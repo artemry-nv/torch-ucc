@@ -1,0 +1,24 @@
+---
+job: 'torch-ucc'
+
+registry_host: 'harbor.mellanox.com'
+# TODO change
+registry_path: '/swx-storage/torch-ucc'
+registry_auth: 'swx-storage'
+
+kubernetes:
+  cloud: 'swx-k8s'
+
+volumes:
+  - { mountPath: '/hpc/local', hostPath: '/hpc/local' }
+  - { mountPath: '/auto/sw_tools', hostPath: '/auto/sw_tools' }
+  - { mountPath: '/.autodirect/mtrswgwork', hostPath: '/.autodirect/mtrswgwork' }
+  - { mountPath: '/.autodirect/sw/release', hostPath: '/.autodirect/sw/release' }
+
+runs_on_dockers:
+  - { file: '.ci/Dockerfile.ubuntu20.04', name: 'ubuntu20.04', tag: 'latest' }
+
+steps:
+  - name: tester
+    run: |
+      echo "INFO: tester"

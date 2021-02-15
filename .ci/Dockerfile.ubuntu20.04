@@ -1,0 +1,1 @@
+FROM harbor.mellanox.com/swx-infra/x86_64/ubuntu20.04/core:latest
