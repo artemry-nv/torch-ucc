@@ -24,3 +24,5 @@ steps:
       echo "INFO: tester"
       find .
       printenv
+      cat /proc/1/cgroup
+      cat /etc/*release*
