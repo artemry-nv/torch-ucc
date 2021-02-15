@@ -22,3 +22,5 @@ steps:
   - name: tester
     run: |
       echo "INFO: tester"
+      find .
+      printenv
