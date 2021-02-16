@@ -18,15 +18,15 @@ volumes:
 env:
   CUDA_HOME: '/usr/local/cuda'
   UCX_BRANCH: 'v1.10.x'
-  UCX_SRC_DIR: ${WORKSPACE}/ucx
-  UCX_BUILD_DIR: ${UCX_SRC_DIR}/build
-  UCX_INSTALL_DIR: ${UCX_BUILD_DIR}/_install
-  UCC_SRC_DIR: ${WORKSPACE}/ucc
-  XCCL_SRC_DIR: ${WORKSPACE}/xccl
-  XCCL_BUILD_DIR: ${XCCL_SRC_DIR}/build
-  XCCL_INSTALL_DIR: ${XCCL_BUILD_DIR}/_install
-  NCCL_SRC_DIR: ${WORKSPACE}/nccl
-  NCCL_BUILD_DIR: ${NCCL_SRC_DIR}/build
+  UCX_SRC_DIR: '${WORKSPACE}/ucx'
+  UCX_BUILD_DIR: '${UCX_SRC_DIR}/build'
+  UCX_INSTALL_DIR: '${UCX_BUILD_DIR}/_install'
+  UCC_SRC_DIR: '${WORKSPACE}/ucc'
+  XCCL_SRC_DIR: '${WORKSPACE}/xccl'
+  XCCL_BUILD_DIR: '${XCCL_SRC_DIR}/build'
+  XCCL_INSTALL_DIR: '${XCCL_BUILD_DIR}/_install'
+  NCCL_SRC_DIR: '${WORKSPACE}/nccl'
+  NCCL_BUILD_DIR: '${NCCL_SRC_DIR}/build'
   NCCL_GIT_REPO: 'https://github.com/nvidia/nccl.git'
 
 runs_on_dockers:
@@ -42,7 +42,6 @@ steps:
       printenv
       cat /proc/1/cgroup
       cat /etc/*release*
-      sleep 3600
   #============================================================================
   - name: Build UCX
     shell: '#!/bin/bash -eEx'
