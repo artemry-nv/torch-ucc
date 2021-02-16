@@ -50,3 +50,11 @@ steps:
       cd ${UCX_SRC_DIR}/build-release
       ${UCX_SRC_DIR}/configure --enable-mt --with-cuda=${CUDA_HOME} --prefix=${UCX_SRC_DIR}/build-release/install
       make -j install
+  - name: Build UCC
+      shell: '#!/bin/bash -eEx'
+      run: |
+        echo "INFO: Build UCC"
+  - name: Build XCCL
+      shell: '#!/bin/bash -eEx'
+      run: |
+        echo "INFO: Build XCCL"
