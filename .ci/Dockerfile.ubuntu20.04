@@ -40,3 +40,5 @@ RUN conda update -y conda && \
         python \
         pip && \
     pip install --no-cache-dir python-hostlist
+
+RUN ln -s /opt/conda/bin/python /usr/bin/python

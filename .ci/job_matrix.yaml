@@ -16,17 +16,27 @@ volumes:
   - { mountPath: '/.autodirect/sw/release', hostPath: '/.autodirect/sw/release' }
 
 env:
-  CUDA_HOME: '/usr/local/cuda'
-  UCX_BRANCH: 'v1.10.x'
+  CUDA_HOME:        '/usr/local/cuda'
+  UCX_BRANCH:       'v1.10.x'
+  UCX_SRC_DIR:      '${WORKSPACE}/ucx'
+  UCX_BUILD_DIR:    '${UCX_SRC_DIR}/build'
+  UCX_INSTALL_DIR:  '${UCX_BUILD_DIR}/_install'
+  UCC_SRC_DIR:      '${WORKSPACE}/ucc'
+  XCCL_SRC_DIR:     '${WORKSPACE}/xccl'
+  XCCL_BUILD_DIR:   '${XCCL_SRC_DIR}/build'
+  XCCL_INSTALL_DIR: '${XCCL_BUILD_DIR}/_install'
+  NCCL_SRC_DIR:     '${WORKSPACE}/nccl'
+  NCCL_BUILD_DIR:   '${NCCL_SRC_DIR}/build'
+  NCCL_GIT_REPO:    'https://github.com/nvidia/nccl.git'
 
 runs_on_dockers:
   - { file: '.ci/Dockerfile.ubuntu20.04', name: 'ubuntu20.04', tag: 'latest', arch: 'x86_64' }
 
 steps:
-  - name: tester
+  - name: Check Env
     shell: '#!/bin/bash -eEx'
     run: |
-      echo "INFO: tester"
+      echo "INFO: check environment"
       find .
       printenv
       cat /proc/1/cgroup
@@ -35,26 +45,37 @@ steps:
     shell: '#!/bin/bash -eEx'
     run: |
       echo "INFO: Build UCX"
-      UCX_SRC_DIR="${WORKSPACE}/ucx"
       cd ${UCX_SRC_DIR}
       git checkout ${UCX_BRANCH}
-      ${WORKSPACE}/ucx/autogen.sh
-      mkdir -p ${UCX_SRC_DIR}/build-debug
-      #cd ${UCX_SRC_DIR}/build-debug
-      #${UCX_SRC_DIR}/configure --enable-debug-data --enable-frame-pointers --enable-stats \
-      #  --enable-memtrack --enable-fault-injection --enable-mt \
-      #  --with-cuda=${CUDA_HOME} \
-      #  --prefix=${UCX_SRC_DIR}/build-debug/install
-      #make -j install
-      mkdir -p ${UCX_SRC_DIR}/build-release
-      cd ${UCX_SRC_DIR}/build-release
-      ${UCX_SRC_DIR}/configure --enable-mt --with-cuda=${CUDA_HOME} --prefix=${UCX_SRC_DIR}/build-release/install
+      ${UCX_SRC_DIR}/autogen.sh
+      mkdir -p ${UCX_BUILD_DIR}
+      cd ${UCX_BUILD_DIR}
+      ${UCX_SRC_DIR}/configure --enable-mt --with-cuda=${CUDA_HOME} --prefix=${UCX_INSTALL_DIR}
       make -j install
-  - name: Build UCC
-      shell: '#!/bin/bash -eEx'
-      run: |
-        echo "INFO: Build UCC"
+  - name: Build NCCL
+    shell: '#!/bin/bash -eEx'
+    run: |
+      echo "INFO: Build NCCL"
+      cd ${WORKSPACE}
+      git clone ${NCCL_GIT_REPO}
+      cd ${NCCL_SRC_DIR}
+      make -j src.build NVCC_GENCODE="-arch=sm_70 -gencode=arch=compute_70,code=sm_70 -gencode=arch=compute_80,code=compute_80"
   - name: Build XCCL
-      shell: '#!/bin/bash -eEx'
-      run: |
-        echo "INFO: Build XCCL"
+    shell: '#!/bin/bash -eEx'
+    run: |
+      echo "INFO: Build XCCL"
+      cd ${XCCL_SRC_DIR}
+      ${XCCL_SRC_DIR}/autogen.sh
+      mkdir -p ${XCCL_BUILD_DIR}
+      cd ${XCCL_BUILD_DIR}
+      ${XCCL_SRC_DIR}/configure --with-nccl=${NCCL_BUILD_DIR} --with-cuda=${CUDA_HOME}  --with-ucx=${UCX_INSTALL_DIR} \
+        --prefix=${XCCL_INSTALL_DIR}
+      make -j install
+  - name: Instal Torch-UCC
+    run: |
+      echo "INFO: Install Torch-UCC"
+      cd ${WORKSPACE}
+      UCX_HOME=${UCX_INSTALL_DIR}
+      XCCL_HOME=${XCCL_INSTALL_DIR}
+      WITH_CUDA=${CUDA_HOME}
+      python setup.py install
