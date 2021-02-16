@@ -19,7 +19,7 @@ runs_on_dockers:
   - { file: '.ci/Dockerfile.ubuntu20.04', name: 'ubuntu20.04', tag: 'latest', arch: 'x86_64' }
 
 steps:
-  - name: 'tester'
+  - name: tester
     shell: '#!/bin/bash -eEx'
     run: |
       echo "INFO: tester"
@@ -27,7 +27,7 @@ steps:
       printenv
       cat /proc/1/cgroup
       cat /etc/*release*
-  - name: 'Build UCX'
+  - name: Build UCX
       shell: '#!/bin/bash -eEx'
       run: |
         echo "INFO: Build UCX"
