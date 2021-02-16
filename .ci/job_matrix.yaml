@@ -35,10 +35,10 @@ steps:
     shell: '#!/bin/bash -eEx'
     run: |
       echo "INFO: Build UCX"
-      UCX_SRC_DIR="${WORSPACE}/ucx"
+      UCX_SRC_DIR="${WORKSPACE}/ucx"
       cd ${UCX_SRC_DIR}
       git checkout ${UCX_BRANCH}
-      ${WORSPACE}/ucx/autogen.sh
+      ${WORKSPACE}/ucx/autogen.sh
       mkdir -p ${UCX_SRC_DIR}/build-debug
       #cd ${UCX_SRC_DIR}/build-debug
       #${UCX_SRC_DIR}/configure --enable-debug-data --enable-frame-pointers --enable-stats \
