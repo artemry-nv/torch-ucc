@@ -42,6 +42,7 @@ steps:
       printenv
       cat /proc/1/cgroup
       cat /etc/*release*
+      sleep 3600
   #============================================================================
   - name: Build UCX
     shell: '#!/bin/bash -eEx'
