@@ -28,6 +28,6 @@ steps:
       cat /proc/1/cgroup
       cat /etc/*release*
   - name: Build UCX
-      shell: '#!/bin/bash -eEx'
-      run: |
-        echo "INFO: Build UCX"
+    shell: '#!/bin/bash -eEx'
+    run: |
+      echo "INFO: Build UCX"
