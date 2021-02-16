@@ -1,1 +1,42 @@
-FROM harbor.mellanox.com/swx-infra/x86_64/ubuntu20.04/core:latest
+FROM nvidia/cuda:11.1-devel-ubuntu18.04
+
+ARG DEBIAN_FRONTEND=noninteractive
+
+RUN apt update && apt install -y --no-install-recommends \
+     build-essential \
+     cmake \
+     git \
+     curl \
+     ca-certificates \
+     libjpeg-dev \
+     wget \
+     lsb-core \
+     pciutils \
+     libcap2 \
+     libtool-bin \
+     iputils-ping \
+     net-tools \
+     ethtool \
+     perl \
+     lsb-release \
+     iproute2 \
+     pciutils \
+     libnuma1 \
+     libnuma-dev \
+     libpng-dev \
+     ssh \
+     numactl && \
+     rm -rf /var/lib/apt/lists/*
+
+# Install conda
+RUN curl -LO http://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh && \
+    bash Miniconda3-latest-Linux-x86_64.sh -p /opt/conda -b && \
+    rm -f Miniconda3-latest-Linux-x86_64.sh
+ENV PATH /opt/conda/bin:${PATH}
+
+# Install conda python
+RUN conda update -y conda && \
+    conda install -c anaconda -y \
+        python \
+        pip && \
+    pip install --no-cache-dir python-hostlist
