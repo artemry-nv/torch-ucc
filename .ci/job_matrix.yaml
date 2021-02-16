@@ -76,7 +76,7 @@ steps:
         --prefix=${XCCL_INSTALL_DIR}
       make -j install
   #============================================================================
-  - name: Instal Torch-UCC
+  - name: Install Torch-UCC
     run: |
       echo "INFO: Install Torch-UCC"
       cd ${WORKSPACE}
