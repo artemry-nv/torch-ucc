@@ -1,9 +1,9 @@
 [submodule "xccl"]
 	path = xccl
-	url = https://github.com/openucx/xccl.git
+	url = https://github.com/artemry-nv/xccl.git
 [submodule "ucc"]
 	path = ucc
-	url = https://github.com/openucx/ucc.git
+	url = https://github.com/artemry-nv/ucc.git
 [submodule "ucx"]
 	path = ucx
-	url = https://github.com/openucx/ucx.git
+	url = https://github.com/artemry-nv/ucx.git
