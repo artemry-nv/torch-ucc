@@ -3,8 +3,8 @@ job: 'torch-ucc'
 
 registry_host: 'harbor.mellanox.com'
 # TODO change
-registry_path: '/swx-storage/torch-ucc'
-registry_auth: 'swx-storage'
+registry_path: '/swx-infra/torch-ucc'
+registry_auth: '1daaea28-800e-425f-a91f-3bd3e9136eea'
 
 kubernetes:
   cloud: 'swx-k8s'
