@@ -68,7 +68,7 @@ steps:
     shell: '#!/bin/bash -eEx'
     run: |
       echo "INFO: Build XCCL"
-      sleep 3600
+      sleep 7200
       cd ${XCCL_SRC_DIR}
       ${XCCL_SRC_DIR}/autogen.sh
       mkdir -p ${XCCL_BUILD_DIR}
