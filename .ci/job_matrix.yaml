@@ -68,12 +68,12 @@ steps:
       sleep 7200
       make -j install
   #============================================================================
-#  - name: Install Torch-UCC
-#    run: |
-#      echo "INFO: Install Torch-UCC"
-#      cd ${WORKSPACE}
-#      UCX_HOME=${UCX_INSTALL_DIR}
-#      XCCL_HOME=${XCCL_INSTALL_DIR}
-#      WITH_CUDA=${CUDA_HOME}
-#      python setup.py install
+  - name: Install Torch-UCC
+    run: |
+      echo "INFO: Install Torch-UCC"
+      cd ${WORKSPACE}
+      UCX_HOME=${UCX_INSTALL_DIR}
+      XCCL_HOME=${XCCL_INSTALL_DIR}
+      WITH_CUDA=${CUDA_HOME}
+      python setup.py install
   #============================================================================
