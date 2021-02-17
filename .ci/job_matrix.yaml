@@ -78,7 +78,7 @@ steps:
       cd ${XCCL_BUILD_DIR}
       ${XCCL_SRC_DIR}/configure --with-nccl=${NCCL_BUILD_DIR} --with-cuda=${CUDA_HOME}  --with-ucx=${UCX_INSTALL_DIR} \
         --prefix=${XCCL_INSTALL_DIR}
-      sleep 7200
+      #sleep 7200
       make -j install
   #============================================================================
   - name: Install Torch-UCC
