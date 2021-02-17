@@ -2,6 +2,13 @@ FROM nvidia/cuda:11.2.1-devel-ubuntu20.04
 
 ARG DEBIAN_FRONTEND=noninteractive
 
+RUN apt update && \
+    apt install -y --no-install-recommends \
+        git \
+        vim \
+    && \
+    rm -rf /var/lib/apt/lists/*
+
 #RUN apt update && apt install -y --no-install-recommends \
 #     build-essential \
 #     cmake \
