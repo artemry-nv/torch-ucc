@@ -65,15 +65,24 @@ steps:
       cd ${XCCL_BUILD_DIR}
       ${XCCL_SRC_DIR}/configure --with-cuda=${CUDA_HOME}  --with-ucx=${UCX_INSTALL_DIR} \
         --prefix=${XCCL_INSTALL_DIR}
-      sleep 7200
       make -j install
   #============================================================================
   - name: Install Torch-UCC
     run: |
       echo "INFO: Install Torch-UCC"
       cd ${WORKSPACE}
-      UCX_HOME=${UCX_INSTALL_DIR}
-      XCCL_HOME=${XCCL_INSTALL_DIR}
-      WITH_CUDA=${CUDA_HOME}
+      UCX_HOME=${UCX_INSTALL_DIR} \
+      XCCL_HOME=${XCCL_INSTALL_DIR} \
+      WITH_CUDA=${CUDA_HOME} \
       python setup.py install
+  #============================================================================
+  - name: Prepare Torch-UCC Package
+    run: |
+      echo "INFO: Prepare Torch-UCC  Package"
+      cd ${WORKSPACE}
+      UCX_HOME=${UCX_INSTALL_DIR} \
+      XCCL_HOME=${XCCL_INSTALL_DIR} \
+      WITH_CUDA=${CUDA_HOME} \
+      python3 setup.py sdist bdist_wheel
+      find dist
   #============================================================================
