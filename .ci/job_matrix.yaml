@@ -54,7 +54,7 @@ steps:
       make -j install
   #============================================================================
   - name: Build XCCL
-    shell: '#!/bin/bash -eExl'
+    shell: '#!/bin/bash -eEx'
     run: |
       echo "INFO: Build XCCL"
       cd ${XCCL_SRC_DIR}
