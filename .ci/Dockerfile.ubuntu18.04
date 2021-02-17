@@ -25,7 +25,9 @@ RUN apt update && apt install -y --no-install-recommends \
      libnuma-dev \
      libpng-dev \
      ssh \
-     numactl && \
+     numactl \
+     vim \
+     && \
      rm -rf /var/lib/apt/lists/*
 
 # Install conda

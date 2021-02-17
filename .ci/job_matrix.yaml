@@ -70,6 +70,8 @@ steps:
       echo "INFO: Build XCCL"
       sleep 7200
       cd ${XCCL_SRC_DIR}
+      # TODO tmp W/A
+      sed -i 's|NVCCFLAGS.*|NVCCFLAGS = "${UCS_CPPFLAGS} -I${XCCL_TOP_SRCDIR}/src -I${XCCL_TOP_SRCDIR}/src/core" --compiler-options -fno-rtti,-fno-exceptions|g' ${XCCL_SRC_DIR}/src/utils/cuda/kernels/Makefile.am
       ${XCCL_SRC_DIR}/autogen.sh
       mkdir -p ${XCCL_BUILD_DIR}
       cd ${XCCL_BUILD_DIR}
