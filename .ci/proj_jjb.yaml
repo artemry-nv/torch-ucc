@@ -67,10 +67,12 @@
 
 - project:
     name: proj_name
+    # TODO
     jjb_email: 'TODO'
     jjb_proj: 'torch-ucc'
-    # TODO
+    # TODO tmp
     jjb_git: 'git@github.com:artemry-nv/torch-ucc.git'
+    # TODO
     jjb_owner: 'TODO'
     jjb_jenkinsfile: '.ci/Jenkinsfile.shlib'
     jobs:
