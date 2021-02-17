@@ -25,9 +25,6 @@ env:
   XCCL_SRC_DIR: '${WORKSPACE}/xccl'
   XCCL_BUILD_DIR: '${XCCL_SRC_DIR}/build'
   XCCL_INSTALL_DIR: '${XCCL_BUILD_DIR}/_install'
-  NCCL_SRC_DIR: '${WORKSPACE}/nccl'
-  NCCL_BUILD_DIR: '${NCCL_SRC_DIR}/build'
-  NCCL_GIT_REPO: 'https://github.com/nvidia/nccl.git'
 
 runs_on_dockers:
   - { file: '.ci/Dockerfile.ubuntu18.04', name: 'ubuntu18.04', tag: 'latest', arch: 'x86_64' }
@@ -56,15 +53,6 @@ steps:
       ${UCX_SRC_DIR}/configure --enable-mt --with-cuda=${CUDA_HOME} --prefix=${UCX_INSTALL_DIR}
       make -j install
   #============================================================================
-  - name: Build NCCL
-    shell: '#!/bin/bash -eEx'
-    run: |
-      echo "INFO: Build NCCL"
-      cd ${WORKSPACE}
-      git clone ${NCCL_GIT_REPO}
-      cd ${NCCL_SRC_DIR}
-      make -j src.build NVCC_GENCODE="-arch=sm_70 -gencode=arch=compute_70,code=sm_70 -gencode=arch=compute_80,code=compute_80"
-  #============================================================================
   - name: Build XCCL
     shell: '#!/bin/bash -eExl'
     run: |
@@ -76,7 +64,7 @@ steps:
       ${XCCL_SRC_DIR}/autogen.sh
       mkdir -p ${XCCL_BUILD_DIR}
       cd ${XCCL_BUILD_DIR}
-      ${XCCL_SRC_DIR}/configure --with-nccl=${NCCL_BUILD_DIR} --with-cuda=${CUDA_HOME}  --with-ucx=${UCX_INSTALL_DIR} \
+      ${XCCL_SRC_DIR}/configure --with-cuda=${CUDA_HOME}  --with-ucx=${UCX_INSTALL_DIR} \
         --prefix=${XCCL_INSTALL_DIR}
       #sleep 7200
       make -j install
