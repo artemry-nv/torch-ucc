@@ -40,6 +40,7 @@ steps:
       cat /proc/1/cgroup
       cat /etc/*release*
       id
+      sleep 7200
   #============================================================================
   - name: Build UCX
     shell: '#!/bin/bash -eEx'
