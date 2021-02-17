@@ -65,7 +65,7 @@ steps:
       make -j src.build NVCC_GENCODE="-arch=sm_70 -gencode=arch=compute_70,code=sm_70 -gencode=arch=compute_80,code=compute_80"
   #============================================================================
   - name: Build XCCL
-    shell: '#!/bin/bash -eEx'
+    shell: '#!/bin/bash -eExl'
     run: |
       echo "INFO: Build XCCL"
       cd ${XCCL_SRC_DIR}
