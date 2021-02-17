@@ -42,6 +42,7 @@ steps:
       printenv
       cat /proc/1/cgroup
       cat /etc/*release*
+      id
   #============================================================================
   - name: Build UCX
     shell: '#!/bin/bash -eEx'
@@ -76,6 +77,7 @@ steps:
       cd ${XCCL_BUILD_DIR}
       ${XCCL_SRC_DIR}/configure --with-nccl=${NCCL_BUILD_DIR} --with-cuda=${CUDA_HOME}  --with-ucx=${UCX_INSTALL_DIR} \
         --prefix=${XCCL_INSTALL_DIR}
+      sleep 7200
       make -j install
   #============================================================================
   - name: Install Torch-UCC
