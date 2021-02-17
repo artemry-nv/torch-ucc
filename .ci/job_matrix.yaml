@@ -27,7 +27,7 @@ env:
   XCCL_INSTALL_DIR: '${XCCL_BUILD_DIR}/_install'
 
 runs_on_dockers:
-  - { file: '.ci/Dockerfile.ubuntu18.04', name: 'ubuntu18.04', tag: 'latest', arch: 'x86_64' }
+  - { file: '.ci/Dockerfile.ubuntu20.04', name: 'ubuntu20.04', tag: 'latest', arch: 'x86_64' }
 
 steps:
   #============================================================================
@@ -57,7 +57,6 @@ steps:
     shell: '#!/bin/bash -eExl'
     run: |
       echo "INFO: Build XCCL"
-      printenv
       cd ${XCCL_SRC_DIR}
       # TODO tmp W/A
       sed -i 's|NVCCFLAGS = .*|NVCCFLAGS = "${UCS_CPPFLAGS} -I${XCCL_TOP_SRCDIR}/src -I${XCCL_TOP_SRCDIR}/src/core" --compiler-options -fno-rtti,-fno-exceptions|g' ${XCCL_SRC_DIR}/src/utils/cuda/kernels/Makefile.am
@@ -66,15 +65,14 @@ steps:
       cd ${XCCL_BUILD_DIR}
       ${XCCL_SRC_DIR}/configure --with-cuda=${CUDA_HOME}  --with-ucx=${UCX_INSTALL_DIR} \
         --prefix=${XCCL_INSTALL_DIR}
-      #sleep 7200
       make -j install
   #============================================================================
-  - name: Install Torch-UCC
-    run: |
-      echo "INFO: Install Torch-UCC"
-      cd ${WORKSPACE}
-      UCX_HOME=${UCX_INSTALL_DIR}
-      XCCL_HOME=${XCCL_INSTALL_DIR}
-      WITH_CUDA=${CUDA_HOME}
-      python setup.py install
+#  - name: Install Torch-UCC
+#    run: |
+#      echo "INFO: Install Torch-UCC"
+#      cd ${WORKSPACE}
+#      UCX_HOME=${UCX_INSTALL_DIR}
+#      XCCL_HOME=${XCCL_INSTALL_DIR}
+#      WITH_CUDA=${CUDA_HOME}
+#      python setup.py install
   #============================================================================
