@@ -48,7 +48,9 @@ steps:
       ${UCX_SRC_DIR}/autogen.sh
       mkdir -p ${UCX_BUILD_DIR}
       cd ${UCX_BUILD_DIR}
-      ${UCX_SRC_DIR}/configure --enable-mt --with-cuda=${CUDA_HOME} --prefix=${UCX_INSTALL_DIR}
+      #${UCX_SRC_DIR}/configure --enable-mt --with-cuda=${CUDA_HOME} --prefix=${UCX_INSTALL_DIR}
+      #${UCX_SRC_DIR}/contrib/configure-devel --with-cuda=${CUDA_HOME} --prefix=${UCX_INSTALL_DIR}
+      ${UCX_SRC_DIR}/contrib/configure-release-mt --with-cuda=${CUDA_HOME} --prefix=${UCX_INSTALL_DIR}
       make -j install
   #============================================================================
   - name: Build XCCL
@@ -82,5 +84,5 @@ steps:
       WITH_CUDA=${CUDA_HOME} \
       python3 setup.py sdist bdist_wheel
       find dist
-      sleep 10000
+      #sleep 10000
   #============================================================================

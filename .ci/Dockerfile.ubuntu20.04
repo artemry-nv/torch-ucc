@@ -32,7 +32,7 @@ RUN conda update -y conda && \
     pip install --no-cache-dir python-hostlist
 
 RUN ln -s /opt/conda/bin/python /usr/bin/python
-RUN python3 -m pip install --user --upgrade setuptools wheel
+RUN python3 -m pip install --user --upgrade setuptools wheel auditwheel check-wheel-contents
 
 WORKDIR "/workspace"
 
