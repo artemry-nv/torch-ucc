@@ -32,7 +32,6 @@ runs_on_dockers:
 steps:
   #============================================================================
   - name: Check Env
-    shell: '#!/bin/bash -eEx'
     run: |
       echo "INFO: check environment"
       find .
@@ -42,7 +41,6 @@ steps:
       id
   #============================================================================
   - name: Build UCX
-    shell: '#!/bin/bash -eEx'
     run: |
       echo "INFO: Build UCX"
       cd ${UCX_SRC_DIR}
@@ -54,7 +52,6 @@ steps:
       make -j install
   #============================================================================
   - name: Build XCCL
-    shell: '#!/bin/bash -eEx'
     run: |
       echo "INFO: Build XCCL"
       cd ${XCCL_SRC_DIR}
