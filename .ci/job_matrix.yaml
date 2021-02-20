@@ -17,14 +17,17 @@ volumes:
 
 env:
   CUDA_HOME: '/usr/local/cuda'
+  INSTALL_ROOT_DIR: '/opt'
   UCX_BRANCH: 'v1.10.x'
   UCX_SRC_DIR: '${WORKSPACE}/ucx'
-  UCX_BUILD_DIR: '${UCX_SRC_DIR}/build'
-  UCX_INSTALL_DIR: '${UCX_BUILD_DIR}/_install'
+  UCX_BUILD_TYPE: 'debug'
+  UCX_BUILD_DIR: '${UCX_SRC_DIR}/build-${UCX_BUILD_TYPE}'
+  UCX_INSTALL_DIR: '${INSTALL_ROOT_DIR}/ucx/${UCX_BUILD_TYPE}'
   UCC_SRC_DIR: '${WORKSPACE}/ucc'
   XCCL_SRC_DIR: '${WORKSPACE}/xccl'
-  XCCL_BUILD_DIR: '${XCCL_SRC_DIR}/build'
-  XCCL_INSTALL_DIR: '${XCCL_BUILD_DIR}/_install'
+  XCCL_BUILD_TYPE: 'debug'
+  XCCL_BUILD_DIR: '${XCCL_SRC_DIR}/build-${XCCL_BUILD_TYPE}'
+  XCCL_INSTALL_DIR: '${INSTALL_ROOT_DIR}/xccl/${XCCL_BUILD_TYPE}'
 
 runs_on_dockers:
   - { file: '.ci/Dockerfile.ubuntu20.04', name: 'ubuntu20.04', tag: 'latest', arch: 'x86_64' }
@@ -49,9 +52,10 @@ steps:
       mkdir -p ${UCX_BUILD_DIR}
       cd ${UCX_BUILD_DIR}
       #${UCX_SRC_DIR}/configure --enable-mt --with-cuda=${CUDA_HOME} --prefix=${UCX_INSTALL_DIR}
-      #${UCX_SRC_DIR}/contrib/configure-devel --with-cuda=${CUDA_HOME} --prefix=${UCX_INSTALL_DIR}
-      ${UCX_SRC_DIR}/contrib/configure-release-mt --with-cuda=${CUDA_HOME} --prefix=${UCX_INSTALL_DIR}
+      ${UCX_SRC_DIR}/contrib/configure-devel --enable-mt --with-cuda=${CUDA_HOME} --prefix=${UCX_INSTALL_DIR}
+      #${UCX_SRC_DIR}/contrib/configure-release-mt --with-cuda=${CUDA_HOME} --prefix=${UCX_INSTALL_DIR}
       make -j install
+      cd ${UCX_INSTALL_DIR} && tar cfz ${UCX_SRC_DIR}/ucx-${UCX_BUILD_TYPE}.tgz .
   #============================================================================
   - name: Build XCCL
     run: |
@@ -63,8 +67,9 @@ steps:
       mkdir -p ${XCCL_BUILD_DIR}
       cd ${XCCL_BUILD_DIR}
       ${XCCL_SRC_DIR}/configure --with-cuda=${CUDA_HOME}  --with-ucx=${UCX_INSTALL_DIR} \
-        --prefix=${XCCL_INSTALL_DIR}
+        --prefix=${XCCL_INSTALL_DIR} --enable-debug
       make -j install
+      cd ${XCCL_INSTALL_DIR} && tar cfz ${XCCL_SRC_DIR}/xccl-${XCCL_BUILD_TYPE}.tgz .
   #============================================================================
   - name: Install Torch-UCC
     run: |
@@ -82,7 +87,8 @@ steps:
       UCX_HOME=${UCX_INSTALL_DIR} \
       XCCL_HOME=${XCCL_INSTALL_DIR} \
       WITH_CUDA=${CUDA_HOME} \
-      python3 setup.py sdist bdist_wheel
+      #python3 setup.py sdist bdist_wheel
+      python3 setup.py bdist_wheel
       find dist
-      #sleep 10000
+      sleep 10000
   #============================================================================
