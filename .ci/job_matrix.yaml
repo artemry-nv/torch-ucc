@@ -74,7 +74,8 @@ steps:
       ${XCCL_SRC_DIR}/autogen.sh
       mkdir -p ${XCCL_BUILD_DIR}
       cd ${XCCL_BUILD_DIR}
-      ${XCCL_SRC_DIR}/configure --with-cuda=${CUDA_HOME}  --with-ucx=${UCX_INSTALL_DIR} \
+      #${XCCL_SRC_DIR}/configure --with-cuda=${CUDA_HOME}  --with-ucx=${UCX_INSTALL_DIR} \
+      ${XCCL_SRC_DIR}/configure --with-ucx=${UCX_INSTALL_DIR} \
         --prefix=${XCCL_INSTALL_DIR} --enable-debug
       make -j install
       echo "${XCCL_INSTALL_DIR}/lib" > /etc/ld.so.conf.d/xccl.conf
@@ -86,7 +87,7 @@ steps:
     run: |
       echo "INFO: Run XCCL tests"
       ${WORKSPACE}/.ci/scripts/run_tests_xccl.sh
-      #sleep 10000
+      sleep 10000
   #============================================================================
   - name: Install Torch-UCC
     run: |
@@ -97,7 +98,7 @@ steps:
       WITH_CUDA=${CUDA_HOME} \
       python setup.py install
       pip3 list | grep torch
-      export LD_LIBRARY_PATH=${UCX_INSTALL_DIR}/lib:${XCCL_INSTALL_DIR}/lib:${LD_LIBRARY_PATH}
+      #export LD_LIBRARY_PATH=${UCX_INSTALL_DIR}/lib:${XCCL_INSTALL_DIR}/lib:${LD_LIBRARY_PATH}
       python -c 'import torch, torch_ucc'
   #============================================================================
   - name: Run Torch-UCC tests
