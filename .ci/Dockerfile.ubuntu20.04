@@ -14,6 +14,7 @@ RUN apt update && \
         ibverbs-utils \
         libnuma-dev \
         libtool-bin \
+        openmpi-bin \
         vim \
     && \
     rm -rf /var/lib/apt/lists/*
