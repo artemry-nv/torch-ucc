@@ -63,7 +63,7 @@ steps:
       echo "${UCX_INSTALL_DIR}/lib" > /etc/ld.so.conf.d/ucx.conf
       ldconfig
       ldconfig -p | grep -i ucx
-      cd ${UCX_INSTALL_DIR} && tar cfz ${UCX_SRC_DIR}/ucx-${UCX_BUILD_TYPE}.tgz .
+      cd ${UCX_INSTALL_DIR} && tar cfz ${UCX_SRC_DIR}/ucx-${UCX_BUILD_TYPE}.tgz --owner=0 --group=0 .
   #============================================================================
   - name: Build XCCL
     run: |
@@ -80,7 +80,7 @@ steps:
       echo "${XCCL_INSTALL_DIR}/lib" > /etc/ld.so.conf.d/xccl.conf
       ldconfig
       ldconfig -p | grep -i xccl
-      cd ${XCCL_INSTALL_DIR} && tar cfz ${XCCL_SRC_DIR}/xccl-${XCCL_BUILD_TYPE}.tgz .
+      cd ${XCCL_INSTALL_DIR} && tar cfz ${XCCL_SRC_DIR}/xccl-${XCCL_BUILD_TYPE}.tgz --owner=0 --group=0 .
   #============================================================================
   - name: Run XCCL tests
     run: |
