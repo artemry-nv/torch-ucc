@@ -4,7 +4,8 @@ export LD_LIBRARY_PATH="${MPI_DIR}/lib:${MPI_DIR}/lib/openmpi:${LD_LIBRARY_PATH}
 export PATH="${MPI_DIR}/bin:${PATH}"
 #command -v mpirun
 export UCX_SOCKADDR_CM_ENABLE=n
-#mpirun --oversubscribe -x XCCL_TEST_TLS=hier -np 8 -H localhost:8 --bind-to none -mca coll ^hcoll ${XCCL_SRC_DIR}/test/test_mpi_allreduce
+#MPI_ARGS_COMMON="--allow-run-as-root"
+#mpirun --oversubscribe ${MPI_ARGS_COMMON} -x XCCL_TEST_TLS=hier -np 8 -H localhost:8 --bind-to none -mca coll ^hcoll ${XCCL_SRC_DIR}/test/test_mpi_allreduce
 #mpirun --oversubscribe -x XCCL_TEST_TLS=hier -np 8 -H localhost:8 --bind-to none -mca coll ^hcoll ${XCCL_SRC_DIR}/test/test_mpi_bcast
 #mpirun --oversubscribe -x XCCL_TEST_TLS=hier -np 8 -H localhost:8 --bind-to none -mca coll ^hcoll ${XCCL_SRC_DIR}/test/test_mpi_barrier
 #
