@@ -99,6 +99,11 @@ steps:
       export LD_LIBRARY_PATH=${UCX_INSTALL_DIR}/lib:${XCCL_INSTALL_DIR}/lib:${LD_LIBRARY_PATH}
       python -c 'import torch, torch_ucc'
   #============================================================================
+  - name: Run Torch-UCC tests
+    run: |
+      echo "INFO: Run Torch-UCC tests"
+      ${WORKSPACE}/.ci/scripts/run_tests_torch_ucc.sh
+  #============================================================================
   - name: Prepare Torch-UCC package
     run: |
       echo "INFO: Prepare Torch-UCC package"
@@ -110,9 +115,4 @@ steps:
       #python3 setup.py sdist bdist_wheel
       find dist
       #sleep 10000
-  #============================================================================
-  - name: Run Torch-UCC tests
-    run: |
-      echo "INFO: Run Torch-UCC tests"
-      ${WORKSPACE}/.ci/scripts/run_tests_torch_ucc.sh
   #============================================================================
