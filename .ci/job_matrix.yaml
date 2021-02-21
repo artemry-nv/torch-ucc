@@ -106,10 +106,10 @@ steps:
       UCX_HOME=${UCX_INSTALL_DIR} \
       XCCL_HOME=${XCCL_INSTALL_DIR} \
       WITH_CUDA=${CUDA_HOME} \
-      #python3 setup.py sdist bdist_wheel
       python3 setup.py bdist_wheel
+      #python3 setup.py sdist bdist_wheel
       find dist
-      sleep 10000
+      #sleep 10000
   #============================================================================
   - name: Run Torch-UCC tests
     run: |
