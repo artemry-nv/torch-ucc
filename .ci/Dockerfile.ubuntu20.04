@@ -14,7 +14,6 @@ RUN apt update && \
         ibverbs-utils \
         libnuma-dev \
         libtool-bin \
-        valgrind-devel \
         vim \
     && \
     rm -rf /var/lib/apt/lists/*
