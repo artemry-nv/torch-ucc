@@ -118,7 +118,7 @@ steps:
       python setup.py install
       pip3 list | grep torch
       export LD_LIBRARY_PATH=${UCX_INSTALL_DIR}/lib:${XCCL_INSTALL_DIR}/lib:${LD_LIBRARY_PATH}
-      python -c 'import torch torch_ucc; print(torch_ucc.__version__)'
+      python -c 'import torch, torch_ucc; print(torch_ucc.__version__)'
   #============================================================================
   - name: Prepare Torch-UCC package
     run: |
