@@ -87,7 +87,26 @@ steps:
       echo "INFO: Run XCCL tests"
       export LD_LIBRARY_PATH="${MPI_DIR}/lib:${MPI_DIR}/lib/openmpi:${LD_LIBRARY_PATH}"
       export PATH="${MPI_DIR}/bin:${PATH}"
-      command -v mpirun
+      #command -v mpirun
+      export UCX_SOCKADDR_CM_ENABLE=n
+      #mpirun --oversubscribe -x XCCL_TEST_TLS=hier -np 8 -H localhost:8 --bind-to none -mca coll ^hcoll ${XCCL_SRC_DIR}/test/test_mpi_allreduce
+      #mpirun --oversubscribe -x XCCL_TEST_TLS=hier -np 8 -H localhost:8 --bind-to none -mca coll ^hcoll ${XCCL_SRC_DIR}/test/test_mpi_bcast
+      #mpirun --oversubscribe -x XCCL_TEST_TLS=hier -np 8 -H localhost:8 --bind-to none -mca coll ^hcoll ${XCCL_SRC_DIR}/test/test_mpi_barrier
+      #
+      #mpirun --oversubscribe -x XCCL_TEAM_HIER_NODE_LEADER_RANK_ID=3 -x XCCL_TEST_TLS=hier -np 8 -H localhost:8 --bind-to none -mca coll ^hcoll ${XCCL_SRC_DIR}/test/test_mpi_allreduce
+      #mpirun --oversubscribe -x XCCL_TEAM_HIER_NODE_LEADER_RANK_ID=4 -x XCCL_TEST_TLS=hier -np 8 -H localhost:8 --bind-to none -mca coll ^hcoll ${XCCL_SRC_DIR}/test/test_mpi_bcast
+      #mpirun --oversubscribe -x XCCL_TEAM_HIER_NODE_LEADER_RANK_ID=5 -x XCCL_TEST_TLS=hier -np 8 -H localhost:8 --bind-to none -mca coll ^hcoll ${XCCL_SRC_DIR}/test/test_mpi_barrier
+      #
+      #mpirun --oversubscribe -x XCCL_TEAM_UCX_ALLREDUCE_ALG_ID=0 -x XCCL_TEST_TLS=ucx -np 8 -H localhost:8 --bind-to none -mca coll ^hcoll ${XCCL_SRC_DIR}/test/test_mpi_allreduce
+      #mpirun --oversubscribe -x XCCL_TEAM_UCX_ALLREDUCE_ALG_ID=1 -x XCCL_TEST_TLS=ucx -np 8 -H localhost:8 --bind-to none -mca coll ^hcoll ${XCCL_SRC_DIR}/test/test_mpi_allreduce
+      #mpirun --oversubscribe -x XCCL_TEST_TLS=ucx -np 8 -H localhost:8 --bind-to none -mca coll ^hcoll ${XCCL_SRC_DIR}/test/test_mpi_bcast
+      #mpirun --oversubscribe -x XCCL_TEST_TLS=ucx -np 8 -H localhost:8 --bind-to none -mca coll ^hcoll ${XCCL_SRC_DIR}/test/test_mpi_barrier
+      #mpirun --oversubscribe -x XCCL_TEST_TLS=ucx -np 8 -H localhost:8 --bind-to none -mca coll ^hcoll ${XCCL_SRC_DIR}/test/test_mpi_alltoall
+      #mpirun --oversubscribe -x XCCL_TEST_TLS=ucx -np 8 -H localhost:8 --bind-to none -mca coll ^hcoll ${XCCL_SRC_DIR}/test/test_mpi_alltoallv
+      #mpirun --oversubscribe -x XCCL_TEST_TLS=ucx -np 8 -H localhost:8 --bind-to none -mca coll ^hcoll ${XCCL_SRC_DIR}/test/test_mpi_allgather
+      #mpirun -x XCCL_TEAM_UCX_ALLTOALL_PAIRWISE_CHUNK=0 --oversubscribe -x XCCL_TEST_TLS=ucx -np 8 -H localhost:8 --bind-to none -mca coll ^hcoll ${XCCL_SRC_DIR}/test/test_mpi_alltoall
+      #mpirun -x XCCL_TEAM_UCX_ALLTOALL_PAIRWISE_CHUNK=0 --oversubscribe -x XCCL_TEST_TLS=ucx -np 8 -H localhost:8 --bind-to none -mca coll ^hcoll ${XCCL_SRC_DIR}/test/test_mpi_alltoallv
+      #mpirun --oversubscribe -x XCCL_TEST_TLS=hier -x XCCL_TEST_ITERS=500  -x XCCL_TEST_NTHREADS=4 -x XCCL_TEST_CHECK=1 -np 8 -H localhost:8 --bind-to none -mca coll ^hcoll ${XCCL_SRC_DIR}/test/test_mpi_mt
   #============================================================================
   - name: Install Torch-UCC
     run: |
@@ -112,4 +131,26 @@ steps:
       python3 setup.py bdist_wheel
       find dist
       sleep 10000
+  #============================================================================
+  - name: Run Torch-UCC tests
+    run: |
+      echo "INFO: Run Torch-UCC tests"
+      export LD_LIBRARY_PATH="${MPI_DIR}/lib:${MPI_DIR}/lib/openmpi:${LD_LIBRARY_PATH}"
+      export PATH="${MPI_DIR}/bin:${UCX_INSTALL_DIR}/bin:${PATH}"
+      #command -v mpirun
+      export TORCH_UCC_XCCL_TLS=ucx
+      ucx_info -e -u t
+      export UCX_LOG_LEVEL=info
+      #echo "XCCL allreduce"
+      #/bin/bash ${XCCL_SRC_DIR}/test/start_test.sh ${XCCL_SRC_DIR}/test/torch_allreduce_test.py --backend=gloo
+      #echo "XCCL alltoall"
+      #/bin/bash ${XCCL_SRC_DIR}/test/start_test.sh ${XCCL_SRC_DIR}/test/torch_alltoall_test.py --backend=gloo
+      #echo "XCCL alltoallv"
+      #/bin/bash ${XCCL_SRC_DIR}/test/start_test.sh ${XCCL_SRC_DIR}/test/torch_alltoallv_test.py --backend=gloo
+      #echo "XCCL barrier"
+      #/bin/bash ${XCCL_SRC_DIR}/test/start_test.sh ${XCCL_SRC_DIR}/test/torch_barrier_test.py --backend=gloo
+      #echo "XCCL allgather"
+      #/bin/bash ${XCCL_SRC_DIR}/test/start_test.sh ${XCCL_SRC_DIR}/test/torch_allgather_test.py --backend=gloo
+      #echo "XCCL broadcast"
+      #/bin/bash ${XCCL_SRC_DIR}/test/start_test.sh ${XCCL_SRC_DIR}/test/torch_bcast_test.py --backend=gloo
   #============================================================================
