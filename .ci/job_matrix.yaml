@@ -20,7 +20,8 @@ env:
   INSTALL_ROOT_DIR: '/opt'
   UCX_BRANCH: 'v1.10.x'
   UCX_SRC_DIR: '${WORKSPACE}/ucx'
-  UCX_BUILD_TYPE: 'debug'
+  #UCX_BUILD_TYPE: 'debug'
+  UCX_BUILD_TYPE: 'release-mt'
   UCX_BUILD_DIR: '${UCX_SRC_DIR}/build-${UCX_BUILD_TYPE}'
   UCX_INSTALL_DIR: '${INSTALL_ROOT_DIR}/ucx/${UCX_BUILD_TYPE}'
   UCC_SRC_DIR: '${WORKSPACE}/ucc'
@@ -55,9 +56,12 @@ steps:
       mkdir -p ${UCX_BUILD_DIR}
       cd ${UCX_BUILD_DIR}
       #${UCX_SRC_DIR}/configure --enable-mt --with-cuda=${CUDA_HOME} --prefix=${UCX_INSTALL_DIR}
-      ${UCX_SRC_DIR}/contrib/configure-devel --enable-mt --with-cuda=${CUDA_HOME} --prefix=${UCX_INSTALL_DIR}
-      #${UCX_SRC_DIR}/contrib/configure-release-mt --with-cuda=${CUDA_HOME} --prefix=${UCX_INSTALL_DIR}
+      #${UCX_SRC_DIR}/contrib/configure-devel --enable-mt --with-cuda=${CUDA_HOME} --prefix=${UCX_INSTALL_DIR}
+      ${UCX_SRC_DIR}/contrib/configure-release-mt --with-cuda=${CUDA_HOME} --prefix=${UCX_INSTALL_DIR}
       make -j install
+      echo "${UCX_INSTALL_DIR}/lib" > /etc/ld.so.conf.d/ucx.conf
+      ldconfig
+      ldconfig -p | grep -i ucx
       cd ${UCX_INSTALL_DIR} && tar cfz ${UCX_SRC_DIR}/ucx-${UCX_BUILD_TYPE}.tgz .
   #============================================================================
   - name: Build XCCL
@@ -72,6 +76,9 @@ steps:
       ${XCCL_SRC_DIR}/configure --with-cuda=${CUDA_HOME}  --with-ucx=${UCX_INSTALL_DIR} \
         --prefix=${XCCL_INSTALL_DIR} --enable-debug
       make -j install
+      echo "${XCCL_INSTALL_DIR}/lib" > /etc/ld.so.conf.d/xccl.conf
+      ldconfig
+      ldconfig -p | grep -i xccl
       cd ${XCCL_INSTALL_DIR} && tar cfz ${XCCL_SRC_DIR}/xccl-${XCCL_BUILD_TYPE}.tgz .
   #============================================================================
   - name: Install Torch-UCC
@@ -84,7 +91,7 @@ steps:
       python setup.py install
       pip3 list | grep torch
       export LD_LIBRARY_PATH=${UCX_INSTALL_DIR}/lib:${XCCL_INSTALL_DIR}/lib:${LD_LIBRARY_PATH}
-      python -c 'import torch torch-ucc; print(torch-ucc.__version__)'
+      python -c 'import torch torch-ucc; print(torch_ucc.__version__)'
   #============================================================================
   - name: Prepare Torch-UCC Package
     run: |
