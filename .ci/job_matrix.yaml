@@ -82,12 +82,14 @@ steps:
       ldconfig
       ldconfig -p | grep -i xccl
       cd ${XCCL_INSTALL_DIR} && tar cfz ${XCCL_SRC_DIR}/xccl-${XCCL_BUILD_TYPE}.tgz --owner=0 --group=0 .
+      # Build XCCL tests
+      make -C test
   #============================================================================
   - name: Run XCCL tests
     run: |
       echo "INFO: Run XCCL tests"
       ${WORKSPACE}/.ci/scripts/run_tests_xccl.sh
-      sleep 10000
+      #sleep 10000
   #============================================================================
   - name: Install Torch-UCC
     run: |
