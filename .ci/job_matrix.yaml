@@ -16,6 +16,7 @@ volumes:
   - { mountPath: '/.autodirect/sw/release', hostPath: '/.autodirect/sw/release' }
 
 env:
+  build_dockers: 'true'
   CUDA_HOME: '/usr/local/cuda'
   INSTALL_ROOT_DIR: '/opt'
   UCX_BRANCH: 'v1.10.x'
