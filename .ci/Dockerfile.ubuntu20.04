@@ -1,7 +1,7 @@
 FROM nvidia/cuda:11.2.1-devel-ubuntu20.04
 
-ARG TORCH_UCC_SRC_DIR='/opt/nvidia/src/torch-ucc'
-ARG TORCH_UCC_PACKAGE_DIR='/opt/nvidia/torch-ucc'
+ARG TORCH_UCC_SRC_DIR='/opt/nvidia/torch-ucc/src'
+ARG TORCH_UCC_PACKAGE_DIR='/opt/nvidia/torch-ucc/pkg'
 ARG CUDA_HOME='/usr/local/cuda'
 ARG UCX_BRANCH='v1.10.x'
 ARG UCX_INSTALL_DIR='/opt/nvidia/ucx'
