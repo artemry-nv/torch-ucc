@@ -68,8 +68,8 @@ RUN echo "INFO: Build XCCL" && \
     echo "${XCCL_INSTALL_DIR}/lib" > /etc/ld.so.conf.d/xccl.conf && \
     ldconfig && \
     ldconfig -p | grep -i xccl && \
-    cd ${XCCL_INSTALL_DIR} && tar cfz ${TORCH_UCC_PKG_DIR}/xccl-${XCCL_BUILD_TYPE}.tgz --owner=0 --group=0 . && \
-    make -C test
+    make -C test && \
+    cd ${XCCL_INSTALL_DIR} && tar cfz ${TORCH_UCC_PKG_DIR}/xccl-${XCCL_BUILD_TYPE}.tgz --owner=0 --group=0 .
 #==============================================================================
 # Install conda
 #RUN curl -LO http://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh && \
