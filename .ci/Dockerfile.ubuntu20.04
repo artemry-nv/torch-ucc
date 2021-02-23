@@ -11,7 +11,7 @@ ARG UCX_BUILD_TYPE='release-mt'
 RUN mkdir -p ${TORCH_UCC_SRC_DIR}
 RUN mkdir -p ${TORCH_UCC_PACKAGE_DIR}
 
-COPY . ${TORCH_UCC_SRC_DIR}/torch-ucc
+COPY . ${TORCH_UCC_SRC_DIR}
 RUN find ${TORCH_UCC_SRC_DIR}
 
 ARG DEBIAN_FRONTEND=noninteractive
