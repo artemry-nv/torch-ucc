@@ -34,7 +34,13 @@ env:
   XCCL_INSTALL_DIR: '${INSTALL_ROOT_DIR}/xccl/${XCCL_BUILD_TYPE}'
 
 runs_on_dockers:
-  - { file: '.ci/Dockerfile.ubuntu20.04', name: 'ubuntu20.04', tag: 'latest', arch: 'x86_64' }
+  - {
+    file: '.ci/Dockerfile.ubuntu20.04',
+    name: 'ubuntu20.04',
+    tag: 'latest',
+    arch: 'x86_64',
+    uri: ${TORCH_UCC_VERSION}/x86_64/ubuntu20.04
+  }
 
 # TODO debug
 timeout_minutes: 180
@@ -50,38 +56,38 @@ steps:
       id
       find /opt/nvidia
   #============================================================================
-#  - name: Run XCCL tests
-#    run: |
-#      echo "INFO: Run XCCL tests"
-#      ${WORKSPACE}/.ci/scripts/run_tests_xccl.sh
-#      #sleep 10000
+  #  - name: Run XCCL tests
+  #    run: |
+  #      echo "INFO: Run XCCL tests"
+  #      ${WORKSPACE}/.ci/scripts/run_tests_xccl.sh
+  #      #sleep 10000
   #============================================================================
-#  - name: Install Torch-UCC
-#    run: |
-#      echo "INFO: Install Torch-UCC"
-#      cd ${WORKSPACE}
-#      UCX_HOME=${UCX_INSTALL_DIR} \
-#      XCCL_HOME=${XCCL_INSTALL_DIR} \
-#      WITH_CUDA=${CUDA_HOME} \
-#      python setup.py install
-#      pip3 list | grep torch
-#      #export LD_LIBRARY_PATH=${UCX_INSTALL_DIR}/lib:${XCCL_INSTALL_DIR}/lib:${LD_LIBRARY_PATH}
-#      python -c 'import torch, torch_ucc'
+  #  - name: Install Torch-UCC
+  #    run: |
+  #      echo "INFO: Install Torch-UCC"
+  #      cd ${WORKSPACE}
+  #      UCX_HOME=${UCX_INSTALL_DIR} \
+  #      XCCL_HOME=${XCCL_INSTALL_DIR} \
+  #      WITH_CUDA=${CUDA_HOME} \
+  #      python setup.py install
+  #      pip3 list | grep torch
+  #      #export LD_LIBRARY_PATH=${UCX_INSTALL_DIR}/lib:${XCCL_INSTALL_DIR}/lib:${LD_LIBRARY_PATH}
+  #      python -c 'import torch, torch_ucc'
   #============================================================================
-#  - name: Run Torch-UCC tests
-#    run: |
-#      echo "INFO: Run Torch-UCC tests"
-#      ${WORKSPACE}/.ci/scripts/run_tests_torch_ucc.sh
+  #  - name: Run Torch-UCC tests
+  #    run: |
+  #      echo "INFO: Run Torch-UCC tests"
+  #      ${WORKSPACE}/.ci/scripts/run_tests_torch_ucc.sh
   #============================================================================
-#  - name: Prepare Torch-UCC package
-#    run: |
-#      echo "INFO: Prepare Torch-UCC package"
-#      cd ${WORKSPACE}
-#      UCX_HOME=${UCX_INSTALL_DIR} \
-#      XCCL_HOME=${XCCL_INSTALL_DIR} \
-#      WITH_CUDA=${CUDA_HOME} \
-#      python3 setup.py bdist_wheel
-#      #python3 setup.py sdist bdist_wheel
-#      find dist
-#      #sleep 10000
+  #  - name: Prepare Torch-UCC package
+  #    run: |
+  #      echo "INFO: Prepare Torch-UCC package"
+  #      cd ${WORKSPACE}
+  #      UCX_HOME=${UCX_INSTALL_DIR} \
+  #      XCCL_HOME=${XCCL_INSTALL_DIR} \
+  #      WITH_CUDA=${CUDA_HOME} \
+  #      python3 setup.py bdist_wheel
+  #      #python3 setup.py sdist bdist_wheel
+  #      find dist
+  #      #sleep 10000
   #============================================================================
