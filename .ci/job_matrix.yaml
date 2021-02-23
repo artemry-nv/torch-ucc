@@ -1,27 +1,27 @@
 ---
-job: torch-ucc
+job: 'torch-ucc'
 
-registry_host: harbor.mellanox.com
+registry_host: 'harbor.mellanox.com'
 # TODO change
-registry_path: /swx-infra/torch-ucc
-registry_auth: 1daaea28-800e-425f-a91f-3bd3e9136eea
+registry_path: '/swx-infra/torch-ucc'
+registry_auth: '1daaea28-800e-425f-a91f-3bd3e9136eea'
 
 kubernetes:
-  cloud: swx-k8s
+  cloud: 'swx-k8s'
 
 volumes:
-  - { mountPath: /hpc/local, hostPath: /hpc/local }
-  - { mountPath: /auto/sw_tools, hostPath: /auto/sw_tools }
-  - { mountPath: /.autodirect/mtrswgwork, hostPath: /.autodirect/mtrswgwork }
-  - { mountPath: /.autodirect/sw/release, hostPath: /.autodirect/sw/release }
+  - { mountPath: '/hpc/local', hostPath: '/hpc/local' }
+  - { mountPath: '/auto/sw_tools', hostPath: '/auto/sw_tools' }
+  - { mountPath: '/.autodirect/mtrswgwork', hostPath: '/.autodirect/mtrswgwork' }
+  - { mountPath: '/.autodirect/sw/release', hostPath: '/.autodirect/sw/release' }
 
 env:
   # build_dockers should be always 'true' (because CI building is a part of docker building process)
-  build_dockers: true
-  CUDA_VER: 11.2.1
-  TORCH_UCC_URI_SUFFIX: ${TORCH_UCC_VERSION}/x86_64/ubuntu20.04/cuda${CUDA_VER}
-  TORCH_UCC_ROOT_DIR: /opt/nvidia/torch-ucc
-  TORCH_UCC_SRC_DIR: ${TORCH_UCC_ROOT_DIR}/src
+  build_dockers: 'true'
+  CUDA_VER: '11.2.1'
+  TORCH_UCC_URI_SUFFIX: '${TORCH_UCC_VERSION}/x86_64/ubuntu20.04/cuda${CUDA_VER}'
+  TORCH_UCC_ROOT_DIR: '/opt/nvidia/torch-ucc'
+  TORCH_UCC_SRC_DIR: '${TORCH_UCC_ROOT_DIR}/src'
 
 runs_on_dockers:
   - {
@@ -34,7 +34,7 @@ runs_on_dockers:
   }
 
 # TODO debug
-timeout_minutes: 180
+timeout_minutes: '180'
 
 steps:
   #============================================================================
@@ -46,15 +46,15 @@ steps:
       cat /etc/*release*
       id
       find /opt/nvidia
-      #============================================================================
-      - name: Run XCCL tests
-        run: |
-          echo "INFO: Run XCCL tests"
-          ${TORCH_UCC_SRC_DIR}/.ci/scripts/run_tests_xccl.sh
-          #sleep 10000
-      #============================================================================
-      - name: Run Torch-UCC tests
-        run: |
-          echo "INFO: Run Torch-UCC tests"
-          ${TORCH_UCC_SRC_DIR}/.ci/scripts/run_tests_torch_ucc.sh
+  #============================================================================
+  - name: Run XCCL tests
+    run: |
+      echo "INFO: Run XCCL tests"
+      ${TORCH_UCC_SRC_DIR}/.ci/scripts/run_tests_xccl.sh
+      #sleep 10000
+  #============================================================================
+  - name: Run Torch-UCC tests
+    run: |
+      echo "INFO: Run Torch-UCC tests"
+      ${TORCH_UCC_SRC_DIR}/.ci/scripts/run_tests_torch_ucc.sh
   #============================================================================
