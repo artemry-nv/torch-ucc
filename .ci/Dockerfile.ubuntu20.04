@@ -12,11 +12,11 @@ ENV UCX_INSTALL_DIR='${TORCH_UCC_BIN_DIR}/ucx'
 ENV UCX_BUILD_TYPE='release-mt'
 ENV XCCL_BUILD_TYPE='debug'
 ENV XCCL_INSTALL_DIR='${TORCH_UCC_BIN_DIR}/xccl'
-##==============================================================================
-#RUN mkdir -p ${TORCH_UCC_SRC_DIR} && \
-#    mkdir -p ${TORCH_UCC_PKG_DIR} && \
-#    mkdir -p ${TORCH_UCC_BIN_DIR}
-#
+#==============================================================================
+RUN mkdir -p ${TORCH_UCC_SRC_DIR} && \
+    mkdir -p ${TORCH_UCC_PKG_DIR} && \
+    mkdir -p ${TORCH_UCC_BIN_DIR}
+
 #COPY . ${TORCH_UCC_SRC_DIR}
 #RUN find ${TORCH_UCC_SRC_DIR}
 ##==============================================================================
