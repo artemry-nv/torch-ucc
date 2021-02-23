@@ -32,7 +32,6 @@ env:
   XCCL_BUILD_TYPE: 'debug'
   XCCL_BUILD_DIR: '${XCCL_SRC_DIR}/build-${XCCL_BUILD_TYPE}'
   XCCL_INSTALL_DIR: '${INSTALL_ROOT_DIR}/xccl/${XCCL_BUILD_TYPE}'
-  MPI_DIR: '/usr/mpi/gcc/openmpi-4.0.4rc3'
 
 runs_on_dockers:
   - { file: '.ci/Dockerfile.ubuntu20.04', name: 'ubuntu20.04', tag: 'latest', arch: 'x86_64' }
@@ -50,43 +49,6 @@ steps:
       cat /etc/*release*
       id
       find /opt/nvidia
-  #============================================================================
-#  - name: Build UCX
-#    run: |
-#      echo "INFO: Build UCX"
-#      cd ${UCX_SRC_DIR}
-#      git checkout ${UCX_BRANCH}
-#      ${UCX_SRC_DIR}/autogen.sh
-#      mkdir -p ${UCX_BUILD_DIR}
-#      cd ${UCX_BUILD_DIR}
-#      #${UCX_SRC_DIR}/configure --enable-mt --with-cuda=${CUDA_HOME} --prefix=${UCX_INSTALL_DIR}
-#      #${UCX_SRC_DIR}/contrib/configure-devel --enable-mt --with-cuda=${CUDA_HOME} --prefix=${UCX_INSTALL_DIR}
-#      ${UCX_SRC_DIR}/contrib/configure-release-mt --with-cuda=${CUDA_HOME} --prefix=${UCX_INSTALL_DIR}
-#      make -j install
-#      echo "${UCX_INSTALL_DIR}/lib" > /etc/ld.so.conf.d/ucx.conf
-#      ldconfig
-#      ldconfig -p | grep -i ucx
-#      cd ${UCX_INSTALL_DIR} && tar cfz ${UCX_SRC_DIR}/ucx-${UCX_BUILD_TYPE}.tgz --owner=0 --group=0 .
-  #============================================================================
-#  - name: Build XCCL
-#    run: |
-#      echo "INFO: Build XCCL"
-#      cd ${XCCL_SRC_DIR}
-#      # TODO tmp W/A
-#      sed -i 's|NVCCFLAGS = .*|NVCCFLAGS = "${UCS_CPPFLAGS} -I${XCCL_TOP_SRCDIR}/src -I${XCCL_TOP_SRCDIR}/src/core" --compiler-options -fno-rtti,-fno-exceptions|g' ${XCCL_SRC_DIR}/src/utils/cuda/kernels/Makefile.am
-#      ${XCCL_SRC_DIR}/autogen.sh
-#      mkdir -p ${XCCL_BUILD_DIR}
-#      cd ${XCCL_BUILD_DIR}
-#      #${XCCL_SRC_DIR}/configure --with-cuda=${CUDA_HOME}  --with-ucx=${UCX_INSTALL_DIR} \
-#      ${XCCL_SRC_DIR}/configure --with-ucx=${UCX_INSTALL_DIR} \
-#        --prefix=${XCCL_INSTALL_DIR} --enable-debug
-#      make -j install
-#      echo "${XCCL_INSTALL_DIR}/lib" > /etc/ld.so.conf.d/xccl.conf
-#      ldconfig
-#      ldconfig -p | grep -i xccl
-#      cd ${XCCL_INSTALL_DIR} && tar cfz ${XCCL_SRC_DIR}/xccl-${XCCL_BUILD_TYPE}.tgz --owner=0 --group=0 .
-#      # Build XCCL tests
-#      make -C test
   #============================================================================
 #  - name: Run XCCL tests
 #    run: |
