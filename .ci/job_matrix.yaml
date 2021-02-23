@@ -32,6 +32,7 @@ env:
   XCCL_BUILD_TYPE: 'debug'
   XCCL_BUILD_DIR: '${XCCL_SRC_DIR}/build-${XCCL_BUILD_TYPE}'
   XCCL_INSTALL_DIR: '${INSTALL_ROOT_DIR}/xccl/${XCCL_BUILD_TYPE}'
+  TORCH_UCC_URI_SUFFIX: '${TORCH_UCC_VERSION}/x86_64/ubuntu20.04'
 
 runs_on_dockers:
   - {
@@ -39,7 +40,7 @@ runs_on_dockers:
     name: 'ubuntu20.04',
     tag: 'latest',
     arch: 'x86_64',
-    uri: ${TORCH_UCC_VERSION}/x86_64/ubuntu20.04
+    uri: $TORCH_UCC_URI_SUFFIX
   }
 
 # TODO debug
