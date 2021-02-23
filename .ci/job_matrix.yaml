@@ -44,6 +44,7 @@ steps:
       cat /etc/*release*
       id
       find /opt/nvidia
+      echo "INFO: XCCL_INSTALL_DIR = ${XCCL_INSTALL_DIR}"
   #============================================================================
   #  - name: Run XCCL tests
   #    run: |
