@@ -1,17 +1,17 @@
 ARG CUDA_VER='11.2.1'
 FROM nvidia/cuda:${CUDA_VER}-devel-ubuntu20.04
 #==============================================================================
-ENV TORCH_UCC_ROOT_DIR='/opt/nvidia/torch-ucc'
-ENV TORCH_UCC_SRC_DIR='${TORCH_UCC_ROOT_DIR}/src'
-ENV TORCH_UCC_PKG_DIR='${TORCH_UCC_ROOT_DIR}/pkg'
-ENV TORCH_UCC_BIN_DIR='${TORCH_UCC_ROOT_DIR}/bin'
-ENV CUDA_HOME='/usr/local/cuda'
-ENV UCX_BRANCH='v1.10.x'
-ENV UCX_INSTALL_DIR='${TORCH_UCC_BIN_DIR}/ucx'
-#ENV UCX_BUILD_TYPE='debug'
-ENV UCX_BUILD_TYPE='release-mt'
-ENV XCCL_BUILD_TYPE='debug'
-ENV XCCL_INSTALL_DIR='${TORCH_UCC_BIN_DIR}/xccl'
+ENV TORCH_UCC_ROOT_DIR=/opt/nvidia/torch-ucc
+ENV TORCH_UCC_SRC_DIR=${TORCH_UCC_ROOT_DIR}/src
+ENV TORCH_UCC_PKG_DIR=${TORCH_UCC_ROOT_DIR}/pkg
+ENV TORCH_UCC_BIN_DIR=${TORCH_UCC_ROOT_DIR}/bin
+ENV CUDA_HOME=/usr/local/cuda
+ENV UCX_BRANCH=v1.10.x
+ENV UCX_INSTALL_DIR=${TORCH_UCC_BIN_DIR}/ucx
+#ENV UCX_BUILD_TYPE=debug
+ENV UCX_BUILD_TYPE=release-mt
+ENV XCCL_BUILD_TYPE=debug
+ENV XCCL_INSTALL_DIR=${TORCH_UCC_BIN_DIR}/xccl
 #==============================================================================
 RUN mkdir -p ${TORCH_UCC_SRC_DIR} && \
     mkdir -p ${TORCH_UCC_PKG_DIR} && \
