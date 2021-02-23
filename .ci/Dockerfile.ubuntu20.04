@@ -17,59 +17,59 @@ RUN mkdir -p ${TORCH_UCC_SRC_DIR} && \
     mkdir -p ${TORCH_UCC_PKG_DIR} && \
     mkdir -p ${TORCH_UCC_BIN_DIR}
 
-#COPY . ${TORCH_UCC_SRC_DIR}
-#RUN find ${TORCH_UCC_SRC_DIR}
-##==============================================================================
-#ARG DEBIAN_FRONTEND=noninteractive
-#RUN apt update && \
-#    apt install -y \
-#        apt-utils \
-#        autoconf \
-#        build-essential \
-#        cmake \
-#        curl \
-#        git \
-#        ibverbs-providers \
-#        ibverbs-utils \
-#        libnuma-dev \
-#        libtool-bin \
-#        openmpi-bin \
-#        vim \
-#    && \
-#    rm -rf /var/lib/apt/lists/*
-##==============================================================================
-## Build UCX
-#RUN echo "INFO: Build UCX" && \
-#    cd ${TORCH_UCC_SRC_DIR}/ucx && \
-#    git checkout ${UCX_BRANCH} && \
-#    ${TORCH_UCC_SRC_DIR}/ucx/autogen.sh && \
-#    mkdir -p ${TORCH_UCC_SRC_DIR}/ucx/build-${UCX_BUILD_TYPE} && \
-#    cd ${TORCH_UCC_SRC_DIR}/ucx/build-${UCX_BUILD_TYPE} && \
-#    #${TORCH_UCC_SRC_DIR}/ucx/configure --enable-mt --with-cuda=${CUDA_HOME} --prefix=${UCX_INSTALL_DIR}/build-${UCX_BUILD_TYPE} && \
-#    #${TORCH_UCC_SRC_DIR}/ucx/contrib/configure-devel --enable-mt --with-cuda=${CUDA_HOME} --prefix=${UCX_INSTALL_DIR}/build-${UCX_BUILD_TYPE} && \
-#    ${TORCH_UCC_SRC_DIR}/ucx/contrib/configure-release-mt --with-cuda=${CUDA_HOME} --prefix=${UCX_INSTALL_DIR}/build-${UCX_BUILD_TYPE} && \
-#    make -j install && \
-#    echo "${UCX_INSTALL_DIR}/build-${UCX_BUILD_TYPE}/lib" > /etc/ld.so.conf.d/ucx.conf && \
-#    ldconfig && \
-#    ldconfig -p | grep -i ucx && \
-#    cd ${UCX_INSTALL_DIR} && tar cfz ${TORCH_UCC_PKG_DIR}/ucx-${UCX_BUILD_TYPE}.tgz --owner=0 --group=0 .
-##==============================================================================
-## Build XCCL
-#RUN echo "INFO: Build XCCL" && \
-#    cd ${TORCH_UCC_SRC_DIR}/xccl && \
-#    sed -i 's|NVCCFLAGS = .*|NVCCFLAGS = "${UCS_CPPFLAGS} -I${XCCL_TOP_SRCDIR}/src -I${XCCL_TOP_SRCDIR}/src/core" --compiler-options -fno-rtti,-fno-exceptions|g' ${TORCH_UCC_SRC_DIR}/xccl/src/utils/cuda/kernels/Makefile.am && \
-#    ${TORCH_UCC_SRC_DIR}/xccl/autogen.sh && \
-#    mkdir -p ${TORCH_UCC_SRC_DIR}/xccl/build-${XCCL_BUILD_TYPE} && \
-#    cd ${TORCH_UCC_SRC_DIR}/xccl/build-${XCCL_BUILD_TYPE} && \
-#    #${TORCH_UCC_SRC_DIR}/xccl/configure --with-cuda=${CUDA_HOME} --with-ucx=${UCX_INSTALL_DIR}/build-${UCX_BUILD_TYPE} \
-#    ${TORCH_UCC_SRC_DIR}/xccl/configure --with-ucx=${UCX_INSTALL_DIR}/build-${UCX_BUILD_TYPE} \
-#        --prefix=${XCCL_INSTALL_DIR} --enable-debug && \
-#    make -j install && \
-#    echo "${XCCL_INSTALL_DIR}/lib" > /etc/ld.so.conf.d/xccl.conf && \
-#    ldconfig && \
-#    ldconfig -p | grep -i xccl && \
-#    cd ${XCCL_INSTALL_DIR} && tar cfz ${TORCH_UCC_PKG_DIR}/xccl-${XCCL_BUILD_TYPE}.tgz --owner=0 --group=0 . && \
-#    make -C test
+COPY . ${TORCH_UCC_SRC_DIR}
+RUN find ${TORCH_UCC_SRC_DIR}
+#==============================================================================
+ARG DEBIAN_FRONTEND=noninteractive
+RUN apt update && \
+    apt install -y \
+        apt-utils \
+        autoconf \
+        build-essential \
+        cmake \
+        curl \
+        git \
+        ibverbs-providers \
+        ibverbs-utils \
+        libnuma-dev \
+        libtool-bin \
+        openmpi-bin \
+        vim \
+    && \
+    rm -rf /var/lib/apt/lists/*
+#==============================================================================
+# Build UCX
+RUN echo "INFO: Build UCX" && \
+    cd ${TORCH_UCC_SRC_DIR}/ucx && \
+    git checkout ${UCX_BRANCH} && \
+    ${TORCH_UCC_SRC_DIR}/ucx/autogen.sh && \
+    mkdir -p ${TORCH_UCC_SRC_DIR}/ucx/build-${UCX_BUILD_TYPE} && \
+    cd ${TORCH_UCC_SRC_DIR}/ucx/build-${UCX_BUILD_TYPE} && \
+    #${TORCH_UCC_SRC_DIR}/ucx/configure --enable-mt --with-cuda=${CUDA_HOME} --prefix=${UCX_INSTALL_DIR}/build-${UCX_BUILD_TYPE} && \
+    #${TORCH_UCC_SRC_DIR}/ucx/contrib/configure-devel --enable-mt --with-cuda=${CUDA_HOME} --prefix=${UCX_INSTALL_DIR}/build-${UCX_BUILD_TYPE} && \
+    ${TORCH_UCC_SRC_DIR}/ucx/contrib/configure-release-mt --with-cuda=${CUDA_HOME} --prefix=${UCX_INSTALL_DIR}/build-${UCX_BUILD_TYPE} && \
+    make -j install && \
+    echo "${UCX_INSTALL_DIR}/build-${UCX_BUILD_TYPE}/lib" > /etc/ld.so.conf.d/ucx.conf && \
+    ldconfig && \
+    ldconfig -p | grep -i ucx && \
+    cd ${UCX_INSTALL_DIR} && tar cfz ${TORCH_UCC_PKG_DIR}/ucx-${UCX_BUILD_TYPE}.tgz --owner=0 --group=0 .
+#==============================================================================
+# Build XCCL
+RUN echo "INFO: Build XCCL" && \
+    cd ${TORCH_UCC_SRC_DIR}/xccl && \
+    sed -i 's|NVCCFLAGS = .*|NVCCFLAGS = "${UCS_CPPFLAGS} -I${XCCL_TOP_SRCDIR}/src -I${XCCL_TOP_SRCDIR}/src/core" --compiler-options -fno-rtti,-fno-exceptions|g' ${TORCH_UCC_SRC_DIR}/xccl/src/utils/cuda/kernels/Makefile.am && \
+    ${TORCH_UCC_SRC_DIR}/xccl/autogen.sh && \
+    mkdir -p ${TORCH_UCC_SRC_DIR}/xccl/build-${XCCL_BUILD_TYPE} && \
+    cd ${TORCH_UCC_SRC_DIR}/xccl/build-${XCCL_BUILD_TYPE} && \
+    #${TORCH_UCC_SRC_DIR}/xccl/configure --with-cuda=${CUDA_HOME} --with-ucx=${UCX_INSTALL_DIR}/build-${UCX_BUILD_TYPE} \
+    ${TORCH_UCC_SRC_DIR}/xccl/configure --with-ucx=${UCX_INSTALL_DIR}/build-${UCX_BUILD_TYPE} \
+        --prefix=${XCCL_INSTALL_DIR} --enable-debug && \
+    make -j install && \
+    echo "${XCCL_INSTALL_DIR}/lib" > /etc/ld.so.conf.d/xccl.conf && \
+    ldconfig && \
+    ldconfig -p | grep -i xccl && \
+    cd ${XCCL_INSTALL_DIR} && tar cfz ${TORCH_UCC_PKG_DIR}/xccl-${XCCL_BUILD_TYPE}.tgz --owner=0 --group=0 . && \
+    make -C test
 #==============================================================================
 # Install conda
 #RUN curl -LO http://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh && \
