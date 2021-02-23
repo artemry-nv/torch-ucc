@@ -45,11 +45,11 @@ steps:
   - name: Check Env
     run: |
       echo "INFO: check environment"
-      find .
       printenv
       cat /proc/1/cgroup
       cat /etc/*release*
       id
+      find /opt/nvidia
   #============================================================================
 #  - name: Build UCX
 #    run: |

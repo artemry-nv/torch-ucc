@@ -1,30 +1,52 @@
-FROM nvidia/cuda:11.2.1-devel-ubuntu20.04 as build_stage
+FROM nvidia/cuda:11.2.1-devel-ubuntu20.04
 
-ARG SRC_DIR="/opt/nvidia/src"
+ARG TORCH_UCC_SRC_DIR='/opt/nvidia/src/torch-ucc'
+ARG TORCH_UCC_PACKAGE_DIR='/opt/nvidia/torch-ucc'
+ARG CUDA_HOME='/usr/local/cuda'
+ARG UCX_BRANCH='v1.10.x'
+ARG UCX_INSTALL_DIR='/opt/nvidia/ucx'
+#ARG UCX_BUILD_TYPE='debug'
+ARG UCX_BUILD_TYPE='release-mt'
+
+RUN mkdir -p ${TORCH_UCC_SRC_DIR}
+RUN mkdir -p ${TORCH_UCC_PACKAGE_DIR}
+
+COPY . ${TORCH_UCC_SRC_DIR}/torch-ucc
+RUN find ${TORCH_UCC_SRC_DIR}
+
 ARG DEBIAN_FRONTEND=noninteractive
+RUN apt update && \
+    apt install -y \
+        apt-utils \
+        autoconf \
+        build-essential \
+        cmake \
+        curl \
+        git \
+        ibverbs-providers \
+        ibverbs-utils \
+        libnuma-dev \
+        libtool-bin \
+        openmpi-bin \
+        vim \
+    && \
+    rm -rf /var/lib/apt/lists/*
 
-WORKDIR ${SRC_DIR}
-RUN mkdir -p ${SRC_DIR}
-
-COPY . ${SRC_DIR}/torch-ucc
-RUN find ${SRC_DIR}
-
-#RUN apt update && \
-#    apt install -y \
-#        apt-utils \
-#        autoconf \
-#        build-essential \
-#        cmake \
-#        curl \
-#        git \
-#        ibverbs-providers \
-#        ibverbs-utils \
-#        libnuma-dev \
-#        libtool-bin \
-#        openmpi-bin \
-#        vim \
-#    && \
-#    rm -rf /var/lib/apt/lists/*
+# Build UCX
+RUN echo "INFO: Build UCX" && \
+    cd ${TORCH_UCC_SRC_DIR}/ucx && \
+    git checkout ${UCX_BRANCH} && \
+    ${TORCH_UCC_SRC_DIR}/ucx/autogen.sh && \
+    mkdir -p ${TORCH_UCC_SRC_DIR}/ucx/build && \
+    cd ${TORCH_UCC_SRC_DIR}/ucx/build && \
+    #${TORCH_UCC_SRC_DIR}/ucx/configure --enable-mt --with-cuda=${CUDA_HOME} --prefix=${UCX_INSTALL_DIR}/build-${UCX_BUILD_TYPE} && \
+    #${TORCH_UCC_SRC_DIR}/ucx/contrib/configure-devel --enable-mt --with-cuda=${CUDA_HOME} --prefix=${UCX_INSTALL_DIR}/build-${UCX_BUILD_TYPE} && \
+    ${UCX_SRC_DIR}/contrib/configure-release-mt --with-cuda=${CUDA_HOME} --prefix=${UCX_INSTALL_DIR}/build-${UCX_BUILD_TYPE} && \
+    make -j install && \
+    echo "${UCX_INSTALL_DIR}/build-${UCX_BUILD_TYPE}/lib" > /etc/ld.so.conf.d/ucx.conf && \
+    ldconfig && \
+    ldconfig -p | grep -i ucx && \
+    cd ${UCX_INSTALL_DIR} && tar cfz ${TORCH_UCC_PACKAGE_DIR}/ucx.tgz --owner=0 --group=0 .
 
 # Install conda
 #RUN curl -LO http://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh && \
@@ -41,8 +63,6 @@ RUN find ${SRC_DIR}
 #
 #RUN ln -s /opt/conda/bin/python /usr/bin/python
 #RUN python3 -m pip install --user --upgrade setuptools wheel auditwheel check-wheel-contents
-
-WORKDIR "/workspace"
 
 # Install PyTorch
 #RUN git clone https://github.com/pytorch/pytorch.git && \
