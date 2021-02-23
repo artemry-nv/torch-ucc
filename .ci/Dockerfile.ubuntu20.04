@@ -1,4 +1,5 @@
-FROM nvidia/cuda:11.2.1-devel-ubuntu20.04
+ARG CUDA_VER='11.2.1'
+FROM nvidia/cuda:${CUDA_VER}-devel-ubuntu20.04
 #==============================================================================
 ARG TORCH_UCC_SRC_DIR='/opt/nvidia/torch-ucc/src'
 ARG TORCH_UCC_PKG_DIR='/opt/nvidia/torch-ucc/pkg'

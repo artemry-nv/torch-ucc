@@ -18,7 +18,8 @@ volumes:
 env:
   # build_dockers should be always 'true' (because CI building is a part of docker building process)
   build_dockers: 'true'
-  TORCH_UCC_URI_SUFFIX: '${TORCH_UCC_VERSION}/x86_64/ubuntu20.04'
+  CUDA_VER: '11.2.1'
+  TORCH_UCC_URI_SUFFIX: '${TORCH_UCC_VERSION}/x86_64/ubuntu20.04/cuda${CUDA_VER}'
 
 runs_on_dockers:
   - {
@@ -26,7 +27,8 @@ runs_on_dockers:
     name: 'ubuntu20.04',
     tag: 'latest',
     arch: 'x86_64',
-    uri: $TORCH_UCC_URI_SUFFIX
+    uri: '${TORCH_UCC_URI_SUFFIX}',
+    build_args: '--rm --no-cache --build-arg CUDA_VER=${CUDA_VER}',
   }
 
 # TODO debug
