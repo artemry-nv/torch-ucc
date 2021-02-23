@@ -43,7 +43,7 @@ RUN echo "INFO: Build UCX" && \
     cd ${TORCH_UCC_SRC_DIR}/ucx/build && \
     #${TORCH_UCC_SRC_DIR}/ucx/configure --enable-mt --with-cuda=${CUDA_HOME} --prefix=${UCX_INSTALL_DIR}/build-${UCX_BUILD_TYPE} && \
     #${TORCH_UCC_SRC_DIR}/ucx/contrib/configure-devel --enable-mt --with-cuda=${CUDA_HOME} --prefix=${UCX_INSTALL_DIR}/build-${UCX_BUILD_TYPE} && \
-    ${UCX_SRC_DIR}/contrib/configure-release-mt --with-cuda=${CUDA_HOME} --prefix=${UCX_INSTALL_DIR}/build-${UCX_BUILD_TYPE} && \
+    ${TORCH_UCC_SRC_DIR}/ucx/contrib/configure-release-mt --with-cuda=${CUDA_HOME} --prefix=${UCX_INSTALL_DIR}/build-${UCX_BUILD_TYPE} && \
     make -j install && \
     echo "${UCX_INSTALL_DIR}/build-${UCX_BUILD_TYPE}/lib" > /etc/ld.so.conf.d/ucx.conf && \
     ldconfig && \
