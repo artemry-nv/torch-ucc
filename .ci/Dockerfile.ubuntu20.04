@@ -1,9 +1,13 @@
 FROM nvidia/cuda:11.2.1-devel-ubuntu20.04 as build_stage
 
-ARG _HOME=/var/home
+ARG SRC_DIR="/opt/nvidia/src"
 ARG DEBIAN_FRONTEND=noninteractive
 
-RUN pwd -P && find .
+WORKDIR ${SRC_DIR}
+RUN mkdir -p ${SRC_DIR}
+
+COPY . ${SRC_DIR}/torch-ucc
+RUN find ${SRC_DIR}
 
 #RUN apt update && \
 #    apt install -y \
