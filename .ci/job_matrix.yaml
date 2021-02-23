@@ -43,8 +43,8 @@ steps:
       cat /proc/1/cgroup
       cat /etc/*release*
       id
-#      find /opt/nvidia
       echo "INFO: XCCL_INSTALL_DIR = ${XCCL_INSTALL_DIR}"
+      find /opt/nvidia
   #============================================================================
   #  - name: Run XCCL tests
   #    run: |
