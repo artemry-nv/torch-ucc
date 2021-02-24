@@ -58,7 +58,7 @@ RUN echo "INFO: Build XCCL" && \
     ${TORCH_UCC_SRC_DIR}/xccl/autogen.sh && \
     mkdir -p ${TORCH_UCC_SRC_DIR}/xccl/build-${XCCL_BUILD_TYPE} && \
     cd ${TORCH_UCC_SRC_DIR}/xccl/build-${XCCL_BUILD_TYPE} && \
-    ${TORCH_UCC_SRC_DIR}/xccl/configure --with-cuda=${CUDA_HOME} --with-ucx=${UCX_INSTALL_DIR} \
+    ${TORCH_UCC_SRC_DIR}/xccl/configure --with-ucx=${UCX_INSTALL_DIR} \
         --prefix=${XCCL_INSTALL_DIR} --enable-debug && \
     make -j install && \
     echo "${XCCL_INSTALL_DIR}/lib" > /etc/ld.so.conf.d/xccl.conf && \
@@ -81,7 +81,8 @@ RUN conda update -y conda && \
     pip install --no-cache-dir python-hostlist
 
 RUN ln -s /opt/conda/bin/python /usr/bin/python
-RUN python3 -m pip install --user --upgrade setuptools wheel auditwheel check-wheel-contents
+#RUN python3 -m pip install --user --upgrade setuptools wheel auditwheel check-wheel-contents
+RUN python3 -m pip install --user --upgrade setuptools wheel
 #==============================================================================
 # Build and Install PyTorch
 RUN cd /tmp && \

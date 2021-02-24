@@ -2,6 +2,7 @@
 
 command -v mpirun
 export TORCH_UCC_XCCL_TLS=ucx
+export UCX_WARN_UNUSED_ENV_VARS=n
 ucx_info -e -u t
 export UCX_LOG_LEVEL=info
 #echo "XCCL allreduce"
