@@ -21,6 +21,7 @@ env:
   TORCH_UCC_URI_SUFFIX: '${TORCH_UCC_VERSION}/x86_64/ubuntu20.04/cuda${CUDA_VER}'
   TORCH_UCC_ROOT_DIR: '/opt/nvidia/torch-ucc'
   TORCH_UCC_SRC_DIR: '${TORCH_UCC_ROOT_DIR}/src'
+  XCCL_BUILD_TYPE: 'debug'
 
 runs_on_dockers:
   - {
@@ -50,11 +51,10 @@ steps:
     run: |
       echo "INFO: Run XCCL tests"
       ${TORCH_UCC_SRC_DIR}/.ci/scripts/run_tests_xccl.sh
-      #sleep 10000
   #============================================================================
   - name: Run Torch-UCC tests
     run: |
       echo "INFO: Run Torch-UCC tests"
       ${TORCH_UCC_SRC_DIR}/.ci/scripts/run_tests_torch_ucc.sh
-      #sleep 20000
+      sleep 20000
   #============================================================================
