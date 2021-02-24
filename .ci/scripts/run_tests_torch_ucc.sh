@@ -1,8 +1,6 @@
 #!/bin/sh -eEx
 
-export LD_LIBRARY_PATH="${MPI_DIR}/lib:${MPI_DIR}/lib/openmpi:${LD_LIBRARY_PATH}"
-export PATH="${MPI_DIR}/bin:${UCX_INSTALL_DIR}/bin:${PATH}"
-#command -v mpirun
+command -v mpirun
 export TORCH_UCC_XCCL_TLS=ucx
 ucx_info -e -u t
 export UCX_LOG_LEVEL=info

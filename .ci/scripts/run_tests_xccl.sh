@@ -1,8 +1,6 @@
 #!/bin/bash -eEx
 
-export LD_LIBRARY_PATH="${MPI_DIR}/lib:${MPI_DIR}/lib/openmpi:${LD_LIBRARY_PATH}"
-export PATH="${MPI_DIR}/bin:${PATH}"
-#command -v mpirun
+command -v mpirun
 export UCX_SOCKADDR_CM_ENABLE=n
 #MPI_ARGS_COMMON="--allow-run-as-root --oversubscribe -np 8 -H localhost:8 --bind-to none -mca coll ^hcoll"
 #mpirun ${MPI_ARGS_COMMON} -x XCCL_TEST_TLS=hier ${XCCL_BUILD_DIR}/test/test_mpi_allreduce
