@@ -31,6 +31,7 @@ RUN apt update && \
         ibverbs-utils \
         libnuma-dev \
         libtool-bin \
+        ninja-build \
         openmpi-bin \
         vim \
     && \
