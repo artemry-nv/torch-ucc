@@ -49,7 +49,7 @@ RUN echo "INFO: Build UCX" && \
     ldconfig && \
     ldconfig -p | grep -i ucx && \
     cd ${UCX_INSTALL_DIR} && tar cfz ${TORCH_UCC_PKG_DIR}/ucx-${UCX_BUILD_TYPE}.tgz --owner=0 --group=0 .
-ENV PATH=${TORCH_UCC_SRC_DIR}/ucx/build-${UCX_BUILD_TYPE}/bin:${PATH}
+ENV PATH=${UCX_INSTALL_DIR}/bin:${PATH}
 #==============================================================================
 # Build XCCL
 RUN echo "INFO: Build XCCL" && \
