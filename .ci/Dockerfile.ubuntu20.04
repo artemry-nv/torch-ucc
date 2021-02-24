@@ -102,6 +102,7 @@ RUN cd /tmp && \
     USE_QNNPACK=0 \
     USE_XNNPACK=0 \
     USE_KINETO=1 \
+    MAX_JOBS=$(($(nproc)-1)) \
     python setup.py install && \
     rm -rf /tmp/pytorch
 #==============================================================================
