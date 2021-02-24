@@ -16,8 +16,6 @@ volumes:
   - { mountPath: '/.autodirect/sw/release', hostPath: '/.autodirect/sw/release' }
 
 env:
-  # build_dockers should be always 'true' (because CI building is a part of docker building process)
-  build_dockers: 'true'
   CUDA_VER: '11.2.1'
   TORCH_UCC_URI_SUFFIX: '${TORCH_UCC_VERSION}/x86_64/ubuntu20.04/cuda${CUDA_VER}'
   TORCH_UCC_ROOT_DIR: '/opt/nvidia/torch-ucc'
