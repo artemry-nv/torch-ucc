@@ -8,7 +8,6 @@ ENV TORCH_UCC_BIN_DIR=${TORCH_UCC_ROOT_DIR}/bin
 ENV CUDA_HOME=/usr/local/cuda
 ENV UCX_BRANCH=v1.10.x
 ENV UCX_INSTALL_DIR=${TORCH_UCC_BIN_DIR}/ucx
-#ENV UCX_BUILD_TYPE=debug
 ENV UCX_BUILD_TYPE=release-mt
 ENV XCCL_BUILD_TYPE=debug
 ENV XCCL_INSTALL_DIR=${TORCH_UCC_BIN_DIR}/xccl
@@ -44,8 +43,6 @@ RUN echo "INFO: Build UCX" && \
     ${TORCH_UCC_SRC_DIR}/ucx/autogen.sh && \
     mkdir -p ${TORCH_UCC_SRC_DIR}/ucx/build-${UCX_BUILD_TYPE} && \
     cd ${TORCH_UCC_SRC_DIR}/ucx/build-${UCX_BUILD_TYPE} && \
-    #${TORCH_UCC_SRC_DIR}/ucx/configure --enable-mt --with-cuda=${CUDA_HOME} --prefix=${UCX_INSTALL_DIR}/build-${UCX_BUILD_TYPE} && \
-    #${TORCH_UCC_SRC_DIR}/ucx/contrib/configure-devel --enable-mt --with-cuda=${CUDA_HOME} --prefix=${UCX_INSTALL_DIR}/build-${UCX_BUILD_TYPE} && \
     ${TORCH_UCC_SRC_DIR}/ucx/contrib/configure-release-mt --with-cuda=${CUDA_HOME} --prefix=${UCX_INSTALL_DIR}/build-${UCX_BUILD_TYPE} && \
     make -j install && \
     echo "${UCX_INSTALL_DIR}/build-${UCX_BUILD_TYPE}/lib" > /etc/ld.so.conf.d/ucx.conf && \
@@ -57,11 +54,9 @@ ENV PATH=${TORCH_UCC_SRC_DIR}/ucx/build-${UCX_BUILD_TYPE}/bin:${PATH}
 # Build XCCL
 RUN echo "INFO: Build XCCL" && \
     cd ${TORCH_UCC_SRC_DIR}/xccl && \
-    sed -i 's|NVCCFLAGS = .*|NVCCFLAGS = "${UCS_CPPFLAGS} -I${XCCL_TOP_SRCDIR}/src -I${XCCL_TOP_SRCDIR}/src/core" --compiler-options -fno-rtti,-fno-exceptions|g' ${TORCH_UCC_SRC_DIR}/xccl/src/utils/cuda/kernels/Makefile.am && \
     ${TORCH_UCC_SRC_DIR}/xccl/autogen.sh && \
     mkdir -p ${TORCH_UCC_SRC_DIR}/xccl/build-${XCCL_BUILD_TYPE} && \
     cd ${TORCH_UCC_SRC_DIR}/xccl/build-${XCCL_BUILD_TYPE} && \
-    #${TORCH_UCC_SRC_DIR}/xccl/configure --with-cuda=${CUDA_HOME} --with-ucx=${UCX_INSTALL_DIR}/build-${UCX_BUILD_TYPE} \
     ${TORCH_UCC_SRC_DIR}/xccl/configure --with-ucx=${UCX_INSTALL_DIR}/build-${UCX_BUILD_TYPE} \
         --prefix=${XCCL_INSTALL_DIR} --enable-debug && \
     make -j install && \
