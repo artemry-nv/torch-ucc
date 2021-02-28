@@ -27,4 +27,6 @@ set -o pipefail
 #python setup.py install
 #rm -rf /tmp/pytorch
 
-conda install -y pytorch torchvision cpuonly -c pytorch-nightly
+# TODO debug
+#conda install -y pytorch torchvision cpuonly -c pytorch-nightly
+conda install pytorch torchvision torchaudio cudatoolkit=11.0 -c pytorch-nightly

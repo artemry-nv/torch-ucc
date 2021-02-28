@@ -6,10 +6,10 @@ cd "${TORCH_UCC_SRC_DIR}/xccl"
 "${TORCH_UCC_SRC_DIR}/xccl/autogen.sh"
 mkdir -p "${TORCH_UCC_SRC_DIR}/xccl/build-${XCCL_BUILD_TYPE}"
 cd "${TORCH_UCC_SRC_DIR}/xccl/build-${XCCL_BUILD_TYPE}"
-"${TORCH_UCC_SRC_DIR}/xccl/configure" --with-ucx="${UCX_INSTALL_DIR}" --prefix="${XCCL_INSTALL_DIR}" --enable-debug
 # TODO enable CUDA (compilation failed)
-#"${TORCH_UCC_SRC_DIR}/xccl/configure" --with-cuda="${CUDA_HOME}" --with-ucx="${UCX_INSTALL_DIR}" \
-#    --prefix="${XCCL_INSTALL_DIR}" --enable-debug
+#"${TORCH_UCC_SRC_DIR}/xccl/configure" --with-ucx="${UCX_INSTALL_DIR}" --prefix="${XCCL_INSTALL_DIR}" --enable-debug
+"${TORCH_UCC_SRC_DIR}/xccl/configure" --with-cuda="${CUDA_HOME}" --with-ucx="${UCX_INSTALL_DIR}" \
+    --prefix="${XCCL_INSTALL_DIR}" --enable-debug
 make -j install
 echo "${XCCL_INSTALL_DIR}/lib" > /etc/ld.so.conf.d/xccl.conf
 ldconfig
