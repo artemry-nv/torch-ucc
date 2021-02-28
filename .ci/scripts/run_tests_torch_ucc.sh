@@ -6,8 +6,8 @@ export TORCH_UCC_XCCL_TLS=ucx
 export UCX_WARN_UNUSED_ENV_VARS=n
 ucx_info -e -u t
 export UCX_LOG_LEVEL=info
-#echo "XCCL allreduce"
-#/bin/bash ${TORCH_UCC_SRC_DIR}/test/start_test.sh ${TORCH_UCC_SRC_DIR}/test/torch_allreduce_test.py --backend=gloo
+echo "XCCL allreduce"
+/bin/bash ${TORCH_UCC_SRC_DIR}/test/start_test.sh ${TORCH_UCC_SRC_DIR}/test/torch_allreduce_test.py --backend=gloo
 #echo "XCCL alltoall"
 #/bin/bash ${TORCH_UCC_SRC_DIR}/test/start_test.sh ${TORCH_UCC_SRC_DIR}/test/torch_alltoall_test.py --backend=gloo
 #echo "XCCL alltoallv"

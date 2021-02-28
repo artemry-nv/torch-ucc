@@ -44,56 +44,13 @@ ENV PATH=${UCX_INSTALL_DIR}/bin:${PATH}
 # Build XCCL
 RUN ${TORCH_UCC_SRC_DIR}/.ci/scripts/build_xccl.sh
 #==============================================================================
-# Install conda
-RUN curl -LO http://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh && \
-    bash Miniconda3-latest-Linux-x86_64.sh -p /opt/conda -b && \
-    rm -f Miniconda3-latest-Linux-x86_64.sh
+# Configure Python
+RUN ${TORCH_UCC_SRC_DIR}/.ci/scripts/configure_python.sh
 ENV PATH /opt/conda/bin:${PATH}
 #==============================================================================
-# Install conda python
-RUN conda update -y conda && \
-    conda install -c anaconda -y \
-        python \
-        pip && \
-    pip install --no-cache-dir python-hostlist
-
-RUN ln -s /opt/conda/bin/python /usr/bin/python
-#RUN python3 -m pip install --user --upgrade setuptools wheel auditwheel check-wheel-contents
-RUN python3 -m pip install --user --upgrade setuptools wheel
-#==============================================================================
-# Build and Install PyTorch
-RUN cd /tmp && \
-    git clone https://github.com/pytorch/pytorch.git && \
-    cd pytorch && \
-    git submodule sync --recursive && \
-    git submodule update --init --recursive && \
-    pip install -r requirements.txt && \
-    TORCH_CUDA_ARCH_LIST="7.0 8.0+PTX" \
-    USE_GLOO=1 \
-    USE_DISTRIBUTED=1 \
-    USE_OPENCV=0 \
-    USE_CUDA=1 \
-    USE_NCCL=0 \
-    USE_MKLDNN=0 \
-    BUILD_TEST=0 \
-    USE_FBGEMM=0 \
-    USE_NNPACK=0 \
-    USE_QNNPACK=0 \
-    USE_XNNPACK=0 \
-    USE_KINETO=1 \
-    MAX_JOBS=$(($(nproc)-1)) \
-    python setup.py install && \
-    rm -rf /tmp/pytorch
+# Install PyTorch
+RUN ${TORCH_UCC_SRC_DIR}/.ci/scripts/install_torch.sh
 #==============================================================================
 # Install torch_ucc python module and build a wheel package
-RUN echo "INFO: Install Torch-UCC" && \
-    cd ${TORCH_UCC_SRC_DIR} && \
-    env \
-        UCX_HOME=${UCX_INSTALL_DIR} \
-        XCCL_HOME=${XCCL_INSTALL_DIR} \
-        WITH_CUDA=${CUDA_HOME} \
-        python setup.py install bdist_wheel && \
-    pip3 list | grep torch  && \
-    python -c 'import torch, torch_ucc' && \
-    cp ${TORCH_UCC_SRC_DIR}/dist/*.whl ${TORCH_UCC_PKG_DIR}
+RUN ${TORCH_UCC_SRC_DIR}/.ci/scripts/install_torch_ucc.sh
 #==============================================================================
