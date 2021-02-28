@@ -27,5 +27,4 @@ set -o pipefail
 #python setup.py install
 #rm -rf /tmp/pytorch
 
-conda uninstall -y pytorch torchvision
 conda install -y pytorch torchvision cpuonly -c pytorch-nightly
