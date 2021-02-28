@@ -1,4 +1,4 @@
-#!/bin/sh -eEx
+#!/bin/bash -eEx
 set -o pipefail
 
 command -v mpirun
