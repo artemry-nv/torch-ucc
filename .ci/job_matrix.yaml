@@ -34,7 +34,7 @@ runs_on_dockers:
   }
 
 # TODO debug
-timeout_minutes: '180'
+timeout_minutes: '400'
 
 steps:
   #============================================================================
