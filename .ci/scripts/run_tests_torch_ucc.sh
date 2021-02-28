@@ -1,4 +1,5 @@
 #!/bin/sh -eEx
+set -o pipefail
 
 command -v mpirun
 export TORCH_UCC_XCCL_TLS=ucx

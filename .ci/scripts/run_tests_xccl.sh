@@ -1,4 +1,5 @@
 #!/bin/bash -eEx
+set -o pipefail
 
 command -v mpirun
 export UCX_SOCKADDR_CM_ENABLE=n
