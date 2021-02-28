@@ -41,12 +41,12 @@ RUN apt update && \
 RUN ${TORCH_UCC_SRC_DIR}/.ci/scripts/build_ucx.sh
 ENV PATH=${UCX_INSTALL_DIR}/bin:${PATH}
 #==============================================================================
-# Build XCCL
-RUN ${TORCH_UCC_SRC_DIR}/.ci/scripts/build_xccl.sh
-#==============================================================================
 # Configure Python
 RUN ${TORCH_UCC_SRC_DIR}/.ci/scripts/configure_python.sh
 ENV PATH /opt/conda/bin:${PATH}
+#==============================================================================
+# Build XCCL
+RUN ${TORCH_UCC_SRC_DIR}/.ci/scripts/build_xccl.sh
 #==============================================================================
 # Install PyTorch
 RUN ${TORCH_UCC_SRC_DIR}/.ci/scripts/install_torch.sh
