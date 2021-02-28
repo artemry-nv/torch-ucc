@@ -5,6 +5,7 @@ set -o pipefail
 curl -LO http://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh
 bash Miniconda3-latest-Linux-x86_64.sh -p /opt/conda -b
 rm -f Miniconda3-latest-Linux-x86_64.sh
+export PATH=/opt/conda/bin:${PATH}
 # Install conda python
 conda update -y conda
 conda install -c anaconda -y \
