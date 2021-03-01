@@ -54,7 +54,7 @@ steps:
     run: |
       echo "INFO: Run Torch-UCC tests"
       ${TORCH_UCC_SRC_DIR}/.ci/scripts/run_tests_torch_ucc.sh
-      sleep 20000
+      #sleep 20000
   #============================================================================
   - name: Run FB DLRM tests
     run: |
