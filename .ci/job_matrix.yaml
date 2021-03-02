@@ -32,6 +32,7 @@ runs_on_dockers:
     nodeLabel: 'swx-clx01 || swx-clx02',
   }
 
+# bare metal
 #runs_on_agents:
 #  - nodeLabel: 'swx-clx01 || swx-clx02'
 
@@ -49,20 +50,20 @@ steps:
       id
       find /opt/nvidia
       #sleep 20000
-#  #============================================================================
-#  - name: Run XCCL tests
-#    run: |
-#      echo "INFO: Run XCCL tests"
-#      ${TORCH_UCC_SRC_DIR}/.ci/scripts/run_tests_xccl.sh
-#  #============================================================================
-#  - name: Run Torch-UCC tests
-#    run: |
-#      echo "INFO: Run Torch-UCC tests"
-#      ${TORCH_UCC_SRC_DIR}/.ci/scripts/run_tests_torch_ucc.sh
-#      #sleep 20000
-#  #============================================================================
-#  - name: Run FB DLRM tests
-#    run: |
-#      echo "INFO: Run FB DLRM tests"
-#      ${TORCH_UCC_SRC_DIR}/.ci/scripts/run_tests_fb_dlrm.sh
-#  #============================================================================
+  #============================================================================
+  - name: Run XCCL tests
+    run: |
+      echo "INFO: Run XCCL tests"
+      ${TORCH_UCC_SRC_DIR}/.ci/scripts/run_tests_xccl.sh
+  #============================================================================
+  - name: Run Torch-UCC tests
+    run: |
+      echo "INFO: Run Torch-UCC tests"
+      ${TORCH_UCC_SRC_DIR}/.ci/scripts/run_tests_torch_ucc.sh
+      #sleep 20000
+  #============================================================================
+  - name: Run FB DLRM tests
+    run: |
+      echo "INFO: Run FB DLRM tests"
+      ${TORCH_UCC_SRC_DIR}/.ci/scripts/run_tests_fb_dlrm.sh
+  #============================================================================
