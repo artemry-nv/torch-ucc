@@ -44,7 +44,7 @@ steps:
       cat /etc/*release*
       id
       find /opt/nvidia
-      sleep 10000
+      sleep 20000
   #============================================================================
   - name: Run XCCL tests
     run: |

@@ -10,8 +10,10 @@ export PATH=/opt/conda/bin:${PATH}
 conda update -y conda
 conda install -c anaconda -y \
     python \
-    pip
-pip install --no-cache-dir python-hostlist
+    pip \
+    setuptools \
+    wheel
+#pip install --no-cache-dir python-hostlist
 ln -s /opt/conda/bin/python /usr/bin/python
 #python3 -m pip install --user --upgrade setuptools wheel auditwheel check-wheel-contents
-python3 -m pip install --user --upgrade setuptools wheel
+#python3 -m pip install --user --upgrade setuptools wheel
