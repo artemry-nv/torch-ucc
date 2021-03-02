@@ -5,8 +5,8 @@ registry_host: 'harbor.mellanox.com'
 registry_path: '/torch-ucc'
 registry_auth: '05d98651-e11c-4a57-9cc6-52df79014b89'
 
-kubernetes:
-  cloud: 'swx-k8s'
+#kubernetes:
+#  cloud: 'swx-k8s'
 
 volumes:
   - { mountPath: '/hpc/local', hostPath: '/hpc/local' }
@@ -29,10 +29,11 @@ runs_on_dockers:
     arch: 'x86_64',
     uri: '${TORCH_UCC_URI_SUFFIX}',
     build_args: '--rm --no-cache --build-arg CUDA_VER=${CUDA_VER} --build-arg TORCH_UCC_ROOT_DIR=${TORCH_UCC_ROOT_DIR}',
+    nodeLabel: 'swx-clx01 || swx-clx02',
   }
 
-runs_on_agents:
-  - nodeLabel: 'ml-test-node-gpu'
+#runs_on_agents:
+#  - nodeLabel: 'swx-clx01 || swx-clx02'
 
 # TODO debug
 timeout_minutes: '400'
@@ -48,20 +49,20 @@ steps:
       id
       find /opt/nvidia
       #sleep 20000
-  #============================================================================
-  - name: Run XCCL tests
-    run: |
-      echo "INFO: Run XCCL tests"
-      ${TORCH_UCC_SRC_DIR}/.ci/scripts/run_tests_xccl.sh
-  #============================================================================
-  - name: Run Torch-UCC tests
-    run: |
-      echo "INFO: Run Torch-UCC tests"
-      ${TORCH_UCC_SRC_DIR}/.ci/scripts/run_tests_torch_ucc.sh
-      #sleep 20000
-  #============================================================================
-  - name: Run FB DLRM tests
-    run: |
-      echo "INFO: Run FB DLRM tests"
-      ${TORCH_UCC_SRC_DIR}/.ci/scripts/run_tests_fb_dlrm.sh
-    #============================================================================
+#  #============================================================================
+#  - name: Run XCCL tests
+#    run: |
+#      echo "INFO: Run XCCL tests"
+#      ${TORCH_UCC_SRC_DIR}/.ci/scripts/run_tests_xccl.sh
+#  #============================================================================
+#  - name: Run Torch-UCC tests
+#    run: |
+#      echo "INFO: Run Torch-UCC tests"
+#      ${TORCH_UCC_SRC_DIR}/.ci/scripts/run_tests_torch_ucc.sh
+#      #sleep 20000
+#  #============================================================================
+#  - name: Run FB DLRM tests
+#    run: |
+#      echo "INFO: Run FB DLRM tests"
+#      ${TORCH_UCC_SRC_DIR}/.ci/scripts/run_tests_fb_dlrm.sh
+#  #============================================================================
