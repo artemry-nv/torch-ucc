@@ -31,4 +31,5 @@ set -o pipefail
 #conda install -y pytorch torchvision cpuonly -c pytorch-nightly
 #conda install pytorch torchvision torchaudio cudatoolkit=11.0 -c pytorch-nightly
 #conda uninstall -y pytorch torchvision
-conda install pytorch torchvision cudatoolkit=11.0 -c pytorch-nightly
+#conda install pytorch torchvision cudatoolkit=11.0 -c pytorch-nightly
+conda install pytorch cudatoolkit=11.0 -c pytorch-nightly
