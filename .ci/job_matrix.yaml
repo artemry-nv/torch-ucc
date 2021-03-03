@@ -21,6 +21,8 @@ env:
   TORCH_UCC_SRC_DIR: '${TORCH_UCC_ROOT_DIR}/src'
   XCCL_BUILD_TYPE: 'debug'
 
+docker_opt: '--pull always'
+
 runs_on_dockers:
   - {
     file: '.ci/Dockerfile.ubuntu20.04',
@@ -30,7 +32,6 @@ runs_on_dockers:
     uri: '${TORCH_UCC_URI_SUFFIX}',
     build_args: '--rm --no-cache --build-arg CUDA_VER=${CUDA_VER} --build-arg TORCH_UCC_ROOT_DIR=${TORCH_UCC_ROOT_DIR}',
     nodeLabel: 'swx-clx01 || swx-clx02',
-    docker_opt: '--pull always',
   }
 
 # bare metal
