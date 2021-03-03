@@ -49,8 +49,8 @@ ENV PATH /opt/conda/bin:${PATH}
 RUN ${TORCH_UCC_SRC_DIR}/.ci/scripts/build_xccl.sh
 #==============================================================================
 # Install PyTorch
-RUN ${TORCH_UCC_SRC_DIR}/.ci/scripts/install_torch.sh
+#RUN ${TORCH_UCC_SRC_DIR}/.ci/scripts/install_torch.sh
 #==============================================================================
 # Install torch_ucc python module and build a wheel package
-RUN ${TORCH_UCC_SRC_DIR}/.ci/scripts/install_torch_ucc.sh
+#RUN ${TORCH_UCC_SRC_DIR}/.ci/scripts/install_torch_ucc.sh
 #==============================================================================
