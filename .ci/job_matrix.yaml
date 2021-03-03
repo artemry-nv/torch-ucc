@@ -51,6 +51,8 @@ steps:
       cat /etc/*release*
       id
       find /opt/nvidia
+      ibv_devinfo
+      nvidia-smi
       sleep 20000
   #============================================================================
   - name: Run XCCL tests
