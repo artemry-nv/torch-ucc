@@ -21,7 +21,7 @@ env:
   TORCH_UCC_SRC_DIR: '${TORCH_UCC_ROOT_DIR}/src'
   XCCL_BUILD_TYPE: 'debug'
 
-docker_opt: '--pull always'
+docker_opt: '--pull always --network=host --uts=host --ipc=host --ulimit stack=67108864 --ulimit memlock=-1 --security-opt seccomp=unconfined --cap-add=SYS_ADMIN --device=/dev/infiniband/ --gpus all --user root'
 
 runs_on_dockers:
   - {
