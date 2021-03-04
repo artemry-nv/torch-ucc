@@ -4,9 +4,7 @@ set -o pipefail
 command -v mpirun
 export UCX_SOCKADDR_CM_ENABLE=n
 export UCX_WARN_UNUSED_ENV_VARS=n
-export UCX_NET_DEVICES=eno1
-export UCX_TLS=sm
-MPI_ARGS_COMMON="--allow-run-as-root --oversubscribe -np 8 -H localhost:8 --bind-to none -mca coll ^hcoll"
+MPI_ARGS_COMMON="--allow-run-as-root --oversubscribe -np 8 -H localhost:8 --bind-to none --mca coll ^hcoll --mca btl ^openib --mca mtl ^ofi"
 mpirun ${MPI_ARGS_COMMON} -x XCCL_TEST_TLS=hier ${TORCH_UCC_SRC_DIR}/xccl/build-${XCCL_BUILD_TYPE}/test/test_mpi_allreduce
 mpirun ${MPI_ARGS_COMMON} -x XCCL_TEST_TLS=hier ${TORCH_UCC_SRC_DIR}/xccl/build-${XCCL_BUILD_TYPE}/test/test_mpi_bcast
 mpirun ${MPI_ARGS_COMMON} -x XCCL_TEST_TLS=hier ${TORCH_UCC_SRC_DIR}/xccl/build-${XCCL_BUILD_TYPE}/test/test_mpi_barrier
