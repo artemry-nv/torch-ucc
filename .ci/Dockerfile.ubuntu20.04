@@ -5,6 +5,7 @@ ARG TORCH_UCC_ROOT_DIR=/opt/nvidia/torch-ucc
 ENV TORCH_UCC_SRC_DIR=${TORCH_UCC_ROOT_DIR}/src
 ENV TORCH_UCC_PKG_DIR=${TORCH_UCC_ROOT_DIR}/pkg
 ENV TORCH_UCC_BIN_DIR=${TORCH_UCC_ROOT_DIR}/bin
+ENV TORCH_UCC_WORKLOADS_DIR=${TORCH_UCC_ROOT_DIR}/workloads
 ENV CUDA_HOME=/usr/local/cuda
 ENV UCX_BRANCH=v1.10.x
 ENV UCX_BUILD_TYPE=release-mt
@@ -14,7 +15,8 @@ ENV XCCL_INSTALL_DIR=${TORCH_UCC_BIN_DIR}/xccl/build-${XCCL_BUILD_TYPE}
 #==============================================================================
 RUN mkdir -p ${TORCH_UCC_SRC_DIR} && \
     mkdir -p ${TORCH_UCC_PKG_DIR} && \
-    mkdir -p ${TORCH_UCC_BIN_DIR}
+    mkdir -p ${TORCH_UCC_BIN_DIR} && \
+    mkdir -p ${TORCH_UCC_WORKLOADS_DIR}
 
 COPY . ${TORCH_UCC_SRC_DIR}
 #==============================================================================
@@ -54,3 +56,9 @@ RUN ${TORCH_UCC_SRC_DIR}/.ci/scripts/install_torch.sh
 # Install torch_ucc python module and build a wheel package
 RUN ${TORCH_UCC_SRC_DIR}/.ci/scripts/install_torch_ucc.sh
 #==============================================================================
+# Install workloads
+WORKDIR ${TORCH_UCC_WORKLOADS_DIR}
+RUN git clone https://github.com/facebookresearch/dlrm.git && \
+    pip install -r param/requirements.txt
+RUN git clone https://github.com/facebookresearch/param.git && \
+    pip install -r param/requirements.txt

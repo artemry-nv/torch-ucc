@@ -71,5 +71,10 @@ steps:
   - name: Run FB DLRM tests
     run: |
       echo "INFO: Run FB DLRM tests"
-      ${TORCH_UCC_SRC_DIR}/.ci/scripts/run_tests_fb_dlrm.sh
+      ${TORCH_UCC_SRC_DIR}/.ci/scripts/run_fb_dlrm.sh
+  #============================================================================
+  - name: Run PARAM benchmarks
+    run: |
+      echo "INFO: Run PARAM benchmarks"
+      ${TORCH_UCC_SRC_DIR}/.ci/scripts/run_param_benchmarks.sh
   #============================================================================
