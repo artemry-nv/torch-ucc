@@ -58,6 +58,7 @@ steps:
   #============================================================================
   - name: Run XCCL tests
     run: |
+      sleep 20000
       echo "INFO: Run XCCL tests"
       ${TORCH_UCC_SRC_DIR}/.ci/scripts/run_tests_xccl.sh
   #============================================================================
