@@ -59,6 +59,6 @@ RUN ${TORCH_UCC_SRC_DIR}/.ci/scripts/install_torch_ucc.sh
 # Install workloads
 WORKDIR ${TORCH_UCC_WORKLOADS_DIR}
 RUN git clone https://github.com/facebookresearch/dlrm.git && \
-    pip install -r requirements.txt
+    pip install -r ${TORCH_UCC_WORKLOADS_DIR}/dlrm/requirements.txt
 RUN git clone https://github.com/facebookresearch/param.git && \
-    pip install -r param/requirements.txt
+    pip install -r ${TORCH_UCC_WORKLOADS_DIR}/param/requirements.txt
