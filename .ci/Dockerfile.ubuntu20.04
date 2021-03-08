@@ -59,6 +59,7 @@ RUN ${TORCH_UCC_SRC_DIR}/.ci/scripts/install_torch_ucc.sh
 # Install workloads
 WORKDIR ${TORCH_UCC_WORKLOADS_DIR}
 RUN git clone https://github.com/facebookresearch/dlrm.git && \
+    git apply ${TORCH_UCC_SRC_DIR}/.ci/patches/dlrm/0001-Added-torch_ucc-support.patch && \
     pip install -r ${TORCH_UCC_WORKLOADS_DIR}/dlrm/requirements.txt
 RUN git clone https://github.com/facebookresearch/param.git && \
     pip install -r ${TORCH_UCC_WORKLOADS_DIR}/param/requirements.txt
