@@ -53,8 +53,8 @@ steps:
       cat /etc/*release*
       id
       find /opt/nvidia
-      ibv_devinfo
-      nvidia-smi
+      #ibv_devinfo
+      #nvidia-smi
   #============================================================================
   - name: Run XCCL tests
     run: |
@@ -79,8 +79,8 @@ steps:
       cat /etc/*release*
       id
       find /opt/nvidia
-      ibv_devinfo
-      nvidia-smi
+      #ibv_devinfo
+      #nvidia-smi
       sleep 20000
       ${TORCH_UCC_SRC_DIR}/.ci/scripts/run_fb_dlrm.sh
   #============================================================================
