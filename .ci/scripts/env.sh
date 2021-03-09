@@ -7,8 +7,9 @@ DLRM_MODEL="small"
 
 HOSTNAME=$(hostname -s)
 export HOSTNAME
-CONFIG_DIR=$(cd "${SCRIPT_DIR}/.." && pwd -P)
-export HOSTFILE=${CONFIG_DIR}/$HOSTNAME/hostfile.txt
+SRC_ROOT_DIR=$(cd "${SCRIPT_DIR}/../../" && pwd -P)
+CONFIGS_DIR="${SRC_ROOT_DIR}/.ci/configs"
+export HOSTFILE=${CONFIGS_DIR}/$HOSTNAME/hostfile.txt
 # shellcheck disable=SC2002
 HOSTS=$(cat "$HOSTFILE" | xargs | tr ' ' ',')
 export HOSTS
