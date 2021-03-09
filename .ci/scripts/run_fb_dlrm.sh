@@ -9,53 +9,10 @@ SCRIPT_DIR="$(
     pwd -P
 )"
 cd "${SCRIPT_DIR}"
-. "${SCRIPT_DIR}/set-env-dist.sh"
+. "${SCRIPT_DIR}/env.sh"
 
-index=$LOCAL_RANK
-export OMPI_COMM_WORLD_SIZE=$WORLD_SIZE
-export OMPI_COMM_WORLD_LOCAL_SIZE=$LOCAL_SIZE
-export OMPI_COMM_WORLD_RANK=$RANK
-export OMPI_COMM_WORLD_LOCAL_RANK=$LOCAL_RANK
-
-case $index in
-"0")
-    export UCX_NET_DEVICES=mlx5_0:1
-    NUMA="numactl --physcpubind=48-63 --membind=3 "
-    ;;
-"1")
-    export UCX_NET_DEVICES=mlx5_1:1
-    NUMA="numactl --physcpubind=48-63 --membind=3 "
-    ;;
-"2")
-    export UCX_NET_DEVICES=mlx5_2:1
-    NUMA="numactl --physcpubind=16-31 --membind=1 "
-    ;;
-"3")
-    export UCX_NET_DEVICES=mlx5_3:1
-    NUMA="numactl --physcpubind=16-31 --membind=1 "
-    ;;
-"4")
-    export UCX_NET_DEVICES=mlx5_6:1
-    NUMA="numactl --physcpubind=112-127 --membind=7 "
-    ;;
-"5")
-    export UCX_NET_DEVICES=mlx5_7:1
-    NUMA="numactl --physcpubind=112-127 --membind=7 "
-    ;;
-"6")
-    export UCX_NET_DEVICES=mlx5_8:1
-    NUMA="numactl --physcpubind=80-95 --membind=5 "
-    ;;
-"7")
-    export UCX_NET_DEVICES=mlx5_9:1
-    NUMA="numactl --physcpubind=80-95 --membind=5 "
-    ;;
-esac
-
-export XCCL_TEAM_UCX_NET_DEVICES=$UCX_NET_DEVICES
-export XCCL_TEAM_HIER_NET_DEVICES=$UCX_NET_DEVICES
-
-if [ "$DLRM_MODEL" = "big" ]; then
+case ${DLRM_MODEL} in
+"big")
     emb_size="1000-1000-1000-1000-1000-1000-1000-1000-1000-1000-1000-1000-1000-1000-1000-1000-1000-1000-1000-1000-1000-1000-1000-1000-1000-1000-1000-1000-1000-1000-1000-1000-1000-1000-1000-1000-1000-1000-1000-1000-1000-1000-1000-1000-1000-1000-1000-1000-1000-1000-1000-1000-1000-1000-1000-1000-1000-1000-1000-1000-1000-1000-1000-1000"
     emb_dim="256"
     emb_lookup="100"
@@ -66,7 +23,8 @@ if [ "$DLRM_MODEL" = "big" ]; then
     lr="0.01"
     #mb_size="2048"
     emb_lookup_fixed="0"
-elif [ "$DLRM_MODEL" = "small" ]; then
+    ;;
+"small")
     emb_size="1000-1000-1000-1000-1000-1000-1000-1000"
     emb_dim="64"
     emb_lookup="100"
@@ -77,28 +35,43 @@ elif [ "$DLRM_MODEL" = "small" ]; then
     lr="0.01"
     #mb_size="2048"
     emb_lookup_fixed="0"
-fi
+    ;;
+*)
+    echo "ERROR: unsupported or empty DLRM_MODEL (${DLRM_MODEL})"
+    exit 1
+    ;;
+esac
 
-if [ "$OMPI_COMM_WORLD_RANK" = "1" ]; then
-    echo "MODEL: $DLRM_MODEL"
-fi
+cd "${TORCH_UCC_ROOT_DIR}/workloads/dlrm"
 
-$NUMA python dlrm_s_pytorch.py \
-    --mini-batch-size=2048 \
-    --test-mini-batch-size=16384 \
-    --test-num-workers=0 \
-    --num-batches=100 \
-    --data-generation=random \
-    --arch-mlp-bot=$bot_mlp \
-    --arch-mlp-top=$top_mlp \
-    --arch-sparse-feature-size=$emb_dim \
-    --arch-embedding-size=$emb_size \
-    --num-indices-per-lookup=$emb_lookup \
-    --num-indices-per-lookup-fixed=$emb_lookup_fixed \
-    --arch-interaction-op=dot \
-    --numpy-rand-seed=727 \
-    --print-freq=1 \
-    --loss-function=$loss_func \
-    --round-targets=$round_targets \
-    --learning-rate=$lr \
-    --print-time "$@"
+MPIRUN_OPTIONS="\
+    -np $NP \
+    -H $HOSTS \
+    --map-by node \
+    -x LD_LIBRARY_PATH \
+    --allow-run-as-root \
+"
+
+# shellcheck disable=SC2086
+mpirun ${MPIRUN_OPTIONS} hostname
+#mpirun ${MPIRUN_OPTIONS} python dlrm_s_pytorch.py \
+#    --mini-batch-size=2048 \
+#    --test-mini-batch-size=16384 \
+#    --test-num-workers=0 \
+#    --num-batches=100 \
+#    --data-generation=random \
+#    --arch-mlp-bot=$bot_mlp \
+#    --arch-mlp-top=$top_mlp \
+#    --arch-sparse-feature-size=$emb_dim \
+#    --arch-embedding-size=$emb_size \
+#    --num-indices-per-lookup=$emb_lookup \
+#    --num-indices-per-lookup-fixed=$emb_lookup_fixed \
+#    --arch-interaction-op=dot \
+#    --numpy-rand-seed=727 \
+#    --print-freq=1 \
+#    --loss-function=$loss_func \
+#    --round-targets=$round_targets \
+#    --learning-rate=$lr \
+#    --print-time \
+#    --dist-backend=ucc \
+#    --use-gpu

@@ -54,7 +54,7 @@ steps:
       find /opt/nvidia
       ibv_devinfo
       nvidia-smi
-      sleep 20000
+      #sleep 20000
   #============================================================================
   - name: Run XCCL tests
     run: |
@@ -71,6 +71,7 @@ steps:
   - name: Run FB DLRM tests
     run: |
       echo "INFO: Run FB DLRM tests"
+      sleep 20000
       ${TORCH_UCC_SRC_DIR}/.ci/scripts/run_fb_dlrm.sh
   #============================================================================
   - name: Run PARAM benchmarks
