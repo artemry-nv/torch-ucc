@@ -85,7 +85,9 @@ steps:
       find /opt/nvidia
       #ibv_devinfo
       #nvidia-smi
-      ${TORCH_UCC_SRC_DIR}/.ci/scripts/run_fb_dlrm_docker.sh
+      pwd
+      find . -name run_fb_dlrm_docker.sh
+      ${WORKSPACE}/.ci/scripts/run_fb_dlrm_docker.sh
   #============================================================================
 #  - name: Run PARAM benchmarks
 #    agentSelector: "{nodeLabel: 'swx-clx01 || swx-clx02'}"
