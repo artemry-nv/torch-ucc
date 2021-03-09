@@ -85,8 +85,6 @@ steps:
       find /opt/nvidia
       #ibv_devinfo
       #nvidia-smi
-      pwd
-      find . -name run_fb_dlrm_docker.sh
       ${WORKSPACE}/.ci/scripts/run_fb_dlrm_docker.sh
   #============================================================================
 #  - name: Run PARAM benchmarks
