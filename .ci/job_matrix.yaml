@@ -45,6 +45,7 @@ timeout_minutes: '400'
 steps:
   #============================================================================
   - name: Check Env
+    agentSelector: "{nodeLabel: 'swx-clx01 || swx-clx02'}"
     run: |
       echo "INFO: check environment"
       hostname
@@ -57,6 +58,7 @@ steps:
       #nvidia-smi
   #============================================================================
   - name: Run XCCL tests
+    agentSelector: "{nodeLabel: 'swx-clx01 || swx-clx02'}"
     run: |
       echo "INFO: Run XCCL tests"
       hostname
@@ -64,6 +66,7 @@ steps:
       #${TORCH_UCC_SRC_DIR}/.ci/scripts/run_tests_xccl.sh
   #============================================================================
   - name: Run Torch-UCC tests
+    agentSelector: "{nodeLabel: 'swx-clx01 || swx-clx02'}"
     run: |
       echo "INFO: Run Torch-UCC tests"
       hostname
@@ -71,6 +74,7 @@ steps:
       #${TORCH_UCC_SRC_DIR}/.ci/scripts/run_tests_torch_ucc.sh
   #============================================================================
   - name: Run FB DLRM tests
+    agentSelector: "{nodeLabel: 'swx-clx01 || swx-clx02'}"
     run: |
       echo "INFO: Run FB DLRM tests"
       printenv
@@ -84,6 +88,7 @@ steps:
       ${TORCH_UCC_SRC_DIR}/.ci/scripts/run_fb_dlrm.sh
   #============================================================================
   - name: Run PARAM benchmarks
+    agentSelector: "{nodeLabel: 'swx-clx01 || swx-clx02'}"
     run: |
       echo "INFO: Run PARAM benchmarks"
       hostname
