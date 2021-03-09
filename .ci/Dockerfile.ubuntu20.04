@@ -18,50 +18,50 @@ RUN mkdir -p ${TORCH_UCC_SRC_DIR} && \
     mkdir -p ${TORCH_UCC_BIN_DIR} && \
     mkdir -p ${TORCH_UCC_WORKLOADS_DIR}
 
-COPY . ${TORCH_UCC_SRC_DIR}
-#==============================================================================
-ARG DEBIAN_FRONTEND=noninteractive
-RUN apt update && \
-    apt install -y \
-        apt-utils \
-        autoconf \
-        build-essential \
-        cmake \
-        curl \
-        git \
-        ibverbs-providers \
-        ibverbs-utils \
-        libnuma-dev \
-        libtool-bin \
-        ninja-build \
-        openmpi-bin \
-        vim \
-    && \
-    rm -rf /var/lib/apt/lists/*
-#==============================================================================
-# Build UCX
-RUN ${TORCH_UCC_SRC_DIR}/.ci/scripts/build_ucx.sh
-ENV PATH=${UCX_INSTALL_DIR}/bin:${PATH}
-#==============================================================================
-# Configure Python
-RUN ${TORCH_UCC_SRC_DIR}/.ci/scripts/configure_python.sh
-ENV PATH /opt/conda/bin:${PATH}
-#==============================================================================
-# Build XCCL
-RUN ${TORCH_UCC_SRC_DIR}/.ci/scripts/build_xccl.sh
-#==============================================================================
-# Install PyTorch
-RUN ${TORCH_UCC_SRC_DIR}/.ci/scripts/install_torch.sh
-#==============================================================================
-# Install torch_ucc python module and build a wheel package
-RUN ${TORCH_UCC_SRC_DIR}/.ci/scripts/install_torch_ucc.sh
-#==============================================================================
-# Install workloads
-WORKDIR ${TORCH_UCC_WORKLOADS_DIR}
-RUN git clone https://github.com/facebookresearch/dlrm.git && \
-    cd ${TORCH_UCC_WORKLOADS_DIR}/dlrm && \
-    git apply ${TORCH_UCC_SRC_DIR}/.ci/patches/dlrm/0001-Added-torch_ucc-support.patch && \
-    pip install -r ${TORCH_UCC_WORKLOADS_DIR}/dlrm/requirements.txt && \
-    pip install tensorboard
-RUN git clone https://github.com/facebookresearch/param.git && \
-    pip install -r ${TORCH_UCC_WORKLOADS_DIR}/param/requirements.txt
+#COPY . ${TORCH_UCC_SRC_DIR}
+##==============================================================================
+#ARG DEBIAN_FRONTEND=noninteractive
+#RUN apt update && \
+#    apt install -y \
+#        apt-utils \
+#        autoconf \
+#        build-essential \
+#        cmake \
+#        curl \
+#        git \
+#        ibverbs-providers \
+#        ibverbs-utils \
+#        libnuma-dev \
+#        libtool-bin \
+#        ninja-build \
+#        openmpi-bin \
+#        vim \
+#    && \
+#    rm -rf /var/lib/apt/lists/*
+##==============================================================================
+## Build UCX
+#RUN ${TORCH_UCC_SRC_DIR}/.ci/scripts/build_ucx.sh
+#ENV PATH=${UCX_INSTALL_DIR}/bin:${PATH}
+##==============================================================================
+## Configure Python
+#RUN ${TORCH_UCC_SRC_DIR}/.ci/scripts/configure_python.sh
+#ENV PATH /opt/conda/bin:${PATH}
+##==============================================================================
+## Build XCCL
+#RUN ${TORCH_UCC_SRC_DIR}/.ci/scripts/build_xccl.sh
+##==============================================================================
+## Install PyTorch
+#RUN ${TORCH_UCC_SRC_DIR}/.ci/scripts/install_torch.sh
+##==============================================================================
+## Install torch_ucc python module and build a wheel package
+#RUN ${TORCH_UCC_SRC_DIR}/.ci/scripts/install_torch_ucc.sh
+##==============================================================================
+## Install workloads
+#WORKDIR ${TORCH_UCC_WORKLOADS_DIR}
+#RUN git clone https://github.com/facebookresearch/dlrm.git && \
+#    cd ${TORCH_UCC_WORKLOADS_DIR}/dlrm && \
+#    git apply ${TORCH_UCC_SRC_DIR}/.ci/patches/dlrm/0001-Added-torch_ucc-support.patch && \
+#    pip install -r ${TORCH_UCC_WORKLOADS_DIR}/dlrm/requirements.txt && \
+#    pip install tensorboard
+#RUN git clone https://github.com/facebookresearch/param.git && \
+#    pip install -r ${TORCH_UCC_WORKLOADS_DIR}/param/requirements.txt

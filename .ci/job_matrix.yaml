@@ -36,8 +36,8 @@ runs_on_dockers:
   }
 
 # bare metal
-#runs_on_agents:
-#  - nodeLabel: 'swx-clx01 || swx-clx02'
+runs_on_agents:
+  - nodeLabel: 'swx-clx01 || swx-clx02'
 
 # TODO debug
 timeout_minutes: '400'
@@ -47,6 +47,7 @@ steps:
   - name: Check Env
     run: |
       echo "INFO: check environment"
+      hostname
       printenv
       cat /proc/1/cgroup
       cat /etc/*release*
@@ -54,28 +55,39 @@ steps:
       find /opt/nvidia
       ibv_devinfo
       nvidia-smi
-      #sleep 20000
   #============================================================================
   - name: Run XCCL tests
     run: |
-      #sleep 20000
       echo "INFO: Run XCCL tests"
-      ${TORCH_UCC_SRC_DIR}/.ci/scripts/run_tests_xccl.sh
+      hostname
+      cat /proc/1/cgroup
+      #${TORCH_UCC_SRC_DIR}/.ci/scripts/run_tests_xccl.sh
   #============================================================================
   - name: Run Torch-UCC tests
     run: |
       echo "INFO: Run Torch-UCC tests"
-      ${TORCH_UCC_SRC_DIR}/.ci/scripts/run_tests_torch_ucc.sh
-      #sleep 20000
+      hostname
+      cat /proc/1/cgroup
+      #${TORCH_UCC_SRC_DIR}/.ci/scripts/run_tests_torch_ucc.sh
   #============================================================================
   - name: Run FB DLRM tests
+    agentSelector: "{nodeLabel: 'swx-clx01 || swx-clx02'}"
     run: |
       echo "INFO: Run FB DLRM tests"
+      printenv
+      cat /proc/1/cgroup
+      cat /etc/*release*
+      id
+      find /opt/nvidia
+      ibv_devinfo
+      nvidia-smi
       sleep 20000
       ${TORCH_UCC_SRC_DIR}/.ci/scripts/run_fb_dlrm.sh
   #============================================================================
   - name: Run PARAM benchmarks
     run: |
       echo "INFO: Run PARAM benchmarks"
-      ${TORCH_UCC_SRC_DIR}/.ci/scripts/run_param_benchmarks.sh
+      hostname
+      cat /proc/1/cgroup
+      #${TORCH_UCC_SRC_DIR}/.ci/scripts/run_param_benchmarks.sh
   #============================================================================
