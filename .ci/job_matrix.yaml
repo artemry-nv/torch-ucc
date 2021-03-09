@@ -58,21 +58,21 @@ steps:
       #ibv_devinfo
       #nvidia-smi
   #============================================================================
-  - name: Run XCCL tests
-    agentSelector: "{nodeLabel: 'swx-clx01 || swx-clx02'}"
-    run: |
-      echo "INFO: Run XCCL tests"
-      hostname
-      cat /proc/1/cgroup
-      #${TORCH_UCC_SRC_DIR}/.ci/scripts/run_tests_xccl.sh
+#  - name: Run XCCL tests
+#    agentSelector: "{nodeLabel: 'swx-clx01 || swx-clx02'}"
+#    run: |
+#      echo "INFO: Run XCCL tests"
+#      hostname
+#      cat /proc/1/cgroup
+#      #${TORCH_UCC_SRC_DIR}/.ci/scripts/run_tests_xccl.sh
   #============================================================================
-  - name: Run Torch-UCC tests
-    agentSelector: "{nodeLabel: 'swx-clx01 || swx-clx02'}"
-    run: |
-      echo "INFO: Run Torch-UCC tests"
-      hostname
-      cat /proc/1/cgroup
-      #${TORCH_UCC_SRC_DIR}/.ci/scripts/run_tests_torch_ucc.sh
+#  - name: Run Torch-UCC tests
+#    agentSelector: "{nodeLabel: 'swx-clx01 || swx-clx02'}"
+#    run: |
+#      echo "INFO: Run Torch-UCC tests"
+#      hostname
+#      cat /proc/1/cgroup
+#      #${TORCH_UCC_SRC_DIR}/.ci/scripts/run_tests_torch_ucc.sh
   #============================================================================
   - name: Run FB DLRM tests
     agentSelector: "{nodeLabel: 'swx-clx01 || swx-clx02'}"
@@ -85,14 +85,13 @@ steps:
       find /opt/nvidia
       #ibv_devinfo
       #nvidia-smi
-      sleep 20000
-      ${TORCH_UCC_SRC_DIR}/.ci/scripts/run_fb_dlrm.sh
+      ${TORCH_UCC_SRC_DIR}/.ci/scripts/run_fb_dlrm_docker.sh
   #============================================================================
-  - name: Run PARAM benchmarks
-    agentSelector: "{nodeLabel: 'swx-clx01 || swx-clx02'}"
-    run: |
-      echo "INFO: Run PARAM benchmarks"
-      hostname
-      cat /proc/1/cgroup
-      #${TORCH_UCC_SRC_DIR}/.ci/scripts/run_param_benchmarks.sh
+#  - name: Run PARAM benchmarks
+#    agentSelector: "{nodeLabel: 'swx-clx01 || swx-clx02'}"
+#    run: |
+#      echo "INFO: Run PARAM benchmarks"
+#      hostname
+#      cat /proc/1/cgroup
+#      #${TORCH_UCC_SRC_DIR}/.ci/scripts/run_param_benchmarks.sh
   #============================================================================
