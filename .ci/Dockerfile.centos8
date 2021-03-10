@@ -46,13 +46,13 @@ ENV PATH=${UCX_INSTALL_DIR}/bin:${PATH}
 #ENV PATH /opt/conda/bin:${PATH}
 ##==============================================================================
 # Build XCCL
-RUN ${TORCH_UCC_SRC_DIR}/.ci/scripts/build_xccl.sh
+#RUN ${TORCH_UCC_SRC_DIR}/.ci/scripts/build_xccl.sh
 ##==============================================================================
 # Install PyTorch
-RUN ${TORCH_UCC_SRC_DIR}/.ci/scripts/install_torch.sh
+#RUN ${TORCH_UCC_SRC_DIR}/.ci/scripts/install_torch.sh
 ##==============================================================================
 # Install torch_ucc python module and build a wheel package
-RUN ${TORCH_UCC_SRC_DIR}/.ci/scripts/install_torch_ucc.sh
+#RUN ${TORCH_UCC_SRC_DIR}/.ci/scripts/install_torch_ucc.sh
 ##==============================================================================
 ## Install workloads
 #WORKDIR ${TORCH_UCC_WORKLOADS_DIR}
