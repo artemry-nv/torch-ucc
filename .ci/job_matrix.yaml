@@ -57,10 +57,10 @@ steps:
       cat /proc/1/cgroup
       cat /etc/*release*
       id
-      sleep 20000
       find /opt/nvidia
       ibv_devinfo
       nvidia-smi
+      nvidia-smi topo -m
   #============================================================================
   - name: Run XCCL tests
     #agentSelector: "{nodeLabel: 'swx-clx01 || swx-clx02'}"
@@ -68,7 +68,7 @@ steps:
       echo "INFO: Run XCCL tests"
       hostname
       cat /proc/1/cgroup
-      #${TORCH_UCC_SRC_DIR}/.ci/scripts/run_tests_xccl.sh
+      ${TORCH_UCC_SRC_DIR}/.ci/scripts/run_tests_xccl.sh
   #============================================================================
   - name: Run Torch-UCC tests
     #agentSelector: "{nodeLabel: 'swx-clx01 || swx-clx02'}"
@@ -76,7 +76,7 @@ steps:
       echo "INFO: Run Torch-UCC tests"
       hostname
       cat /proc/1/cgroup
-      #${TORCH_UCC_SRC_DIR}/.ci/scripts/run_tests_torch_ucc.sh
+      ${TORCH_UCC_SRC_DIR}/.ci/scripts/run_tests_torch_ucc.sh
   #============================================================================
   - name: Run FB DLRM tests
     #agentSelector: "{nodeLabel: 'swx-clx01 || swx-clx02'}"
