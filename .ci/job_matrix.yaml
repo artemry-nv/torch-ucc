@@ -26,19 +26,20 @@ docker_opt: '--pull always --network=host --uts=host --ipc=host --ulimit stack=6
 
 runs_on_dockers:
   - {
-    file: '.ci/Dockerfile.ubuntu20.04',
+    #file: '.ci/Dockerfile.ubuntu20.04',
+    file: '.ci/Dockerfile.centos8',
     name: 'ubuntu20.04',
     tag: '${BUILD_NUMBER}',
     arch: 'x86_64',
     uri: '${TORCH_UCC_URI_SUFFIX}',
     build_args: '--rm --no-cache --build-arg CUDA_VER=${CUDA_VER} --build-arg TORCH_UCC_ROOT_DIR=${TORCH_UCC_ROOT_DIR}',
     cloud: 'swx-k8s',
-#    nodeLabel: 'swx-clx01 || swx-clx02',
+    nodeLabel: 'swx-clx01 || swx-clx02',
   }
 
 # bare metal
-runs_on_agents:
-  - nodeLabel: 'swx-clx01 || swx-clx02'
+#runs_on_agents:
+#  - nodeLabel: 'swx-clx01 || swx-clx02'
 
 # TODO debug
 timeout_minutes: '400'
@@ -46,7 +47,7 @@ timeout_minutes: '400'
 steps:
   #============================================================================
   - name: Check Env
-    agentSelector: "{nodeLabel: 'swx-clx01 || swx-clx02'}"
+    #agentSelector: "{nodeLabel: 'swx-clx01 || swx-clx02'}"
     run: |
       echo "INFO: check environment"
       hostname
@@ -55,27 +56,28 @@ steps:
       cat /etc/*release*
       id
       find /opt/nvidia
-      #ibv_devinfo
-      #nvidia-smi
+      ibv_devinfo
+      nvidia-smi
+      sleep 20000
   #============================================================================
-#  - name: Run XCCL tests
-#    agentSelector: "{nodeLabel: 'swx-clx01 || swx-clx02'}"
-#    run: |
-#      echo "INFO: Run XCCL tests"
-#      hostname
-#      cat /proc/1/cgroup
-#      #${TORCH_UCC_SRC_DIR}/.ci/scripts/run_tests_xccl.sh
+  - name: Run XCCL tests
+    #agentSelector: "{nodeLabel: 'swx-clx01 || swx-clx02'}"
+    run: |
+      echo "INFO: Run XCCL tests"
+      hostname
+      cat /proc/1/cgroup
+      #${TORCH_UCC_SRC_DIR}/.ci/scripts/run_tests_xccl.sh
   #============================================================================
-#  - name: Run Torch-UCC tests
-#    agentSelector: "{nodeLabel: 'swx-clx01 || swx-clx02'}"
-#    run: |
-#      echo "INFO: Run Torch-UCC tests"
-#      hostname
-#      cat /proc/1/cgroup
-#      #${TORCH_UCC_SRC_DIR}/.ci/scripts/run_tests_torch_ucc.sh
+  - name: Run Torch-UCC tests
+    #agentSelector: "{nodeLabel: 'swx-clx01 || swx-clx02'}"
+    run: |
+      echo "INFO: Run Torch-UCC tests"
+      hostname
+      cat /proc/1/cgroup
+      #${TORCH_UCC_SRC_DIR}/.ci/scripts/run_tests_torch_ucc.sh
   #============================================================================
   - name: Run FB DLRM tests
-    agentSelector: "{nodeLabel: 'swx-clx01 || swx-clx02'}"
+    #agentSelector: "{nodeLabel: 'swx-clx01 || swx-clx02'}"
     run: |
       echo "INFO: Run FB DLRM tests"
       printenv
@@ -85,7 +87,7 @@ steps:
       find /opt/nvidia
       #ibv_devinfo
       #nvidia-smi
-      ${WORKSPACE}/.ci/scripts/run_fb_dlrm_docker.sh
+      #${WORKSPACE}/.ci/scripts/run_fb_dlrm_docker.sh
   #============================================================================
 #  - name: Run PARAM benchmarks
 #    agentSelector: "{nodeLabel: 'swx-clx01 || swx-clx02'}"
