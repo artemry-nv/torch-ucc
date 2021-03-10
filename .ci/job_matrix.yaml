@@ -16,7 +16,8 @@ volumes:
 
 env:
   CUDA_VER: '11.2.1'
-  TORCH_UCC_URI_SUFFIX: '${TORCH_UCC_VERSION}/x86_64/ubuntu20.04/cuda${CUDA_VER}'
+  #TORCH_UCC_URI_SUFFIX: '${TORCH_UCC_VERSION}/x86_64/ubuntu20.04/cuda${CUDA_VER}'
+  TORCH_UCC_URI_SUFFIX: '${TORCH_UCC_VERSION}/x86_64/centos8/cuda${CUDA_VER}'
   TORCH_UCC_DOCKER_IMAGE_NAME: '${registry_host}${registry_path}/${TORCH_UCC_URI_SUFFIX}'
   TORCH_UCC_ROOT_DIR: '/opt/nvidia/torch-ucc'
   TORCH_UCC_SRC_DIR: '${TORCH_UCC_ROOT_DIR}/src'
@@ -28,7 +29,8 @@ runs_on_dockers:
   - {
     #file: '.ci/Dockerfile.ubuntu20.04',
     file: '.ci/Dockerfile.centos8',
-    name: 'ubuntu20.04',
+    #name: 'ubuntu20.04',
+    name: 'centos8',
     tag: '${BUILD_NUMBER}',
     arch: 'x86_64',
     uri: '${TORCH_UCC_URI_SUFFIX}',
