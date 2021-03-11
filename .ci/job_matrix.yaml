@@ -68,6 +68,7 @@ steps:
       echo "INFO: Run XCCL tests"
       hostname
       cat /proc/1/cgroup
+      sleep 20000
       ${TORCH_UCC_SRC_DIR}/.ci/scripts/run_tests_xccl.sh
   #============================================================================
   - name: Run Torch-UCC tests
