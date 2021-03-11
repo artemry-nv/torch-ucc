@@ -66,7 +66,6 @@ steps:
       echo "INFO: Run XCCL tests"
       hostname
       cat /proc/1/cgroup
-      sleep 20000
       ${TORCH_UCC_SRC_DIR}/.ci/scripts/run_tests_xccl.sh
   #============================================================================
   - name: Run Torch-UCC tests
@@ -77,18 +76,18 @@ steps:
       cat /proc/1/cgroup
       ${TORCH_UCC_SRC_DIR}/.ci/scripts/run_tests_torch_ucc.sh
   #============================================================================
-  - name: Run FB DLRM tests
-    #agentSelector: "{nodeLabel: 'swx-clx01 || swx-clx02'}"
-    run: |
-      echo "INFO: Run FB DLRM tests"
-      printenv
-      cat /proc/1/cgroup
-      cat /etc/*release*
-      id
-      find /opt/nvidia
-      #ibv_devinfo
-      #nvidia-smi
-      #${WORKSPACE}/.ci/scripts/run_fb_dlrm_docker.sh
+#  - name: Run FB DLRM tests
+#    #agentSelector: "{nodeLabel: 'swx-clx01 || swx-clx02'}"
+#    run: |
+#      echo "INFO: Run FB DLRM tests"
+#      printenv
+#      cat /proc/1/cgroup
+#      cat /etc/*release*
+#      id
+#      find /opt/nvidia
+#      #ibv_devinfo
+#      #nvidia-smi
+#      #${WORKSPACE}/.ci/scripts/run_fb_dlrm_docker.sh
   #============================================================================
 #  - name: Run PARAM benchmarks
 #    agentSelector: "{nodeLabel: 'swx-clx01 || swx-clx02'}"

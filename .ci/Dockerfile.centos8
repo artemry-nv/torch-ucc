@@ -34,6 +34,8 @@ RUN yum config-manager --set-enabled powertools && yum install -y \
     protobuf-devel \
     python36-devel \
     vim
+# Remove old UCX
+RUN rpm -e --nodeps ucx
 ENV PATH=/usr/lib64/openmpi/bin:${PATH}
 #==============================================================================
 # Configure SSH
