@@ -61,7 +61,6 @@ steps:
       ibv_devinfo
       nvidia-smi
       nvidia-smi topo -m
-      sleep 20000
   #============================================================================
   - name: Run XCCL tests
     #agentSelector: "{nodeLabel: 'swx-clx01 || swx-clx02'}"

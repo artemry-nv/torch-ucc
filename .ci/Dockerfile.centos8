@@ -23,12 +23,15 @@ COPY . ${TORCH_UCC_SRC_DIR}
 RUN yum groupinstall -y \
     'Development Tools' \
     'Infiniband Support'
-RUN yum install -y \
+RUN yum config-manager --set-enabled powertools && yum install -y \
+    cmake \
     numactl \
     numactl-devel \
     openmpi \
     openmpi-devel \
     openssh-server \
+    protobuf-compiler \
+    protobuf-devel \
     python36-devel \
     vim
 ENV PATH=/usr/lib64/openmpi/bin:${PATH}
@@ -54,13 +57,13 @@ RUN ${TORCH_UCC_SRC_DIR}/.ci/scripts/install_torch.sh
 #==============================================================================
 # Install torch_ucc python module and build a wheel package
 RUN ${TORCH_UCC_SRC_DIR}/.ci/scripts/install_torch_ucc.sh
-##==============================================================================
+#==============================================================================
 # Install workloads
-#WORKDIR ${TORCH_UCC_WORKLOADS_DIR}
-#RUN git clone https://github.com/facebookresearch/dlrm.git && \
-#    cd ${TORCH_UCC_WORKLOADS_DIR}/dlrm && \
-#    git apply ${TORCH_UCC_SRC_DIR}/.ci/patches/dlrm/0001-Added-torch_ucc-support.patch && \
-#    pip3 install -r ${TORCH_UCC_WORKLOADS_DIR}/dlrm/requirements.txt && \
-#    pip3 install tensorboard
-#RUN git clone https://github.com/facebookresearch/param.git && \
-#    pip3 install -r ${TORCH_UCC_WORKLOADS_DIR}/param/requirements.txt
+WORKDIR ${TORCH_UCC_WORKLOADS_DIR}
+RUN git clone https://github.com/facebookresearch/dlrm.git && \
+    cd ${TORCH_UCC_WORKLOADS_DIR}/dlrm && \
+    git apply ${TORCH_UCC_SRC_DIR}/.ci/patches/dlrm/0001-Added-torch_ucc-support.patch && \
+    pip3 install -r ${TORCH_UCC_WORKLOADS_DIR}/dlrm/requirements.txt && \
+    pip3 install tensorboard
+RUN git clone https://github.com/facebookresearch/param.git && \
+    pip3 install -r ${TORCH_UCC_WORKLOADS_DIR}/param/requirements.txt
