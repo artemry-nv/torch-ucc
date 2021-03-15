@@ -69,3 +69,9 @@ RUN git clone https://github.com/facebookresearch/dlrm.git && \
     pip3 install tensorboard
 RUN git clone https://github.com/facebookresearch/param.git && \
     pip3 install -r ${TORCH_UCC_WORKLOADS_DIR}/param/requirements.txt
+
+RUN groupadd -g 11429 swx-jenkins
+RUN adduser --uid 6213 --gid 11429 --home /home/swx-jenkins swx-jenkins
+
+RUN groupadd -g 30 dip
+RUN adduser --uid 50009 --gid 30 --home /labhome/artemry artemry
