@@ -1,6 +1,12 @@
 #!/bin/bash -eEx
 set -o pipefail
 
+function err_report () {
+    echo "Exited with ERROR in line $1"
+    exit 1
+}
+trap 'err_report $LINENO' ERR
+
 SCRIPT_DIR="$(
     cd "$(dirname "$0")"
     pwd -P
@@ -33,11 +39,13 @@ DOCKER_RUN_ARGS="\
 -v /labhome:/labhome \
 -v /root/.ssh:/root/.ssh \
 -p 12345:12345 \
+--user $USER \
 "
 
 while read -r HOST; do
     echo "INFO: HOST = $HOST"
-    STALE_DOCKER_CONTAINER_LIST=$(sudo ssh "$HOST" "docker ps -a -q -f name=${DOCKER_CONTAINER_NAME}")
+
+    STALE_DOCKER_CONTAINER_LIST=$(ssh -n "$HOST" "docker ps -a -q -f name=${DOCKER_CONTAINER_NAME}")
     if [ -n "${STALE_DOCKER_CONTAINER_LIST}" ]; then
         echo "WARNING: stale docker container (name: ${DOCKER_CONTAINER_NAME}) is detected on ${HOST} (to be stopped)"
         echo "INFO: Stopping stale docker container (name: ${DOCKER_CONTAINER_NAME}) on ${HOST}..."
@@ -49,12 +57,14 @@ while read -r HOST; do
     sudo ssh "$HOST" "docker run \
         ${DOCKER_RUN_ARGS} \
         ${DOCKER_IMAGE_NAME} \
-        bash -c '/usr/sbin/sshd -p ${DOCKER_SSH_PORT}; sleep infinity'"
+        bash -c 'ssh-keygen -A; /usr/sbin/sshd -p ${DOCKER_SSH_PORT}; sleep infinity'"
     echo "INFO: start docker container on $HOST ... DONE"
-
-    echo "INFO: verify docker container on $HOST ..."
-    sudo ssh "$HOST" -p ${DOCKER_SSH_PORT} hostname
-    echo "INFO: verify docker container on $HOST ... DONE"
+#
+#    sleep 5
+#
+#    echo "INFO: verify docker container on $HOST ..."
+#    ssh -n "$HOST" -p ${DOCKER_SSH_PORT} hostname
+#    echo "INFO: verify docker container on $HOST ... DONE"
 done <"$HOSTFILE"
 
 sleep 20000
