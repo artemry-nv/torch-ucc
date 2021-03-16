@@ -12,7 +12,7 @@ DOCKER_SSH_PORT="12345"
 DOCKER_CONTAINER_NAME="torch_ucc_ci"
 # TODO debug
 #DOCKER_IMAGE_NAME="${TORCH_UCC_DOCKER_IMAGE_NAME}:${BUILD_ID}"
-DOCKER_IMAGE_NAME="harbor.mellanox.com/torch-ucc/0.1.0/x86_64/centos8/cuda11.1.1:171"
+DOCKER_IMAGE_NAME="harbor.mellanox.com/torch-ucc/0.1.0/x86_64/centos8/cuda11.2.1:175"
 
 DOCKER_RUN_ARGS="\
 --pull always \
@@ -31,7 +31,8 @@ DOCKER_RUN_ARGS="\
 --rm \
 --name=${DOCKER_CONTAINER_NAME} \
 -v /labhome:/labhome \
---user $USER \
+-v /root/.ssh:/root/.ssh \
+-p 12345:12345 \
 "
 
 while read -r HOST; do

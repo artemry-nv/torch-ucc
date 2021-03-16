@@ -42,7 +42,8 @@ ENV PATH=/usr/lib64/openmpi/bin:${PATH}
 RUN mkdir -p /var/run/sshd && \
     cat /etc/ssh/ssh_config | grep -v StrictHostKeyChecking > /etc/ssh/ssh_config.new && \
     echo "    StrictHostKeyChecking no" >> /etc/ssh/ssh_config.new && \
-    mv /etc/ssh/ssh_config.new /etc/ssh/ssh_config
+    mv /etc/ssh/ssh_config.new /etc/ssh/ssh_config && \
+    ssh-keygen -A
 ##==============================================================================
 ## Build UCX
 #RUN ${TORCH_UCC_SRC_DIR}/.ci/scripts/build_ucx.sh
@@ -75,3 +76,6 @@ RUN adduser --uid 6213 --gid 11429 --home /home/swx-jenkins swx-jenkins
 #
 RUN groupadd -g 30 dip
 RUN adduser --no-create-home --uid 50009 --gid 30 --home /labhome/artemry artemry
+
+EXPOSE 12345
+EXPOSE 12346
