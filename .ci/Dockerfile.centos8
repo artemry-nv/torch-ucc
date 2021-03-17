@@ -13,11 +13,13 @@ ENV UCX_INSTALL_DIR=${TORCH_UCC_BIN_DIR}/ucx/build-${UCX_BUILD_TYPE}
 ENV XCCL_BUILD_TYPE=debug
 ENV XCCL_INSTALL_DIR=${TORCH_UCC_BIN_DIR}/xccl/build-${XCCL_BUILD_TYPE}
 ENV UCC_INSTALL_DIR=${TORCH_UCC_BIN_DIR}/ucc/build
+ENV TORCH_UCC_PYTHON_VENV_DIR=${TORCH_UCC_BIN_DIR}/python/venv
 #==============================================================================
 RUN mkdir -p ${TORCH_UCC_SRC_DIR} && \
     mkdir -p ${TORCH_UCC_PKG_DIR} && \
     mkdir -p ${TORCH_UCC_BIN_DIR} && \
-    mkdir -p ${TORCH_UCC_WORKLOADS_DIR}
+    mkdir -p ${TORCH_UCC_WORKLOADS_DIR} && \
+    mkdir -p ${TORCH_UCC_PYTHON_VENV_DIR}
 
 COPY . ${TORCH_UCC_SRC_DIR}
 #==============================================================================
@@ -52,20 +54,20 @@ ENV PATH=${UCX_INSTALL_DIR}/bin:${PATH}
 #==============================================================================
 # Configure Python
 RUN ${TORCH_UCC_SRC_DIR}/.ci/scripts/configure_python.sh
-##==============================================================================
-## Build XCCL
-#RUN ${TORCH_UCC_SRC_DIR}/.ci/scripts/build_xccl.sh
+#==============================================================================
+# Build XCCL
+RUN ${TORCH_UCC_SRC_DIR}/.ci/scripts/build_xccl.sh
 #==============================================================================
 # Build UCC
 RUN ${TORCH_UCC_SRC_DIR}/.ci/scripts/build_ucc.sh
-##==============================================================================
-## Install PyTorch
-#RUN ${TORCH_UCC_SRC_DIR}/.ci/scripts/install_torch.sh
-##==============================================================================
-## Install torch_ucc python module and build a wheel package
+#==============================================================================
+# Install PyTorch
+RUN ${TORCH_UCC_SRC_DIR}/.ci/scripts/install_torch.sh
+#==============================================================================
+# Install torch_ucc python module and build a wheel package
 #RUN ${TORCH_UCC_SRC_DIR}/.ci/scripts/install_torch_ucc.sh
-##==============================================================================
-## Install workloads
+#==============================================================================
+# Install workloads
 #WORKDIR ${TORCH_UCC_WORKLOADS_DIR}
 #RUN git clone https://github.com/facebookresearch/dlrm.git && \
 #    cd ${TORCH_UCC_WORKLOADS_DIR}/dlrm && \
