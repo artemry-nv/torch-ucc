@@ -1,10 +1,10 @@
 #!/bin/bash -eEx
 set -o pipefail
 
-echo "INFO: Install Torch-UCC (UCC version)"
 cd "${TORCH_UCC_PYTHON_VENV_DIR}"
 
 # UCC
+echo "INFO: Install Torch-UCC (UCC version)"
 python3 -m venv --system-site-packages ucc
 . "${TORCH_UCC_PYTHON_VENV_DIR}/ucc/bin/activate"
 export UCX_HOME=${UCX_INSTALL_DIR}
@@ -18,6 +18,7 @@ cp "${TORCH_UCC_SRC_DIR}/dist/"*.whl "${TORCH_UCC_PKG_DIR}"
 deactivate
 
 # XCCL
+echo "INFO: Install Torch-UCC (XCCL version)"
 python3 -m venv --system-site-packages xccl
 . "${TORCH_UCC_PYTHON_VENV_DIR}/xccl/bin/activate"
 export UCX_HOME=${UCX_INSTALL_DIR}
