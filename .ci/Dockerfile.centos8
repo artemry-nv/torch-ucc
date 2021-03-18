@@ -64,8 +64,11 @@ RUN ${TORCH_UCC_SRC_DIR}/.ci/scripts/build_ucc.sh
 # Install PyTorch
 RUN ${TORCH_UCC_SRC_DIR}/.ci/scripts/install_torch.sh
 #==============================================================================
-# Install torch_ucc python module and build a wheel package
-#RUN ${TORCH_UCC_SRC_DIR}/.ci/scripts/install_torch_ucc.sh
+# Install torch_ucc (XCCL version) python module and build a wheel package
+RUN ${TORCH_UCC_SRC_DIR}/.ci/scripts/install_torch_xccl.sh
+#==============================================================================
+# Install torch_ucc (UCC version) python module and build a wheel package
+RUN ${TORCH_UCC_SRC_DIR}/.ci/scripts/install_torch_ucc.sh
 #==============================================================================
 # Install workloads
 #WORKDIR ${TORCH_UCC_WORKLOADS_DIR}

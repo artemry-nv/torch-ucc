@@ -58,47 +58,51 @@ steps:
       ibv_devinfo
       nvidia-smi
       nvidia-smi topo -m
-      sleep 20000
+      #sleep 20000
   #============================================================================
-#  - name: Run XCCL tests
-#    #agentSelector: "{nodeLabel: 'swx-clx01 || swx-clx02'}"
-#    run: |
-#      echo "INFO: Run XCCL tests"
-#      . "${TORCH_UCC_PYTHON_VENV_DIR}/xccl/bin/activate"
-#      hostname
-#      cat /proc/1/cgroup
-#      ${TORCH_UCC_SRC_DIR}/.ci/scripts/run_tests_xccl.sh
-#      deactivate
+  - name: Run XCCL tests
+    #agentSelector: "{nodeLabel: 'swx-clx01 || swx-clx02'}"
+    run: |
+      echo "INFO: Run XCCL tests"
+      . "${TORCH_UCC_PYTHON_VENV_DIR}/xccl/bin/activate"
+      hostname
+      cat /proc/1/cgroup
+      pip3 list | grep torch
+      ${TORCH_UCC_SRC_DIR}/.ci/scripts/run_tests_xccl.sh
+      deactivate
   #============================================================================
-#  - name: Run UCC tests
-#    #agentSelector: "{nodeLabel: 'swx-clx01 || swx-clx02'}"
-#    run: |
-#      echo "INFO: Run UCC tests"
-#      . "${TORCH_UCC_PYTHON_VENV_DIR}/ucc/bin/activate"
-#      hostname
-#      cat /proc/1/cgroup
-#      ${TORCH_UCC_SRC_DIR}/.ci/scripts/run_tests_ucc.sh
-#      deactivate
+  - name: Run UCC tests
+    #agentSelector: "{nodeLabel: 'swx-clx01 || swx-clx02'}"
+    run: |
+      echo "INFO: Run UCC tests"
+      . "${TORCH_UCC_PYTHON_VENV_DIR}/ucc/bin/activate"
+      hostname
+      cat /proc/1/cgroup
+      pip3 list | grep torch
+      ${TORCH_UCC_SRC_DIR}/.ci/scripts/run_tests_ucc.sh
+      deactivate
   #============================================================================
-#  - name: Run Torch-UCC tests (UCC)
-#    #agentSelector: "{nodeLabel: 'swx-clx01 || swx-clx02'}"
-#    run: |
-#      echo "INFO: Run Torch-UCC tests (UCC)"
-#      . "${TORCH_UCC_PYTHON_VENV_DIR}/ucc/bin/activate"
-#      hostname
-#      cat /proc/1/cgroup
-#      ${TORCH_UCC_SRC_DIR}/.ci/scripts/run_tests_torch_ucc.sh
-#      deactivate
+  - name: Run Torch-UCC tests (XCCL)
+    #agentSelector: "{nodeLabel: 'swx-clx01 || swx-clx02'}"
+    run: |
+      echo "INFO: Run Torch-UCC tests (XCCL)"
+      . "${TORCH_UCC_PYTHON_VENV_DIR}/xccl/bin/activate"
+      hostname
+      cat /proc/1/cgroup
+      pip3 list | grep torch
+      ${TORCH_UCC_SRC_DIR}/.ci/scripts/run_tests_torch_xccl.sh
+      deactivate
   #============================================================================
-#  - name: Run Torch-UCC tests (XCCL)
-#    #agentSelector: "{nodeLabel: 'swx-clx01 || swx-clx02'}"
-#    run: |
-#      echo "INFO: Run Torch-UCC tests (XCCL)"
-#      . "${TORCH_UCC_PYTHON_VENV_DIR}/xccl/bin/activate"
-#      hostname
-#      cat /proc/1/cgroup
-#      ${TORCH_UCC_SRC_DIR}/.ci/scripts/run_tests_torch_ucc.sh
-#      deactivate
+  - name: Run Torch-UCC tests (UCC)
+    #agentSelector: "{nodeLabel: 'swx-clx01 || swx-clx02'}"
+    run: |
+      echo "INFO: Run Torch-UCC tests (UCC)"
+      . "${TORCH_UCC_PYTHON_VENV_DIR}/ucc/bin/activate"
+      hostname
+      cat /proc/1/cgroup
+      pip3 list | grep torch
+      ${TORCH_UCC_SRC_DIR}/.ci/scripts/run_tests_torch_ucc.sh
+      deactivate
 #  #============================================================================
 #  - name: Run FB DLRM tests
 #    #agentSelector: "{nodeLabel: 'swx-clx01 || swx-clx02'}"
