@@ -23,9 +23,9 @@ RUN mkdir -p ${TORCH_UCC_SRC_DIR} && \
 
 COPY . ${TORCH_UCC_SRC_DIR}
 #==============================================================================
-RUN yum groupinstall -y \
-    'Development Tools' \
-    'Infiniband Support'
+#RUN yum groupinstall -y \
+#    'Development Tools' \
+#    'Infiniband Support'
 RUN yum config-manager --set-enabled powertools && yum install -y \
     cmake \
     numactl \
@@ -49,36 +49,36 @@ RUN mkdir -p /var/run/sshd && \
     ssh-keygen -A
 #==============================================================================
 # Build UCX
-RUN ${TORCH_UCC_SRC_DIR}/.ci/scripts/build_ucx.sh
-ENV PATH=${UCX_INSTALL_DIR}/bin:${PATH}
+#RUN ${TORCH_UCC_SRC_DIR}/.ci/scripts/build_ucx.sh
+#ENV PATH=${UCX_INSTALL_DIR}/bin:${PATH}
 #==============================================================================
 # Configure Python
-RUN ${TORCH_UCC_SRC_DIR}/.ci/scripts/configure_python.sh
+#RUN ${TORCH_UCC_SRC_DIR}/.ci/scripts/configure_python.sh
 #==============================================================================
 # Build XCCL
-RUN ${TORCH_UCC_SRC_DIR}/.ci/scripts/build_xccl.sh
+#RUN ${TORCH_UCC_SRC_DIR}/.ci/scripts/build_xccl.sh
 #==============================================================================
 # Build UCC
-RUN ${TORCH_UCC_SRC_DIR}/.ci/scripts/build_ucc.sh
+#RUN ${TORCH_UCC_SRC_DIR}/.ci/scripts/build_ucc.sh
 #==============================================================================
 # Install PyTorch
-RUN ${TORCH_UCC_SRC_DIR}/.ci/scripts/install_torch.sh
+#RUN ${TORCH_UCC_SRC_DIR}/.ci/scripts/install_torch.sh
 #==============================================================================
 # Install torch_ucc (XCCL version) python module and build a wheel package
-RUN ${TORCH_UCC_SRC_DIR}/.ci/scripts/install_torch_xccl.sh
+#RUN ${TORCH_UCC_SRC_DIR}/.ci/scripts/install_torch_xccl.sh
 #==============================================================================
 # Install torch_ucc (UCC version) python module and build a wheel package
-RUN ${TORCH_UCC_SRC_DIR}/.ci/scripts/install_torch_ucc.sh
+#RUN ${TORCH_UCC_SRC_DIR}/.ci/scripts/install_torch_ucc.sh
 #==============================================================================
 # Install workloads
-WORKDIR ${TORCH_UCC_WORKLOADS_DIR}
-RUN git clone https://github.com/facebookresearch/dlrm.git && \
-    cd ${TORCH_UCC_WORKLOADS_DIR}/dlrm && \
-    git apply ${TORCH_UCC_SRC_DIR}/.ci/patches/dlrm/0001-Added-torch_ucc-support.patch && \
-    pip3 install -r ${TORCH_UCC_WORKLOADS_DIR}/dlrm/requirements.txt && \
-    pip3 install tensorboard
-RUN git clone https://github.com/facebookresearch/param.git && \
-    pip3 install -r ${TORCH_UCC_WORKLOADS_DIR}/param/requirements.txt
+#WORKDIR ${TORCH_UCC_WORKLOADS_DIR}
+#RUN git clone https://github.com/facebookresearch/dlrm.git && \
+#    cd ${TORCH_UCC_WORKLOADS_DIR}/dlrm && \
+#    git apply ${TORCH_UCC_SRC_DIR}/.ci/patches/dlrm/0001-Added-torch_ucc-support.patch && \
+#    pip3 install -r ${TORCH_UCC_WORKLOADS_DIR}/dlrm/requirements.txt && \
+#    pip3 install tensorboard
+#RUN git clone https://github.com/facebookresearch/param.git && \
+#    pip3 install -r ${TORCH_UCC_WORKLOADS_DIR}/param/requirements.txt
 
 RUN groupadd -g 11429 swx-jenkins
 RUN adduser --uid 6213 --gid 11429 --home /home/swx-jenkins swx-jenkins
