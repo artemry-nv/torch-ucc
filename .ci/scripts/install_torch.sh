@@ -25,6 +25,7 @@ export USE_XNNPACK=0
 export USE_KINETO=1
 export MAX_JOBS=$(($(nproc)-1))
 python setup.py install
+cd -
 rm -rf /tmp/pytorch
 
 # TODO debug
