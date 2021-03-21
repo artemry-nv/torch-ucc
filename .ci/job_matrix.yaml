@@ -46,7 +46,7 @@ timeout_minutes: '400'
 steps:
   #============================================================================
   - name: Check Env
-    #agentSelector: "{nodeLabel: 'swx-clx01 || swx-clx02'}"
+    agentSelector: "{nodeLabel: 'swx-clx01 || swx-clx02'}"
     run: |
       echo "INFO: check environment"
       hostname
