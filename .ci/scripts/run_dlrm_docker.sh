@@ -17,7 +17,7 @@ cd "${SCRIPT_DIR}"
 DOCKER_CONTAINER_NAME="torch_ucc_ci"
 # TODO debug
 #DOCKER_IMAGE_NAME="${TORCH_UCC_DOCKER_IMAGE_NAME}:${BUILD_ID}"
-DOCKER_IMAGE_NAME="harbor.mellanox.com/torch-ucc/1.0.0/x86_64/centos8/cuda11.2.1:193"
+DOCKER_IMAGE_NAME="harbor.mellanox.com/torch-ucc/1.0.0/x86_64/centos8/cuda11.2.1:196"
 
 DOCKER_RUN_ARGS="\
 --pull always \
@@ -38,6 +38,7 @@ DOCKER_RUN_ARGS="\
 -v /labhome:/labhome \
 -v /root/.ssh:/root/.ssh \
 -p 12345:12345 \
+-p 12346:12346 \
 "
 
 # shellcheck disable=SC2013
@@ -64,10 +65,12 @@ for HOST in $(cat "$HOSTFILE"); do
 
     echo "INFO: verify docker container on $HOST ..."
     ssh -p "${DOCKER_SSH_PORT}" "$HOST" hostname
+    ssh -p "${DOCKER_SSH_PORT}" "$HOST" cat /proc/1/cgroup
     echo "INFO: verify docker container on $HOST ... DONE"
 done
 
-ssh -p "${DOCKER_SSH_PORT}" "${HEAD_NODE}" /opt/nvidia/torch-ucc/src/.ci/scripts/run_dlrm.sh
+# TODO remove sudo
+sudo ssh -p "${DOCKER_SSH_PORT}" "${HEAD_NODE}" /opt/nvidia/torch-ucc/src/.ci/scripts/run_dlrm.sh
 
 # TODO debug
 # shellcheck disable=SC2013

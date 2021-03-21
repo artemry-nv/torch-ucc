@@ -90,4 +90,5 @@ RUN groupadd -g 30 dip
 RUN adduser --no-create-home --uid 50009 --gid 30 --home /labhome/artemry artemry
 
 EXPOSE 12345
+EXPOSE 12346
 #==============================================================================

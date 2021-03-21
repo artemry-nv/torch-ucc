@@ -11,37 +11,6 @@ cd "${SCRIPT_DIR}"
 export PATH="/usr/lib64/openmpi/bin:$PATH"
 export LD_LIBRARY_PATH="/usr/lib64/openmpi/lib:${LD_LIBRARY_PATH}"
 
-case ${DLRM_MODEL} in
-"big")
-    emb_size="1000-1000-1000-1000-1000-1000-1000-1000-1000-1000-1000-1000-1000-1000-1000-1000-1000-1000-1000-1000-1000-1000-1000-1000-1000-1000-1000-1000-1000-1000-1000-1000-1000-1000-1000-1000-1000-1000-1000-1000-1000-1000-1000-1000-1000-1000-1000-1000-1000-1000-1000-1000-1000-1000-1000-1000-1000-1000-1000-1000-1000-1000-1000-1000"
-    emb_dim="256"
-    emb_lookup="100"
-    bot_mlp="512-512-256"
-    top_mlp="1024-1024-1024-1"
-    loss_func="mse"
-    round_targets="False"
-    lr="0.01"
-    #mb_size="2048"
-    emb_lookup_fixed="0"
-    ;;
-"small")
-    emb_size="1000-1000-1000-1000-1000-1000-1000-1000"
-    emb_dim="64"
-    emb_lookup="100"
-    bot_mlp="512-512-64"
-    top_mlp="1024-1024-1024-1"
-    loss_func="mse"
-    round_targets="False"
-    lr="0.01"
-    #mb_size="2048"
-    emb_lookup_fixed="0"
-    ;;
-*)
-    echo "ERROR: unsupported or empty DLRM_MODEL (${DLRM_MODEL})"
-    exit 1
-    ;;
-esac
-
 #cd "${TORCH_UCC_ROOT_DIR}/workloads/dlrm"
 
 # shellcheck disable=SC2086
@@ -65,6 +34,17 @@ mpirun \
     -x PATH \
     -x LD_LIBRARY_PATH \
     cat /proc/1/cgroup
+
+# shellcheck disable=SC2086
+mpirun \
+    -np $NP \
+    --hostfile ${HOSTFILE} \
+    --map-by node \
+    --allow-run-as-root \
+    --mca plm_rsh_args '-p 12345' \
+    -x PATH \
+    -x LD_LIBRARY_PATH \
+    /opt/nvidia/torch-ucc/src/.ci/scripts/run_dlrm_s_pytorch.sh
 
 #mpirun ${MPIRUN_OPTIONS} python dlrm_s_pytorch.py \
 #    --mini-batch-size=2048 \
