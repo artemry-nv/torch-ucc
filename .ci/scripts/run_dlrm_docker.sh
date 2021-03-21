@@ -70,7 +70,7 @@ for HOST in $(cat "$HOSTFILE"); do
 done
 
 # TODO remove sudo
-sudo ssh -p "${DOCKER_SSH_PORT}" "${HEAD_NODE}" /opt/nvidia/torch-ucc/src/.ci/scripts/run_dlrm.sh
+#sudo ssh -p "${DOCKER_SSH_PORT}" "${HEAD_NODE}" /opt/nvidia/torch-ucc/src/.ci/scripts/run_dlrm.sh
 
 # TODO debug
 # shellcheck disable=SC2013
