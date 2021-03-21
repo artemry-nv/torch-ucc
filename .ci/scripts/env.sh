@@ -22,6 +22,9 @@ export HOSTS
 NP=$(wc --lines "$HOSTFILE" | awk '{print $1}')
 export NP
 
+HEAD_NODE=$(head -1 "$HOSTFILE")
+export HEAD_NODE
+
 export MASTER_ADDR=$HOSTNAME
 export MASTER_PORT=4242
 

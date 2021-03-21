@@ -8,6 +8,9 @@ SCRIPT_DIR="$(
 cd "${SCRIPT_DIR}"
 . "${SCRIPT_DIR}/env.sh"
 
+export PATH="/usr/lib64/openmpi/bin:$PATH"
+export LD_LIBRARY_PATH="/usr/lib64/openmpi/lib:${LD_LIBRARY_PATH}"
+
 case ${DLRM_MODEL} in
 "big")
     emb_size="1000-1000-1000-1000-1000-1000-1000-1000-1000-1000-1000-1000-1000-1000-1000-1000-1000-1000-1000-1000-1000-1000-1000-1000-1000-1000-1000-1000-1000-1000-1000-1000-1000-1000-1000-1000-1000-1000-1000-1000-1000-1000-1000-1000-1000-1000-1000-1000-1000-1000-1000-1000-1000-1000-1000-1000-1000-1000-1000-1000-1000-1000-1000-1000"
@@ -41,18 +44,28 @@ esac
 
 #cd "${TORCH_UCC_ROOT_DIR}/workloads/dlrm"
 
-# shellcheck disable=SC2089
-MPIRUN_OPTIONS="\
+# shellcheck disable=SC2086
+mpirun \
     -np $NP \
     --hostfile ${HOSTFILE} \
     --map-by node \
     --allow-run-as-root \
-    --mca plm_rsh_args '-p ${DOCKER_SSH_PORT}' \
-"
+    --mca plm_rsh_args '-p 12345' \
+    -x PATH \
+    -x LD_LIBRARY_PATH \
+    hostname
 
 # shellcheck disable=SC2086
-# shellcheck disable=SC2090
-mpirun ${MPIRUN_OPTIONS} hostname
+mpirun \
+    -np $NP \
+    --hostfile ${HOSTFILE} \
+    --map-by node \
+    --allow-run-as-root \
+    --mca plm_rsh_args '-p 12345' \
+    -x PATH \
+    -x LD_LIBRARY_PATH \
+    cat /proc/1/cgroup
+
 #mpirun ${MPIRUN_OPTIONS} python dlrm_s_pytorch.py \
 #    --mini-batch-size=2048 \
 #    --test-mini-batch-size=16384 \
