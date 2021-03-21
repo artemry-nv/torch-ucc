@@ -67,12 +67,6 @@ RUN ${TORCH_UCC_SRC_DIR}/.ci/scripts/build_ucc.sh
 # Install PyTorch
 RUN ${TORCH_UCC_SRC_DIR}/.ci/scripts/install_torch.sh
 #==============================================================================
-# Install torch_ucc (XCCL version) python module and build a wheel package
-RUN ${TORCH_UCC_SRC_DIR}/.ci/scripts/install_torch_xccl.sh
-#==============================================================================
-# Install torch_ucc (UCC version) python module and build a wheel package
-RUN ${TORCH_UCC_SRC_DIR}/.ci/scripts/install_torch_ucc.sh
-#==============================================================================
 # Install workloads
 WORKDIR ${TORCH_UCC_WORKLOADS_DIR}
 RUN git clone https://github.com/facebookresearch/dlrm.git && \
@@ -82,12 +76,18 @@ RUN git clone https://github.com/facebookresearch/dlrm.git && \
     pip3 install tensorboard
 RUN git clone https://github.com/facebookresearch/param.git && \
     pip3 install -r ${TORCH_UCC_WORKLOADS_DIR}/param/requirements.txt
-
+#==============================================================================
+# Install torch_ucc (XCCL version) python module and build a wheel package
+RUN ${TORCH_UCC_SRC_DIR}/.ci/scripts/install_torch_xccl.sh
+#==============================================================================
+# Install torch_ucc (UCC version) python module and build a wheel package
+RUN ${TORCH_UCC_SRC_DIR}/.ci/scripts/install_torch_ucc.sh
+#==============================================================================
 RUN groupadd -g 11429 swx-jenkins
 RUN adduser --uid 6213 --gid 11429 --home /home/swx-jenkins swx-jenkins
-#
+
 RUN groupadd -g 30 dip
 RUN adduser --no-create-home --uid 50009 --gid 30 --home /labhome/artemry artemry
 
 EXPOSE 12345
-EXPOSE 12346
+#==============================================================================
