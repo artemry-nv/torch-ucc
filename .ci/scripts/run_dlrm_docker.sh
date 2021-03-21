@@ -18,7 +18,7 @@ DOCKER_SSH_PORT="12345"
 DOCKER_CONTAINER_NAME="torch_ucc_ci"
 # TODO debug
 #DOCKER_IMAGE_NAME="${TORCH_UCC_DOCKER_IMAGE_NAME}:${BUILD_ID}"
-DOCKER_IMAGE_NAME="harbor.mellanox.com/torch-ucc/0.1.0/x86_64/centos8/cuda11.2.1:175"
+DOCKER_IMAGE_NAME="harbor.mellanox.com/torch-ucc/1.0.0/x86_64/centos8/cuda11.2.1:192"
 
 DOCKER_RUN_ARGS="\
 --pull always \
@@ -57,7 +57,7 @@ while read -r HOST; do
     sudo ssh "$HOST" "docker run \
         ${DOCKER_RUN_ARGS} \
         ${DOCKER_IMAGE_NAME} \
-        bash -c 'ssh-keygen -A; /usr/sbin/sshd -p ${DOCKER_SSH_PORT}; sleep infinity'"
+        bash -c '/usr/sbin/sshd -p ${DOCKER_SSH_PORT}; sleep infinity'"
     echo "INFO: start docker container on $HOST ... DONE"
 #
 #    sleep 5
