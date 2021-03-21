@@ -46,6 +46,8 @@ mpirun \
     -x LD_LIBRARY_PATH \
     /opt/nvidia/torch-ucc/src/.ci/scripts/run_dlrm_s_pytorch.sh
 
+#ssh -p 12345 swx-clx01 /opt/nvidia/torch-ucc/src/.ci/scripts/run_dlrm_s_pytorch.sh
+
 #mpirun ${MPIRUN_OPTIONS} python dlrm_s_pytorch.py \
 #    --mini-batch-size=2048 \
 #    --test-mini-batch-size=16384 \
