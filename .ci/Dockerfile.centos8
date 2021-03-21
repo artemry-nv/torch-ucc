@@ -23,9 +23,9 @@ RUN mkdir -p ${TORCH_UCC_SRC_DIR} && \
 
 COPY . ${TORCH_UCC_SRC_DIR}
 #==============================================================================
-#RUN yum groupinstall -y \
-#    'Development Tools' \
-#    'Infiniband Support'
+RUN yum groupinstall -y \
+    'Development Tools' \
+    'Infiniband Support'
 RUN yum config-manager --set-enabled powertools && yum install -y \
     cmake \
     numactl \
