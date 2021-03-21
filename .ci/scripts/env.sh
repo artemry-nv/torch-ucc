@@ -24,3 +24,5 @@ export NP
 
 export MASTER_ADDR=$HOSTNAME
 export MASTER_PORT=4242
+
+export DOCKER_SSH_PORT="12345"

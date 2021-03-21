@@ -1,9 +1,6 @@
 #!/bin/bash -eEx
 set -o pipefail
 
-# TODO debug
-exit 0
-
 SCRIPT_DIR="$(
     cd "$(dirname "$0")"
     pwd -P
@@ -42,17 +39,19 @@ case ${DLRM_MODEL} in
     ;;
 esac
 
-cd "${TORCH_UCC_ROOT_DIR}/workloads/dlrm"
+#cd "${TORCH_UCC_ROOT_DIR}/workloads/dlrm"
 
+# shellcheck disable=SC2089
 MPIRUN_OPTIONS="\
     -np $NP \
-    -H $HOSTS \
+    --hostfile ${HOSTFILE} \
     --map-by node \
-    -x LD_LIBRARY_PATH \
     --allow-run-as-root \
+    --mca plm_rsh_args '-p ${DOCKER_SSH_PORT}' \
 "
 
 # shellcheck disable=SC2086
+# shellcheck disable=SC2090
 mpirun ${MPIRUN_OPTIONS} hostname
 #mpirun ${MPIRUN_OPTIONS} python dlrm_s_pytorch.py \
 #    --mini-batch-size=2048 \

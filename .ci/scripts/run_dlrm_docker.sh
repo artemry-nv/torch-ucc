@@ -14,11 +14,10 @@ SCRIPT_DIR="$(
 cd "${SCRIPT_DIR}"
 . "${SCRIPT_DIR}/env.sh"
 
-DOCKER_SSH_PORT="12345"
 DOCKER_CONTAINER_NAME="torch_ucc_ci"
 # TODO debug
 #DOCKER_IMAGE_NAME="${TORCH_UCC_DOCKER_IMAGE_NAME}:${BUILD_ID}"
-DOCKER_IMAGE_NAME="harbor.mellanox.com/torch-ucc/1.0.0/x86_64/centos8/cuda11.2.1:192"
+DOCKER_IMAGE_NAME="harbor.mellanox.com/torch-ucc/1.0.0/x86_64/centos8/cuda11.2.1:193"
 
 DOCKER_RUN_ARGS="\
 --pull always \
@@ -39,10 +38,10 @@ DOCKER_RUN_ARGS="\
 -v /labhome:/labhome \
 -v /root/.ssh:/root/.ssh \
 -p 12345:12345 \
---user $USER \
 "
 
-while read -r HOST; do
+# shellcheck disable=SC2013
+for HOST in $(cat "$HOSTFILE"); do
     echo "INFO: HOST = $HOST"
 
     STALE_DOCKER_CONTAINER_LIST=$(ssh -n "$HOST" "docker ps -a -q -f name=${DOCKER_CONTAINER_NAME}")
@@ -59,18 +58,19 @@ while read -r HOST; do
         ${DOCKER_IMAGE_NAME} \
         bash -c '/usr/sbin/sshd -p ${DOCKER_SSH_PORT}; sleep infinity'"
     echo "INFO: start docker container on $HOST ... DONE"
-#
-#    sleep 5
-#
-#    echo "INFO: verify docker container on $HOST ..."
-#    ssh -n "$HOST" -p ${DOCKER_SSH_PORT} hostname
-#    echo "INFO: verify docker container on $HOST ... DONE"
-done <"$HOSTFILE"
+
+    sleep 5
+
+    echo "INFO: verify docker container on $HOST ..."
+    ssh -n "$HOST" -p "${DOCKER_SSH_PORT}" hostname
+    echo "INFO: verify docker container on $HOST ... DONE"
+done
 
 sleep 20000
 
-while read -r HOST; do
+# shellcheck disable=SC2013
+for HOST in $(cat "$HOSTFILE"); do
     echo "INFO: stop docker container on $HOST ..."
     sudo ssh "${HOST}" docker stop ${DOCKER_CONTAINER_NAME}
     echo "INFO: stop docker container on $HOST ... DONE"
-done <"$HOSTFILE"
+done
