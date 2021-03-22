@@ -13,8 +13,8 @@ export USE_GLOO=1
 export USE_DISTRIBUTED=1
 export USE_OPENCV=0
 # TODO debug
-#export USE_CUDA=1
-export USE_CUDA=0
+export USE_CUDA=1
+#export USE_CUDA=0
 export USE_NCCL=0
 export USE_MKLDNN=0
 export BUILD_TEST=0
