@@ -17,7 +17,8 @@ cd "${SCRIPT_DIR}"
 DOCKER_CONTAINER_NAME="torch_ucc"
 # TODO debug
 #DOCKER_IMAGE_NAME="${TORCH_UCC_DOCKER_IMAGE_NAME}:${BUILD_ID}"
-DOCKER_IMAGE_NAME="harbor.mellanox.com/torch-ucc/1.0.0/x86_64/centos8/cuda11.2.1:197"
+#DOCKER_IMAGE_NAME="harbor.mellanox.com/torch-ucc/1.0.0/x86_64/centos8/cuda11.2.1:197"
+DOCKER_IMAGE_NAME="harbor.mellanox.com/torch-ucc/1.0.0/x86_64/centos8/cuda11.2.1:204"
 
 DOCKER_RUN_ARGS="\
 --pull always \

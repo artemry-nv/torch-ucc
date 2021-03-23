@@ -9,7 +9,7 @@ HOSTNAME=$(hostname -s)
 export HOSTNAME
 SRC_ROOT_DIR=$(cd "${SCRIPT_DIR}/../../" && pwd -P)
 CONFIGS_DIR="${SRC_ROOT_DIR}/.ci/configs"
-export HOSTFILE=${CONFIGS_DIR}/$HOSTNAME/hostfile.txt
+export HOSTFILE=${HOSTFILE:-${CONFIGS_DIR}/$HOSTNAME/hostfile.txt}
 
 if [ ! -f "${HOSTFILE}" ]; then
     echo "ERROR: ${HOSTFILE} does not exist"

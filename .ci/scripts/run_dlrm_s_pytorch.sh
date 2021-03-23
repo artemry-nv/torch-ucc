@@ -8,12 +8,11 @@ SCRIPT_DIR="$(
 cd "${SCRIPT_DIR}"
 . "${SCRIPT_DIR}/env.sh"
 
-. /opt/nvidia/torch-ucc/bin/python/venv/xccl/bin/activate
+. /opt/nvidia/torch-ucc/bin/python/venv/ucc/bin/activate
+#. /opt/nvidia/torch-ucc/bin/python/venv/xccl/bin/activate
 pip3 list | grep torch
-pip3 install "git+https://github.com/mlperf/logging.git@0.7.1"
+#pip3 install "git+https://github.com/mlperf/logging.git@0.7.1"
 python -c 'import torch, torch_ucc'
-
-DLRM_MODEL="small"
 
 case ${DLRM_MODEL} in
 "big")
@@ -69,7 +68,7 @@ python /opt/nvidia/torch-ucc/workloads/dlrm/dlrm_s_pytorch.py \
     --round-targets=$round_targets \
     --learning-rate=$lr \
     --print-time \
-    --dist-backend=ucc
-#    --use-gpu
+    --dist-backend=ucc \
+    --use-gpu
 
 deactivate
