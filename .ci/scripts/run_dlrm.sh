@@ -35,6 +35,10 @@ mpirun \
     -x LD_LIBRARY_PATH \
     cat /proc/1/cgroup
 
+HEAD_NODE=$(head -1 "$HOSTFILE")
+export HEAD_NODE
+export MASTER_ADDR=${HEAD_NODE}
+
 # shellcheck disable=SC2086
 mpirun \
     -np $NP \
@@ -44,6 +48,7 @@ mpirun \
     --mca plm_rsh_args '-p 12345' \
     -x PATH \
     -x LD_LIBRARY_PATH \
+    -x MASTER_ADDR \
     /opt/nvidia/torch-ucc/src/.ci/scripts/run_dlrm_s_pytorch.sh
 
 #ssh -p 12345 swx-clx01 /opt/nvidia/torch-ucc/src/.ci/scripts/run_dlrm_s_pytorch.sh

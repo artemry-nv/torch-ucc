@@ -46,12 +46,15 @@ case ${DLRM_MODEL} in
     ;;
 esac
 
+export UCX_NET_DEVICES="mlx5_0:1"
+#export UCX_NET_DEVICES="eno1"
+
 # shellcheck disable=SC2086
 python /opt/nvidia/torch-ucc/workloads/dlrm/dlrm_s_pytorch.py \
     --mini-batch-size=2048 \
     --test-mini-batch-size=16384 \
     --test-num-workers=0 \
-    --num-batches=100 \
+    --num-batches=10 \
     --data-generation=random \
     --arch-mlp-bot=$bot_mlp \
     --arch-mlp-top=$top_mlp \
