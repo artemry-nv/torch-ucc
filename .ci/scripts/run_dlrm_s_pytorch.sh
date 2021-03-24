@@ -8,10 +8,14 @@ SCRIPT_DIR="$(
 cd "${SCRIPT_DIR}"
 . "${SCRIPT_DIR}/env.sh"
 
-. /opt/nvidia/torch-ucc/bin/python/venv/ucc/bin/activate
-#. /opt/nvidia/torch-ucc/bin/python/venv/xccl/bin/activate
+if [ "${TORCH_UCC_MODE}" != "ucc" ] && [ "${TORCH_UCC_MODE}" != "xccl" ]; then
+    echo "ERROR: unsupported or empty TORCH_UCC_MODE (${TORCH_UCC_MODE}), supported values: ucc, xccl"
+    exit 1
+fi
+
+# shellcheck disable=SC1090
+. "/opt/nvidia/torch-ucc/bin/python/venv/${TORCH_UCC_MODE}/bin/activate"
 pip3 list | grep torch
-#pip3 install "git+https://github.com/mlperf/logging.git@0.7.1"
 python -c 'import torch, torch_ucc'
 
 case ${DLRM_MODEL} in
@@ -46,7 +50,6 @@ case ${DLRM_MODEL} in
 esac
 
 export UCX_NET_DEVICES="mlx5_0:1"
-#export UCX_NET_DEVICES="eno1"
 
 # shellcheck disable=SC2086
 python /opt/nvidia/torch-ucc/workloads/dlrm/dlrm_s_pytorch.py \
@@ -68,7 +71,7 @@ python /opt/nvidia/torch-ucc/workloads/dlrm/dlrm_s_pytorch.py \
     --round-targets=$round_targets \
     --learning-rate=$lr \
     --print-time \
-    --dist-backend=ucc \
+    --dist-backend=ucc
     --use-gpu
 
 deactivate

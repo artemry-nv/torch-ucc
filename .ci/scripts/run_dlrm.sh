@@ -8,6 +8,13 @@ SCRIPT_DIR="$(
 cd "${SCRIPT_DIR}"
 . "${SCRIPT_DIR}/env.sh"
 
+TORCH_UCC_MODE="$1"
+
+if [ "${TORCH_UCC_MODE}" != "ucc" ] && [ "${TORCH_UCC_MODE}" != "xccl" ]; then
+    echo "ERROR: unsupported or empty TORCH_UCC_MODE (${TORCH_UCC_MODE}), supported values: ucc, xccl"
+    exit 1
+fi
+
 export PATH="/usr/lib64/openmpi/bin:$PATH"
 export LD_LIBRARY_PATH="/usr/lib64/openmpi/lib:${LD_LIBRARY_PATH}"
 
@@ -49,6 +56,7 @@ mpirun \
     -x PATH \
     -x LD_LIBRARY_PATH \
     -x MASTER_ADDR \
+    -x TORCH_UCC_MODE \
     /opt/nvidia/torch-ucc/src/.ci/scripts/run_dlrm_s_pytorch.sh
 
 #ssh -p 12345 swx-clx01 /opt/nvidia/torch-ucc/src/.ci/scripts/run_dlrm_s_pytorch.sh

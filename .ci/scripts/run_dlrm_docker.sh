@@ -14,11 +14,18 @@ SCRIPT_DIR="$(
 cd "${SCRIPT_DIR}"
 . "${SCRIPT_DIR}/env.sh"
 
+TORCH_UCC_MODE="$1"
+
+if [ "${TORCH_UCC_MODE}" != "ucc" ] && [ "${TORCH_UCC_MODE}" != "xccl" ]; then
+    echo "ERROR: unsupported or empty TORCH_UCC_MODE (${TORCH_UCC_MODE}), supported values: ucc, xccl"
+    exit 1
+fi
+
 DOCKER_CONTAINER_NAME="torch_ucc"
 # TODO debug
 #DOCKER_IMAGE_NAME="${TORCH_UCC_DOCKER_IMAGE_NAME}:${BUILD_ID}"
 #DOCKER_IMAGE_NAME="harbor.mellanox.com/torch-ucc/1.0.0/x86_64/centos8/cuda11.2.1:197"
-DOCKER_IMAGE_NAME="harbor.mellanox.com/torch-ucc/1.0.0/x86_64/centos8/cuda11.2.1:204"
+DOCKER_IMAGE_NAME="harbor.mellanox.com/torch-ucc/1.0.0/x86_64/centos8/cuda11.2.1:205"
 
 DOCKER_RUN_ARGS="\
 --pull always \
@@ -71,7 +78,7 @@ for HOST in $(cat "$HOSTFILE"); do
 done
 
 # TODO remove sudo
-#sudo ssh -p "${DOCKER_SSH_PORT}" "${HEAD_NODE}" /opt/nvidia/torch-ucc/src/.ci/scripts/run_dlrm.sh
+sudo ssh -p "${DOCKER_SSH_PORT}" "${HEAD_NODE}" /opt/nvidia/torch-ucc/src/.ci/scripts/run_dlrm.sh ${TORCH_UCC_MODE}
 
 # TODO debug
 # shellcheck disable=SC2013

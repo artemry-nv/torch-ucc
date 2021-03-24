@@ -59,54 +59,54 @@ steps:
       nvidia-smi
       nvidia-smi topo -m
   #============================================================================
-#  - name: Run XCCL tests
-#    #agentSelector: "{nodeLabel: 'swx-clx01 || swx-clx02'}"
-#    run: |
-#      echo "INFO: Run XCCL tests"
-#      . "${TORCH_UCC_PYTHON_VENV_DIR}/xccl/bin/activate"
-#      hostname
-#      cat /proc/1/cgroup
-#      pip3 list | grep torch
-#      ${TORCH_UCC_SRC_DIR}/.ci/scripts/run_tests_xccl.sh
-#      deactivate
+  - name: Run XCCL tests
+    #agentSelector: "{nodeLabel: 'swx-clx01 || swx-clx02'}"
+    run: |
+      echo "INFO: Run XCCL tests"
+      . "${TORCH_UCC_PYTHON_VENV_DIR}/xccl/bin/activate"
+      hostname
+      cat /proc/1/cgroup
+      pip3 list | grep torch
+      ${TORCH_UCC_SRC_DIR}/.ci/scripts/run_tests_xccl.sh
+      deactivate
   #============================================================================
-#  - name: Run UCC tests
-#    #agentSelector: "{nodeLabel: 'swx-clx01 || swx-clx02'}"
-#    run: |
-#      echo "INFO: Run UCC tests"
-#      . "${TORCH_UCC_PYTHON_VENV_DIR}/ucc/bin/activate"
-#      hostname
-#      cat /proc/1/cgroup
-#      pip3 list | grep torch
-#      ${TORCH_UCC_SRC_DIR}/.ci/scripts/run_tests_ucc.sh
-#      deactivate
+  - name: Run UCC tests
+    #agentSelector: "{nodeLabel: 'swx-clx01 || swx-clx02'}"
+    run: |
+      echo "INFO: Run UCC tests"
+      . "${TORCH_UCC_PYTHON_VENV_DIR}/ucc/bin/activate"
+      hostname
+      cat /proc/1/cgroup
+      pip3 list | grep torch
+      ${TORCH_UCC_SRC_DIR}/.ci/scripts/run_tests_ucc.sh
+      deactivate
   #============================================================================
-#  - name: Run Torch-UCC tests (XCCL)
-#    #agentSelector: "{nodeLabel: 'swx-clx01 || swx-clx02'}"
-#    run: |
-#      echo "INFO: Run Torch-UCC tests (XCCL)"
-#      . "${TORCH_UCC_PYTHON_VENV_DIR}/xccl/bin/activate"
-#      hostname
-#      cat /proc/1/cgroup
-#      pip3 list | grep torch
-#      ${TORCH_UCC_SRC_DIR}/.ci/scripts/run_tests_torch_xccl.sh
-#      deactivate
+  - name: Run Torch-UCC tests (XCCL)
+    #agentSelector: "{nodeLabel: 'swx-clx01 || swx-clx02'}"
+    run: |
+      echo "INFO: Run Torch-UCC tests (XCCL)"
+      . "${TORCH_UCC_PYTHON_VENV_DIR}/xccl/bin/activate"
+      hostname
+      cat /proc/1/cgroup
+      pip3 list | grep torch
+      ${TORCH_UCC_SRC_DIR}/.ci/scripts/run_tests_torch_xccl.sh
+      deactivate
   #============================================================================
-#  - name: Run Torch-UCC tests (UCC)
-#    #agentSelector: "{nodeLabel: 'swx-clx01 || swx-clx02'}"
-#    run: |
-#      echo "INFO: Run Torch-UCC tests (UCC)"
-#      . "${TORCH_UCC_PYTHON_VENV_DIR}/ucc/bin/activate"
-#      hostname
-#      cat /proc/1/cgroup
-#      pip3 list | grep torch
-#      ${TORCH_UCC_SRC_DIR}/.ci/scripts/run_tests_torch_ucc.sh
-#      deactivate
-#  #============================================================================
-  - name: Run DLRM tests
+  - name: Run Torch-UCC tests (UCC)
+    #agentSelector: "{nodeLabel: 'swx-clx01 || swx-clx02'}"
+    run: |
+      echo "INFO: Run Torch-UCC tests (UCC)"
+      . "${TORCH_UCC_PYTHON_VENV_DIR}/ucc/bin/activate"
+      hostname
+      cat /proc/1/cgroup
+      pip3 list | grep torch
+      ${TORCH_UCC_SRC_DIR}/.ci/scripts/run_tests_torch_ucc.sh
+      deactivate
+  #============================================================================
+  - name: Run DLRM tests (XCCL/GPU)
     agentSelector: "{nodeLabel: 'swx-clx01 || swx-clx02'}"
     run: |
-      echo "INFO: Run DLRM tests"
+      echo "INFO: Run DLRM tests (XCCL/GPU)"
       hostname
       printenv
       cat /proc/1/cgroup
@@ -115,7 +115,21 @@ steps:
       find /opt/nvidia
       ibv_devinfo
       nvidia-smi
-      #${WORKSPACE}/.ci/scripts/run_dlrm_docker.sh
+      ${WORKSPACE}/.ci/scripts/run_dlrm_docker.sh xccl
+  #============================================================================
+  - name: Run DLRM tests (UCC/GPU)
+    agentSelector: "{nodeLabel: 'swx-clx01 || swx-clx02'}"
+    run: |
+      echo "INFO: Run DLRM tests (UCC/GPU)"
+      hostname
+      printenv
+      cat /proc/1/cgroup
+      cat /etc/*release*
+      id
+      find /opt/nvidia
+      ibv_devinfo
+      nvidia-smi
+      ${WORKSPACE}/.ci/scripts/run_dlrm_docker.sh ucc
   #============================================================================
 #  - name: Run PARAM benchmarks
 #    agentSelector: "{nodeLabel: 'swx-clx01 || swx-clx02'}"
