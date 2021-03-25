@@ -20,6 +20,8 @@ env:
   TORCH_UCC_DOCKER_IMAGE_NAME: '${registry_host}${registry_path}/${TORCH_UCC_URI_SUFFIX}'
   TORCH_UCC_ROOT_DIR: '/opt/nvidia/torch-ucc'
   TORCH_UCC_SRC_DIR: '${TORCH_UCC_ROOT_DIR}/src'
+  TORCH_UCC_BIN_DIR: '${TORCH_UCC_ROOT_DIR}/bin'
+  TORCH_UCC_PYTHON_VENV_DIR: '${TORCH_UCC_BIN_DIR}/python/venv'
   XCCL_BUILD_TYPE: 'debug'
 
 docker_opt: '--pull always --network=host --uts=host --ipc=host --ulimit stack=67108864 --ulimit memlock=-1 --security-opt seccomp=unconfined --cap-add=SYS_ADMIN --device=/dev/infiniband/ --gpus all --user root'
