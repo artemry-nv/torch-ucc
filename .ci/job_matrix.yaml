@@ -63,6 +63,7 @@ steps:
   #============================================================================
   - name: Run XCCL tests
     #agentSelector: "{nodeLabel: 'swx-clx01 || swx-clx02'}"
+    containerSelector: "{name:'centos8'}"
     run: |
       echo "INFO: Run XCCL tests"
       . "${TORCH_UCC_PYTHON_VENV_DIR}/xccl/bin/activate"
@@ -74,6 +75,7 @@ steps:
   #============================================================================
   - name: Run UCC tests
     #agentSelector: "{nodeLabel: 'swx-clx01 || swx-clx02'}"
+    containerSelector: "{name:'centos8'}"
     run: |
       echo "INFO: Run UCC tests"
       . "${TORCH_UCC_PYTHON_VENV_DIR}/ucc/bin/activate"
@@ -85,6 +87,7 @@ steps:
   #============================================================================
   - name: Run Torch-UCC tests (XCCL)
     #agentSelector: "{nodeLabel: 'swx-clx01 || swx-clx02'}"
+    containerSelector: "{name:'centos8'}"
     run: |
       echo "INFO: Run Torch-UCC tests (XCCL)"
       . "${TORCH_UCC_PYTHON_VENV_DIR}/xccl/bin/activate"
@@ -96,6 +99,7 @@ steps:
   #============================================================================
   - name: Run Torch-UCC tests (UCC)
     #agentSelector: "{nodeLabel: 'swx-clx01 || swx-clx02'}"
+    containerSelector: "{name:'centos8'}"
     run: |
       echo "INFO: Run Torch-UCC tests (UCC)"
       . "${TORCH_UCC_PYTHON_VENV_DIR}/ucc/bin/activate"
