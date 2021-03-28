@@ -16,6 +16,8 @@ if [ "${TORCH_UCC_MODE}" != "ucc" ] && [ "${TORCH_UCC_MODE}" != "xccl" ]; then
     exit 1
 fi
 
+export TORCH_UCC_MODE
+
 if [ -z "$HOSTFILE" ]; then
     echo "ERROR: HOSTFILE is not specified"
     exit 1
