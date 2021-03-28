@@ -24,6 +24,12 @@ fi
 export PATH="/usr/lib64/openmpi/bin:$PATH"
 export LD_LIBRARY_PATH="/usr/lib64/openmpi/lib:${LD_LIBRARY_PATH}"
 
+HEAD_NODE=$(head -1 "$HOSTFILE")
+export HEAD_NODE
+export MASTER_ADDR=${HEAD_NODE}
+
+NP=$(wc --lines "$HOSTFILE" | awk '{print $1}')
+
 # shellcheck disable=SC2086
 mpirun \
     -np $NP \
@@ -45,12 +51,6 @@ mpirun \
     -x PATH \
     -x LD_LIBRARY_PATH \
     cat /proc/1/cgroup
-
-HEAD_NODE=$(head -1 "$HOSTFILE")
-export HEAD_NODE
-export MASTER_ADDR=${HEAD_NODE}
-
-NP=$(wc --lines "$HOSTFILE" | awk '{print $1}')
 
 # shellcheck disable=SC2086
 mpirun \
