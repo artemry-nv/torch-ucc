@@ -45,25 +45,23 @@ DOCKER_RUN_ARGS="\
 --name=${DOCKER_CONTAINER_NAME} \
 -v /labhome:/labhome \
 -v /root/.ssh:/root/.ssh \
--p 12345:12345 \
--p 12346:12346 \
 "
 
 # shellcheck disable=SC2013
 for HOST in $(cat "$HOSTFILE"); do
     echo "INFO: HOST = $HOST"
 
-    STALE_DOCKER_CONTAINER_LIST=$(ssh -n "$HOST" "docker ps -a -q -f name=${DOCKER_CONTAINER_NAME}")
+    STALE_DOCKER_CONTAINER_LIST=$(sudo ssh -n "$HOST" "docker ps -a -q -f name=${DOCKER_CONTAINER_NAME}")
     if [ -n "${STALE_DOCKER_CONTAINER_LIST}" ]; then
         echo "WARNING: stale docker container (name: ${DOCKER_CONTAINER_NAME}) is detected on ${HOST} (to be stopped)"
         echo "INFO: Stopping stale docker container (name: ${DOCKER_CONTAINER_NAME}) on ${HOST}..."
-        ssh "${HOST}" docker stop ${DOCKER_CONTAINER_NAME}
+        sudo ssh "${HOST}" docker stop ${DOCKER_CONTAINER_NAME}
         echo "INFO: Stopping stale docker container (name: ${DOCKER_CONTAINER_NAME}) on ${HOST}... DONE"
     fi
 
     echo "INFO: start docker container on $HOST ..."
     # shellcheck disable=SC2029
-    ssh "$HOST" "docker run \
+    sudo ssh "$HOST" "docker run \
         ${DOCKER_RUN_ARGS} \
         ${DOCKER_IMAGE_NAME} \
         bash -c '/usr/sbin/sshd -p ${DOCKER_SSH_PORT}; sleep infinity'"
@@ -72,8 +70,8 @@ for HOST in $(cat "$HOSTFILE"); do
     sleep 5
 
     echo "INFO: verify docker container on $HOST ..."
-    ssh -p "${DOCKER_SSH_PORT}" "$HOST" hostname
-    ssh -p "${DOCKER_SSH_PORT}" "$HOST" cat /proc/1/cgroup
+    sudo ssh -p "${DOCKER_SSH_PORT}" "$HOST" hostname
+    sudo ssh -p "${DOCKER_SSH_PORT}" "$HOST" cat /proc/1/cgroup
     echo "INFO: verify docker container on $HOST ... DONE"
 done
 
