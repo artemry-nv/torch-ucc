@@ -21,11 +21,23 @@ if [ "${TORCH_UCC_MODE}" != "ucc" ] && [ "${TORCH_UCC_MODE}" != "xccl" ]; then
     exit 1
 fi
 
+export HOSTFILE=${HOSTFILE:-${CONFIGS_DIR}/$HOSTNAME/hostfile.txt}
+
+if [ ! -f "${HOSTFILE}" ]; then
+    echo "ERROR: ${HOSTFILE} does not exist"
+    exit 1
+fi
+
+# shellcheck disable=SC2002
+HOSTS=$(cat "$HOSTFILE" | xargs | tr ' ' ',')
+export HOSTS
+HEAD_NODE=$(head -1 "$HOSTFILE")
+export HEAD_NODE
+
 DOCKER_CONTAINER_NAME="torch_ucc"
 # TODO debug
-#DOCKER_IMAGE_NAME="${TORCH_UCC_DOCKER_IMAGE_NAME}:${BUILD_ID}"
-#DOCKER_IMAGE_NAME="harbor.mellanox.com/torch-ucc/1.0.0/x86_64/centos8/cuda11.2.1:197"
-DOCKER_IMAGE_NAME="harbor.mellanox.com/torch-ucc/1.0.0/x86_64/centos8/cuda11.2.1:205"
+DOCKER_IMAGE_NAME="${TORCH_UCC_DOCKER_IMAGE_NAME}:${BUILD_ID}"
+#DOCKER_IMAGE_NAME="harbor.mellanox.com/torch-ucc/1.0.0/x86_64/centos8/cuda11.2.1:205"
 
 DOCKER_RUN_ARGS="\
 --pull always \
@@ -76,7 +88,7 @@ for HOST in $(cat "$HOSTFILE"); do
 done
 
 # TODO remove sudo
-sudo ssh -p "${DOCKER_SSH_PORT}" "${HEAD_NODE}" /opt/nvidia/torch-ucc/src/.ci/scripts/run_dlrm.sh ${TORCH_UCC_MODE}
+sudo ssh -p "${DOCKER_SSH_PORT}" "${HEAD_NODE}" /opt/nvidia/torch-ucc/src/.ci/scripts/run_dlrm.sh ${TORCH_UCC_MODE} ${HOSTFILE}
 
 # TODO debug
 # shellcheck disable=SC2013

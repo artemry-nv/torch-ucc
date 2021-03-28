@@ -9,16 +9,20 @@ cd "${SCRIPT_DIR}"
 . "${SCRIPT_DIR}/env.sh"
 
 TORCH_UCC_MODE="$1"
+HOSTFILE="$2"
 
 if [ "${TORCH_UCC_MODE}" != "ucc" ] && [ "${TORCH_UCC_MODE}" != "xccl" ]; then
     echo "ERROR: unsupported or empty TORCH_UCC_MODE (${TORCH_UCC_MODE}), supported values: ucc, xccl"
     exit 1
 fi
 
+if [ -z "$HOSTFILE" ]; then
+    echo "ERROR: HOSTFILE is not specified"
+    exit 1
+fi
+
 export PATH="/usr/lib64/openmpi/bin:$PATH"
 export LD_LIBRARY_PATH="/usr/lib64/openmpi/lib:${LD_LIBRARY_PATH}"
-
-#cd "${TORCH_UCC_ROOT_DIR}/workloads/dlrm"
 
 # shellcheck disable=SC2086
 mpirun \
@@ -45,6 +49,8 @@ mpirun \
 HEAD_NODE=$(head -1 "$HOSTFILE")
 export HEAD_NODE
 export MASTER_ADDR=${HEAD_NODE}
+
+NP=$(wc --lines "$HOSTFILE" | awk '{print $1}')
 
 # shellcheck disable=SC2086
 mpirun \

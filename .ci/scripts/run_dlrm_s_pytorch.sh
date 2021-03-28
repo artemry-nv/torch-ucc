@@ -71,7 +71,7 @@ python /opt/nvidia/torch-ucc/workloads/dlrm/dlrm_s_pytorch.py \
     --round-targets=$round_targets \
     --learning-rate=$lr \
     --print-time \
-    --dist-backend=ucc
+    --dist-backend=ucc \
     --use-gpu
 
 deactivate
