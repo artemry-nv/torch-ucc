@@ -43,7 +43,7 @@ runs_on_agents:
   - nodeLabel: 'swx-clx01 || swx-clx02'
 
 # TODO debug
-#timeout_minutes: '400'
+timeout_minutes: '400'
 
 steps:
   #============================================================================
