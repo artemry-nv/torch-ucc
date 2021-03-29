@@ -9,6 +9,7 @@ cd "${SCRIPT_DIR}"
 . "${SCRIPT_DIR}/env.sh"
 
 TORCH_UCC_MODE="$1"
+CPU_GPU_MODE="$2"
 HOSTFILE="$2"
 
 if [ "${TORCH_UCC_MODE}" != "ucc" ] && [ "${TORCH_UCC_MODE}" != "xccl" ]; then
@@ -17,6 +18,7 @@ if [ "${TORCH_UCC_MODE}" != "ucc" ] && [ "${TORCH_UCC_MODE}" != "xccl" ]; then
 fi
 
 export TORCH_UCC_MODE
+export CPU_GPU_MODE
 
 if [ -z "$HOSTFILE" ]; then
     echo "ERROR: HOSTFILE is not specified"
@@ -65,4 +67,5 @@ mpirun \
     -x LD_LIBRARY_PATH \
     -x MASTER_ADDR \
     -x TORCH_UCC_MODE \
+    -x CPU_GPU_MODE \
     /opt/nvidia/torch-ucc/src/.ci/scripts/run_dlrm_s_pytorch.sh

@@ -51,6 +51,10 @@ esac
 
 export UCX_NET_DEVICES="mlx5_0:1"
 
+if [ "${CPU_GPU_MODE}" = "gpu" ]; then
+    DLRM_S_PYTORCH_EXTRA_ARGS="--use-gpu"
+fi
+
 # shellcheck disable=SC2086
 python /opt/nvidia/torch-ucc/workloads/dlrm/dlrm_s_pytorch.py \
     --mini-batch-size=2048 \
@@ -72,6 +76,6 @@ python /opt/nvidia/torch-ucc/workloads/dlrm/dlrm_s_pytorch.py \
     --learning-rate=$lr \
     --print-time \
     --dist-backend=ucc \
-    --use-gpu
+    ${DLRM_S_PYTORCH_EXTRA_ARGS}
 
 deactivate
