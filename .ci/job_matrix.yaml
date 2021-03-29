@@ -74,17 +74,17 @@ steps:
       ${TORCH_UCC_SRC_DIR}/.ci/scripts/run_tests_xccl.sh
       deactivate
   #============================================================================
-  - name: Run UCC tests
-    #agentSelector: "{nodeLabel: 'swx-clx01 || swx-clx02'}"
-    containerSelector: "{name:'centos8'}"
-    run: |
-      echo "INFO: Run UCC tests"
-      . "${TORCH_UCC_PYTHON_VENV_DIR}/ucc/bin/activate"
-      hostname
-      cat /proc/1/cgroup
-      pip3 list | grep torch
-      ${TORCH_UCC_SRC_DIR}/.ci/scripts/run_tests_ucc.sh
-      deactivate
+#  - name: Run UCC tests
+#    #agentSelector: "{nodeLabel: 'swx-clx01 || swx-clx02'}"
+#    containerSelector: "{name:'centos8'}"
+#    run: |
+#      echo "INFO: Run UCC tests"
+#      . "${TORCH_UCC_PYTHON_VENV_DIR}/ucc/bin/activate"
+#      hostname
+#      cat /proc/1/cgroup
+#      pip3 list | grep torch
+#      ${TORCH_UCC_SRC_DIR}/.ci/scripts/run_tests_ucc.sh
+#      deactivate
   #============================================================================
   - name: Run Torch-UCC tests (XCCL)
     #agentSelector: "{nodeLabel: 'swx-clx01 || swx-clx02'}"
