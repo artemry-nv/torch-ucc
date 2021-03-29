@@ -10,7 +10,7 @@ cd "${SCRIPT_DIR}"
 
 TORCH_UCC_MODE="$1"
 CPU_GPU_MODE="$2"
-HOSTFILE="$2"
+HOSTFILE="$3"
 
 if [ "${TORCH_UCC_MODE}" != "ucc" ] && [ "${TORCH_UCC_MODE}" != "xccl" ]; then
     echo "ERROR: unsupported or empty TORCH_UCC_MODE (${TORCH_UCC_MODE}), supported values: ucc, xccl"
