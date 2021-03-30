@@ -35,12 +35,12 @@ runs_on_dockers:
     uri: '${TORCH_UCC_URI_SUFFIX}',
     build_args: '--network=host --rm --no-cache --build-arg CUDA_VER=${CUDA_VER} --build-arg TORCH_UCC_ROOT_DIR=${TORCH_UCC_ROOT_DIR}',
     cloud: 'swx-k8s',
-    nodeLabel: 'swx-clx01 || swx-clx02',
+    nodeLabel: 'swx-clx02',
   }
 
 # bare metal
 runs_on_agents:
-  - nodeLabel: 'swx-clx01 || swx-clx02'
+  - nodeLabel: 'swx-clx01'
 
 # TODO debug
 timeout_minutes: '400'
@@ -48,7 +48,7 @@ timeout_minutes: '400'
 steps:
   #============================================================================
   - name: Check Env
-    agentSelector: "{nodeLabel: 'swx-clx01 || swx-clx02'}"
+    agentSelector: "{nodeLabel: 'swx-clx01'}"
     containerSelector: "{name:'centos8'}"
     run: |
       echo "INFO: check environment"
@@ -63,7 +63,6 @@ steps:
       #nvidia-smi topo -m
   #============================================================================
   - name: Run XCCL tests
-    #agentSelector: "{nodeLabel: 'swx-clx01 || swx-clx02'}"
     containerSelector: "{name:'centos8'}"
     run: |
       echo "INFO: Run XCCL tests"
@@ -75,7 +74,6 @@ steps:
       deactivate
   #============================================================================
 #  - name: Run UCC tests
-#    #agentSelector: "{nodeLabel: 'swx-clx01 || swx-clx02'}"
 #    containerSelector: "{name:'centos8'}"
 #    run: |
 #      echo "INFO: Run UCC tests"
@@ -87,7 +85,6 @@ steps:
 #      deactivate
   #============================================================================
   - name: Run Torch-UCC tests (XCCL)
-    #agentSelector: "{nodeLabel: 'swx-clx01 || swx-clx02'}"
     containerSelector: "{name:'centos8'}"
     run: |
       echo "INFO: Run Torch-UCC tests (XCCL)"
@@ -99,7 +96,6 @@ steps:
       deactivate
   #============================================================================
   - name: Run Torch-UCC tests (UCC)
-    #agentSelector: "{nodeLabel: 'swx-clx01 || swx-clx02'}"
     containerSelector: "{name:'centos8'}"
     run: |
       echo "INFO: Run Torch-UCC tests (UCC)"
@@ -111,7 +107,7 @@ steps:
       deactivate
   #============================================================================
   - name: Run DLRM tests (XCCL/GPU)
-    agentSelector: "{nodeLabel: 'swx-clx01 || swx-clx02'}"
+    agentSelector: "{nodeLabel: 'swx-clx01'}"
     run: |
       echo "INFO: Run DLRM tests (XCCL/GPU)"
       hostname
@@ -125,7 +121,7 @@ steps:
       ${WORKSPACE}/.ci/scripts/run_dlrm_docker.sh xccl
   #============================================================================
   - name: Run DLRM tests (UCC/GPU)
-    agentSelector: "{nodeLabel: 'swx-clx01 || swx-clx02'}"
+    agentSelector: "{nodeLabel: 'swx-clx01'}"
     run: |
       echo "INFO: Run DLRM tests (UCC/GPU)"
       hostname
@@ -139,7 +135,7 @@ steps:
       ${WORKSPACE}/.ci/scripts/run_dlrm_docker.sh ucc
   #============================================================================
 #  - name: Run PARAM benchmarks
-#    agentSelector: "{nodeLabel: 'swx-clx01 || swx-clx02'}"
+#    agentSelector: "{nodeLabel: 'swx-clx01'}"
 #    run: |
 #      echo "INFO: Run PARAM benchmarks"
 #      hostname
