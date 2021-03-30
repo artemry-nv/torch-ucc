@@ -63,16 +63,16 @@ DOCKER_RUN_ARGS="\
 for HOST in $(cat "$HOSTFILE"); do
     echo "INFO: HOST = $HOST"
 
-    STALE_DOCKER_CONTAINER_LIST=$(sudo ssh -n "$HOST" "docker ps -a -q -f name=${DOCKER_CONTAINER_NAME}")
+    STALE_DOCKER_CONTAINER_LIST=$(ssh -n "$HOST" "docker ps -a -q -f name=${DOCKER_CONTAINER_NAME}")
     if [ -n "${STALE_DOCKER_CONTAINER_LIST}" ]; then
         echo "WARNING: stale docker container (name: ${DOCKER_CONTAINER_NAME}) is detected on ${HOST} (to be stopped)"
         echo "INFO: Stopping stale docker container (name: ${DOCKER_CONTAINER_NAME}) on ${HOST}..."
-        sudo ssh "${HOST}" docker stop ${DOCKER_CONTAINER_NAME}
+        ssh "${HOST}" docker stop ${DOCKER_CONTAINER_NAME}
         echo "INFO: Stopping stale docker container (name: ${DOCKER_CONTAINER_NAME}) on ${HOST}... DONE"
     fi
 
     echo "INFO: clean up docker artefacts on $HOST ..."
-    sudo ssh "$HOST" "docker system prune --all --volumes --force"
+    ssh "$HOST" "docker system prune --all --volumes --force"
     echo "INFO: clean up docker artefacts on $HOST ... DONE"
 
     echo "INFO: start docker container on $HOST ..."
@@ -86,19 +86,19 @@ for HOST in $(cat "$HOSTFILE"); do
     sleep 5
 
     echo "INFO: verify docker container on $HOST ..."
-    sudo ssh -p "${DOCKER_SSH_PORT}" "$HOST" hostname
-    sudo ssh -p "${DOCKER_SSH_PORT}" "$HOST" cat /proc/1/cgroup
+    ssh -p "${DOCKER_SSH_PORT}" "$HOST" hostname
+    ssh -p "${DOCKER_SSH_PORT}" "$HOST" cat /proc/1/cgroup
     echo "INFO: verify docker container on $HOST ... DONE"
 done
 
 # TODO remove sudo
-#sudo ssh -p "${DOCKER_SSH_PORT}" "${HEAD_NODE}" /opt/nvidia/torch-ucc/src/.ci/scripts/run_dlrm.sh ${TORCH_UCC_MODE} cpu /opt/nvidia/torch-ucc/src/.ci/configs/$HOSTNAME/hostfile.txt
-sudo ssh -p "${DOCKER_SSH_PORT}" "${HEAD_NODE}" /opt/nvidia/torch-ucc/src/.ci/scripts/run_dlrm.sh ${TORCH_UCC_MODE} gpu /opt/nvidia/torch-ucc/src/.ci/configs/$HOSTNAME/hostfile.txt
+#ssh -p "${DOCKER_SSH_PORT}" "${HEAD_NODE}" /opt/nvidia/torch-ucc/src/.ci/scripts/run_dlrm.sh ${TORCH_UCC_MODE} cpu /opt/nvidia/torch-ucc/src/.ci/configs/$HOSTNAME/hostfile.txt
+ssh -p "${DOCKER_SSH_PORT}" "${HEAD_NODE}" /opt/nvidia/torch-ucc/src/.ci/scripts/run_dlrm.sh ${TORCH_UCC_MODE} gpu /opt/nvidia/torch-ucc/src/.ci/configs/$HOSTNAME/hostfile.txt
 
 # TODO debug
 # shellcheck disable=SC2013
-#for HOST in $(cat "$HOSTFILE"); do
-#    echo "INFO: stop docker container on $HOST ..."
-#    ssh "${HOST}" docker stop ${DOCKER_CONTAINER_NAME}
-#    echo "INFO: stop docker container on $HOST ... DONE"
-#done
+for HOST in $(cat "$HOSTFILE"); do
+    echo "INFO: stop docker container on $HOST ..."
+    ssh "${HOST}" docker stop ${DOCKER_CONTAINER_NAME}
+    echo "INFO: stop docker container on $HOST ... DONE"
+done
