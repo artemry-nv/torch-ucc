@@ -71,6 +71,10 @@ for HOST in $(cat "$HOSTFILE"); do
         echo "INFO: Stopping stale docker container (name: ${DOCKER_CONTAINER_NAME}) on ${HOST}... DONE"
     fi
 
+    echo "INFO: clean up docker artefacts on $HOST ..."
+    sudo ssh "$HOST" "docker system prune --all --volumes --force"
+    echo "INFO: clean up docker artefacts on $HOST ... DONE"
+
     echo "INFO: start docker container on $HOST ..."
     # shellcheck disable=SC2029
     sudo ssh "$HOST" "docker run \
