@@ -8,7 +8,6 @@ ENV TORCH_UCC_BIN_DIR=${TORCH_UCC_ROOT_DIR}/bin
 ENV TORCH_UCC_WORKLOADS_DIR=${TORCH_UCC_ROOT_DIR}/workloads
 ENV CUDA_HOME=/usr/local/cuda
 ENV UCX_BRANCH=master
-#ENV UCX_BRANCH=v1.10.x
 ENV UCX_BUILD_TYPE=release-mt
 ENV UCX_INSTALL_DIR=${TORCH_UCC_BIN_DIR}/ucx/build-${UCX_BUILD_TYPE}
 ENV XCCL_BUILD_TYPE=debug
@@ -23,6 +22,7 @@ RUN mkdir -p ${TORCH_UCC_SRC_DIR} && \
     mkdir -p ${TORCH_UCC_PYTHON_VENV_DIR}
 
 COPY . ${TORCH_UCC_SRC_DIR}
+COPY . ${TORCH_UCC_SRC_DIR}_xccl
 #==============================================================================
 RUN yum groupinstall -y \
     'Development Tools' \
@@ -89,7 +89,7 @@ RUN ${TORCH_UCC_SRC_DIR}/.ci/scripts/install_torch_ucc.sh
 #==============================================================================
 RUN groupadd -g 11429 swx-jenkins
 RUN adduser --no-create-home --uid 6213 --gid 11429 --home /labhome/swx-jenkins swx-jenkins
-
+# TODO debug
 RUN groupadd -g 30 dip
 RUN adduser --no-create-home --uid 50009 --gid 30 --home /labhome/artemry artemry
 #==============================================================================

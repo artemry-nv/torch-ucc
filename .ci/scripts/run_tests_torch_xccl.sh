@@ -3,6 +3,7 @@ set -o pipefail
 
 command -v mpirun
 export UCX_WARN_UNUSED_ENV_VARS=n
+export TORCH_UCC_XCCL_TLS=ucx
 ucx_info -e -u t
 
 echo "XCCL allreduce"
