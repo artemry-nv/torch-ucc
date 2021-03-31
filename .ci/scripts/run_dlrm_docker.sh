@@ -86,14 +86,14 @@ for HOST in $(cat "$HOSTFILE"); do
     sleep 5
 
     echo "INFO: verify docker container on $HOST ..."
-    ssh -p "${DOCKER_SSH_PORT}" "$HOST" hostname
-    ssh -p "${DOCKER_SSH_PORT}" "$HOST" cat /proc/1/cgroup
+    sudo ssh -p "${DOCKER_SSH_PORT}" "$HOST" hostname
+    sudo ssh -p "${DOCKER_SSH_PORT}" "$HOST" cat /proc/1/cgroup
     echo "INFO: verify docker container on $HOST ... DONE"
 done
 
 # TODO remove sudo
-#ssh -p "${DOCKER_SSH_PORT}" "${HEAD_NODE}" /opt/nvidia/torch-ucc/src/.ci/scripts/run_dlrm.sh ${TORCH_UCC_MODE} cpu /opt/nvidia/torch-ucc/src/.ci/configs/$HOSTNAME/hostfile.txt
-ssh -p "${DOCKER_SSH_PORT}" "${HEAD_NODE}" /opt/nvidia/torch-ucc/src/.ci/scripts/run_dlrm.sh ${TORCH_UCC_MODE} gpu /opt/nvidia/torch-ucc/src/.ci/configs/$HOSTNAME/hostfile.txt
+#sudo ssh -p "${DOCKER_SSH_PORT}" "${HEAD_NODE}" /opt/nvidia/torch-ucc/src/.ci/scripts/run_dlrm.sh ${TORCH_UCC_MODE} cpu /opt/nvidia/torch-ucc/src/.ci/configs/$HOSTNAME/hostfile.txt
+sudo ssh -p "${DOCKER_SSH_PORT}" "${HEAD_NODE}" /opt/nvidia/torch-ucc/src/.ci/scripts/run_dlrm.sh ${TORCH_UCC_MODE} gpu /opt/nvidia/torch-ucc/src/.ci/configs/$HOSTNAME/hostfile.txt
 
 # TODO debug
 # shellcheck disable=SC2013
