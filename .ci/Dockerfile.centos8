@@ -21,7 +21,7 @@ RUN mkdir -p ${TORCH_UCC_SRC_DIR} && \
     mkdir -p ${TORCH_UCC_WORKLOADS_DIR} && \
     mkdir -p ${TORCH_UCC_PYTHON_VENV_DIR}
 
-#COPY . ${TORCH_UCC_SRC_DIR}
+COPY . ${TORCH_UCC_SRC_DIR}
 #==============================================================================
 RUN yum groupinstall -y \
     'Development Tools' \
