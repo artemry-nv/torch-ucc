@@ -21,6 +21,7 @@ env:
   TORCH_UCC_ROOT_DIR: '/opt/nvidia/torch-ucc'
   TORCH_UCC_SRC_DIR: '${TORCH_UCC_ROOT_DIR}/src'
   TORCH_UCC_BIN_DIR: '${TORCH_UCC_ROOT_DIR}/bin'
+  TORCH_UCC_PKG_DIR: '${TORCH_UCC_ROOT_DIR}/pkg'
   TORCH_UCC_PYTHON_VENV_DIR: '${TORCH_UCC_BIN_DIR}/python/venv'
   XCCL_BUILD_TYPE: 'debug'
 
@@ -73,16 +74,17 @@ steps:
       ${TORCH_UCC_SRC_DIR}/.ci/scripts/run_tests_xccl.sh
       deactivate
   #============================================================================
-  - name: Run UCC tests
-    containerSelector: "{name:'centos8'}"
-    run: |
-      echo "INFO: Run UCC tests"
-      . "${TORCH_UCC_PYTHON_VENV_DIR}/ucc/bin/activate"
-      hostname
-      cat /proc/1/cgroup
-      pip3 list | grep torch
-      ${TORCH_UCC_SRC_DIR}/.ci/scripts/run_tests_ucc.sh
-      deactivate
+# TODO tmp
+#  - name: Run UCC tests
+#    containerSelector: "{name:'centos8'}"
+#    run: |
+#      echo "INFO: Run UCC tests"
+#      . "${TORCH_UCC_PYTHON_VENV_DIR}/ucc/bin/activate"
+#      hostname
+#      cat /proc/1/cgroup
+#      pip3 list | grep torch
+#      ${TORCH_UCC_SRC_DIR}/.ci/scripts/run_tests_ucc.sh
+#      deactivate
   #============================================================================
   - name: Run Torch-UCC tests (XCCL)
     containerSelector: "{name:'centos8'}"
@@ -140,4 +142,22 @@ steps:
 #      hostname
 #      cat /proc/1/cgroup
 #      #${TORCH_UCC_SRC_DIR}/.ci/scripts/run_param_benchmarks.sh
+  #============================================================================
+  - name: Publish release files to NFS repo
+    containerSelector: "{name:'centos8'}"
+    run: |
+      if [ "${do_release}" = "true" ]; then
+        echo "INFO: Publish release files to NFS repo ..."
+        if [ -d "${release_dir}/${TORCH_UCC_VERSION}" ]; then
+          echo "ERROR: ${release_dir} exists, remove it and restart the job"
+          exit 1
+        else
+          mkdir -p "${release_dir}/${TORCH_UCC_VERSION}"
+        fi
+        cp -r "${TORCH_UCC_PKG_DIR}"/* "${release_dir}/${TORCH_UCC_VERSION}"
+        find "${release_dir}/${TORCH_UCC_VERSION}"
+        echo "INFO: Publish release files to NFS repo ... DONE"
+      else
+        echo "INFO: Publish release files to NFS repo ... SKIPPED"
+      fi
   #============================================================================

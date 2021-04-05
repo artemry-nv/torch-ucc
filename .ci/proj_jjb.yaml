@@ -33,7 +33,9 @@
           description: "Release rpm"
       - string:
           name: "release_dir"
-          default: "/.autodirect/sw/release/sw_acceleration/{jjb_proj}"
+          # TODO tmp
+          #default: "/.autodirect/sw/release/sw_acceleration/{jjb_proj}"
+          default: "/.autodirect/mtrswgwork/swx-jenkins/release/{jjb_proj}"
           description: "Location to release rpm to"
       - string:
           name: "script"
