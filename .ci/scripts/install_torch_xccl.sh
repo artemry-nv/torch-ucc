@@ -13,7 +13,6 @@ TORCH_UCC_SRC_DIR_WITH_XCCL_SUPPORT="${TORCH_UCC_SRC_DIR}_xccl"
 mkdir -p "${TORCH_UCC_SRC_DIR_WITH_XCCL_SUPPORT}"
 git clone https://github.com/openucx/torch-ucc.git "${TORCH_UCC_SRC_DIR_WITH_XCCL_SUPPORT}"
 cd "${TORCH_UCC_SRC_DIR_WITH_XCCL_SUPPORT}"
-git clean -ffdx
 python setup.py install bdist_wheel
 pip3 list | grep torch
 python -c 'import torch, torch_ucc'
