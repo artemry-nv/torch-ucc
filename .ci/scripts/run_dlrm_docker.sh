@@ -14,13 +14,6 @@ SCRIPT_DIR="$(
 cd "${SCRIPT_DIR}"
 . "${SCRIPT_DIR}/env.sh"
 
-TORCH_UCC_MODE="$1"
-
-if [ "${TORCH_UCC_MODE}" != "ucc" ] && [ "${TORCH_UCC_MODE}" != "xccl" ]; then
-    echo "ERROR: unsupported or empty TORCH_UCC_MODE (${TORCH_UCC_MODE}), supported values: ucc, xccl"
-    exit 1
-fi
-
 export HOSTFILE=${HOSTFILE:-${CONFIGS_DIR}/$HOSTNAME/hostfile.txt}
 
 if [ ! -f "${HOSTFILE}" ]; then
@@ -100,8 +93,8 @@ for HOST in $(cat "$HOSTFILE"); do
 done
 
 # TODO remove sudo
-#sudo ssh -p "${DOCKER_SSH_PORT}" "${HEAD_NODE}" /opt/nvidia/torch-ucc/src/.ci/scripts/run_dlrm.sh ${TORCH_UCC_MODE} cpu /opt/nvidia/torch-ucc/src/.ci/configs/$HOSTNAME/hostfile.txt
-sudo ssh -p "${DOCKER_SSH_PORT}" "${HEAD_NODE}" /opt/nvidia/torch-ucc/src/.ci/scripts/run_dlrm.sh ${TORCH_UCC_MODE} gpu /opt/nvidia/torch-ucc/src/.ci/configs/$HOSTNAME/hostfile.txt
+#sudo ssh -p "${DOCKER_SSH_PORT}" "${HEAD_NODE}" /opt/nvidia/torch-ucc/src/.ci/scripts/run_dlrm.sh cpu "/opt/nvidia/torch-ucc/src/.ci/configs/$HOSTNAME/hostfile.txt"
+sudo ssh -p "${DOCKER_SSH_PORT}" "${HEAD_NODE}" /opt/nvidia/torch-ucc/src/.ci/scripts/run_dlrm.sh gpu "/opt/nvidia/torch-ucc/src/.ci/configs/$HOSTNAME/hostfile.txt"
 
 echo "INFO: stop docker container on $HOST ..."
 pdsh -w "${HOST_LIST}" -R ssh docker stop ${DOCKER_CONTAINER_NAME}

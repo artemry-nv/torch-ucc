@@ -21,9 +21,6 @@ env:
   TORCH_UCC_ROOT_DIR: '/opt/nvidia/torch-ucc'
   TORCH_UCC_SRC_DIR: '${TORCH_UCC_ROOT_DIR}/src'
   TORCH_UCC_BIN_DIR: '${TORCH_UCC_ROOT_DIR}/bin'
-  TORCH_UCC_PKG_DIR: '${TORCH_UCC_ROOT_DIR}/pkg'
-  TORCH_UCC_PYTHON_VENV_DIR: '${TORCH_UCC_BIN_DIR}/python/venv'
-  XCCL_BUILD_TYPE: 'debug'
 
 docker_opt: '--pull always --network=host --uts=host --ipc=host --ulimit stack=67108864 --ulimit memlock=-1 --security-opt seccomp=unconfined --cap-add=SYS_ADMIN --device=/dev/infiniband/ --gpus all --user root'
 
@@ -63,64 +60,24 @@ steps:
       nvidia-smi
       nvidia-smi topo -m
   #============================================================================
-  - name: Run XCCL tests
-    containerSelector: "{name:'centos8'}"
-    run: |
-      echo "INFO: Run XCCL tests"
-      . "${TORCH_UCC_PYTHON_VENV_DIR}/xccl/bin/activate"
-      hostname
-      cat /proc/1/cgroup
-      pip3 list | grep torch
-      ${TORCH_UCC_SRC_DIR}/.ci/scripts/run_tests_xccl.sh
-      deactivate
-  #============================================================================
 # TODO tmp
 #  - name: Run UCC tests
 #    containerSelector: "{name:'centos8'}"
 #    run: |
 #      echo "INFO: Run UCC tests"
-#      . "${TORCH_UCC_PYTHON_VENV_DIR}/ucc/bin/activate"
 #      hostname
 #      cat /proc/1/cgroup
 #      pip3 list | grep torch
 #      ${TORCH_UCC_SRC_DIR}/.ci/scripts/run_tests_ucc.sh
-#      deactivate
   #============================================================================
-  - name: Run Torch-UCC tests (XCCL)
+  - name: Run Torch-UCC tests
     containerSelector: "{name:'centos8'}"
     run: |
-      echo "INFO: Run Torch-UCC tests (XCCL)"
-      . "${TORCH_UCC_PYTHON_VENV_DIR}/xccl/bin/activate"
-      hostname
-      cat /proc/1/cgroup
-      pip3 list | grep torch
-      ${TORCH_UCC_SRC_DIR}/.ci/scripts/run_tests_torch_xccl.sh
-      deactivate
-  #============================================================================
-  - name: Run Torch-UCC tests (UCC)
-    containerSelector: "{name:'centos8'}"
-    run: |
-      echo "INFO: Run Torch-UCC tests (UCC)"
-      . "${TORCH_UCC_PYTHON_VENV_DIR}/ucc/bin/activate"
+      echo "INFO: Run Torch-UCC tests"
       hostname
       cat /proc/1/cgroup
       pip3 list | grep torch
       ${TORCH_UCC_SRC_DIR}/.ci/scripts/run_tests_torch_ucc.sh
-      deactivate
-  #============================================================================
-  - name: Run DLRM tests (XCCL/GPU)
-    agentSelector: "{nodeLabel: 'swx-clx01'}"
-    run: |
-      echo "INFO: Run DLRM tests (XCCL/GPU)"
-      hostname
-      printenv
-      cat /proc/1/cgroup
-      cat /etc/*release*
-      id
-      find /opt/nvidia
-      ibv_devinfo
-      nvidia-smi
-      ${WORKSPACE}/.ci/scripts/run_dlrm_docker.sh xccl
   #============================================================================
   - name: Run DLRM tests (UCC/GPU)
     agentSelector: "{nodeLabel: 'swx-clx01'}"
@@ -133,7 +90,7 @@ steps:
       id
       ibv_devinfo
       nvidia-smi
-      ${WORKSPACE}/.ci/scripts/run_dlrm_docker.sh ucc
+      ${WORKSPACE}/.ci/scripts/run_dlrm_docker.sh
   #============================================================================
 #  - name: Run PARAM benchmarks
 #    agentSelector: "{nodeLabel: 'swx-clx01'}"
@@ -154,7 +111,7 @@ steps:
         else
           mkdir -p "${release_dir}/${TORCH_UCC_VERSION}"
         fi
-        cp -r "${TORCH_UCC_PKG_DIR}"/* "${release_dir}/${TORCH_UCC_VERSION}"
+        cd "${TORCH_UCC_BIN_DIR}" && tar cfz "${release_dir}/${TORCH_UCC_VERSION}/torch-ucc.${TORCH_UCC_VERSION}.tgz" --owner=0 --group=0 .
         find "${release_dir}/${TORCH_UCC_VERSION}"
         echo "INFO: Publish release files to NFS repo ... DONE"
       else

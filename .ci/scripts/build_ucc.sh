@@ -13,4 +13,3 @@ make -j install
 echo "${UCC_INSTALL_DIR}/lib" > /etc/ld.so.conf.d/ucc.conf
 ldconfig
 ldconfig -p | grep -i libucc
-cd "${UCC_INSTALL_DIR}" && tar cfz "${TORCH_UCC_PKG_DIR}/ucc.tgz" --owner=0 --group=0 .
