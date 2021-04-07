@@ -5,20 +5,68 @@ command -v mpirun
 export UCX_WARN_UNUSED_ENV_VARS=n
 ucx_info -e -u t
 
-echo "UCC barrier"
+#==============================================================================
+# CPU
+#==============================================================================
+echo "INFO: UCC barrier (CPU)"
 /bin/bash ${TORCH_UCC_SRC_DIR}/test/start_test.sh ${TORCH_UCC_SRC_DIR}/test/torch_barrier_test.py --backend=gloo
 
-echo "UCC alltoall"
+echo "INFO: UCC alltoall (CPU)"
 /bin/bash ${TORCH_UCC_SRC_DIR}/test/start_test.sh ${TORCH_UCC_SRC_DIR}/test/torch_alltoall_test.py --backend=gloo
 
-echo "UCC alltoallv"
+echo "INFO: UCC alltoallv (CPU)"
 /bin/bash ${TORCH_UCC_SRC_DIR}/test/start_test.sh ${TORCH_UCC_SRC_DIR}/test/torch_alltoallv_test.py --backend=gloo
 
-echo "UCC allgather"
+echo "INFO: UCC allgather (CPU)"
 /bin/bash ${TORCH_UCC_SRC_DIR}/test/start_test.sh ${TORCH_UCC_SRC_DIR}/test/torch_allgather_test.py --backend=gloo
 
-echo "UCC allreduce"
+echo "INFO: UCC allreduce (CPU)"
 /bin/bash ${TORCH_UCC_SRC_DIR}/test/start_test.sh ${TORCH_UCC_SRC_DIR}/test/torch_allreduce_test.py --backend=gloo
 
-echo "UCC broadcast"
+echo "INFO: UCC broadcast (CPU)"
 /bin/bash ${TORCH_UCC_SRC_DIR}/test/start_test.sh ${TORCH_UCC_SRC_DIR}/test/torch_bcast_test.py --backend=gloo
+#==============================================================================
+# GPU with NCCL
+#==============================================================================
+echo "INFO: UCC barrier (GPU with NCCL)"
+/bin/bash ${TORCH_UCC_SRC_DIR}/test/start_test.sh ${TORCH_UCC_SRC_DIR}/test/torch_barrier_test.py --backend=gloo --use-cuda
+
+echo "INFO: UCC alltoall (GPU with NCCL)"
+/bin/bash ${TORCH_UCC_SRC_DIR}/test/start_test.sh ${TORCH_UCC_SRC_DIR}/test/torch_alltoall_test.py --backend=gloo --use-cuda
+
+echo "INFO: UCC alltoallv (GPU with NCCL)"
+/bin/bash ${TORCH_UCC_SRC_DIR}/test/start_test.sh ${TORCH_UCC_SRC_DIR}/test/torch_alltoallv_test.py --backend=gloo --use-cuda
+
+echo "INFO: UCC allgather (GPU with NCCL)"
+/bin/bash ${TORCH_UCC_SRC_DIR}/test/start_test.sh ${TORCH_UCC_SRC_DIR}/test/torch_allgather_test.py --backend=gloo --use-cuda
+
+echo "INFO: UCC allreduce (GPU with NCCL)"
+/bin/bash ${TORCH_UCC_SRC_DIR}/test/start_test.sh ${TORCH_UCC_SRC_DIR}/test/torch_allreduce_test.py --backend=gloo --use-cuda
+
+echo "INFO: UCC broadcast (GPU with NCCL)"
+/bin/bash ${TORCH_UCC_SRC_DIR}/test/start_test.sh ${TORCH_UCC_SRC_DIR}/test/torch_bcast_test.py --backend=gloo --use-cuda
+#==============================================================================
+# GPU without NCCL
+#==============================================================================
+export UCC_TL_NCCL_COLL_SCORE=0
+
+echo "INFO: UCC barrier (GPU without NCCL)"
+/bin/bash ${TORCH_UCC_SRC_DIR}/test/start_test.sh ${TORCH_UCC_SRC_DIR}/test/torch_barrier_test.py --backend=gloo --use-cuda
+
+echo "INFO: UCC alltoall (GPU without NCCL)"
+/bin/bash ${TORCH_UCC_SRC_DIR}/test/start_test.sh ${TORCH_UCC_SRC_DIR}/test/torch_alltoall_test.py --backend=gloo --use-cuda
+
+echo "INFO: UCC alltoallv (GPU without NCCL)"
+/bin/bash ${TORCH_UCC_SRC_DIR}/test/start_test.sh ${TORCH_UCC_SRC_DIR}/test/torch_alltoallv_test.py --backend=gloo --use-cuda
+
+echo "INFO: UCC allgather (GPU without NCCL)"
+/bin/bash ${TORCH_UCC_SRC_DIR}/test/start_test.sh ${TORCH_UCC_SRC_DIR}/test/torch_allgather_test.py --backend=gloo --use-cuda
+
+echo "INFO: UCC allreduce (GPU without NCCL)"
+/bin/bash ${TORCH_UCC_SRC_DIR}/test/start_test.sh ${TORCH_UCC_SRC_DIR}/test/torch_allreduce_test.py --backend=gloo --use-cuda
+
+echo "INFO: UCC broadcast (GPU without NCCL)"
+/bin/bash ${TORCH_UCC_SRC_DIR}/test/start_test.sh ${TORCH_UCC_SRC_DIR}/test/torch_bcast_test.py --backend=gloo --use-cuda
+
+unset UCC_TL_NCCL_COLL_SCORE
+#==============================================================================
