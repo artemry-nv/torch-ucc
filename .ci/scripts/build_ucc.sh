@@ -13,3 +13,7 @@ make -j install
 echo "${UCC_INSTALL_DIR}/lib" > /etc/ld.so.conf.d/ucc.conf
 ldconfig
 ldconfig -p | grep -i libucc
+
+# Build MPI tests
+cd "${UCC_SRC_DIR}/build/test/mpi"
+make -j
