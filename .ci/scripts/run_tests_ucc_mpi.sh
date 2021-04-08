@@ -71,7 +71,7 @@ mpirun \
     --mca plm_rsh_args '-p 12345' \
     -x PATH \
     -x LD_LIBRARY_PATH \
-    /opt/nvidia/torch-ucc/src/ucc/build/test/mpi/ucc_test_mpi --mtypes cuda
+    /opt/nvidia/torch-ucc/src/ucc/build/test/mpi/ucc_test_mpi --mtypes cuda --set_device 1
 echo "INFO: UCC MPI unit tests (GPU with NCCL) ... DONE"
 
 # GPU without NCCL
@@ -88,3 +88,31 @@ mpirun \
     -x UCC_TL_NCCL_COLL_SCORE 0 \
     /opt/nvidia/torch-ucc/src/ucc/build/test/mpi/ucc_test_mpi --mtypes cuda
 echo "INFO: UCC MPI unit tests (GPU without NCCL) ... DONE"
+
+# GPU with NCCL, allreduce --inplace 0
+echo "INFO: UCC MPI unit tests (GPU with NCCL, allreduce --inplace 0) ..."
+# shellcheck disable=SC2086
+mpirun \
+    -np $NP \
+    --hostfile ${HOSTFILE} \
+    --map-by node \
+    --allow-run-as-root \
+    --mca plm_rsh_args '-p 12345' \
+    -x PATH \
+    -x LD_LIBRARY_PATH \
+    /opt/nvidia/torch-ucc/src/ucc/build/test/mpi/ucc_test_mpi -colls allreduce --mtypes cuda --inplace 0 --set_device 1
+echo "INFO: UCC MPI unit tests (GPU with NCCL, allreduce --inplace 0) ... DONE"
+
+# GPU with NCCL, allreduce --inplace 1
+echo "INFO: UCC MPI unit tests (GPU with NCCL, allreduce --inplace 1) ..."
+# shellcheck disable=SC2086
+mpirun \
+    -np $NP \
+    --hostfile ${HOSTFILE} \
+    --map-by node \
+    --allow-run-as-root \
+    --mca plm_rsh_args '-p 12345' \
+    -x PATH \
+    -x LD_LIBRARY_PATH \
+    /opt/nvidia/torch-ucc/src/ucc/build/test/mpi/ucc_test_mpi -colls allreduce --mtypes cuda --inplace 1 --set_device 1
+echo "INFO: UCC MPI unit tests (GPU with NCCL, allreduce --inplace 1) ... DONE"
