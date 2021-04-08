@@ -4,6 +4,7 @@ set -o pipefail
 echo "INFO: Build UCC"
 UCC_SRC_DIR="${TORCH_UCC_SRC_DIR}/ucc"
 cd "${UCC_SRC_DIR}"
+git rev-parse HEAD
 "${UCC_SRC_DIR}/autogen.sh"
 mkdir -p "${UCC_SRC_DIR}/build"
 cd "${UCC_SRC_DIR}/build"
