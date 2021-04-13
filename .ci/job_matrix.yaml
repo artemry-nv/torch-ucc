@@ -37,13 +37,13 @@ runs_on_dockers:
   }
 
 # bare metal
-runs_on_agents:
-  - nodeLabel: 'swx-clx01'
+#runs_on_agents:
+#  - nodeLabel: 'swx-clx01'
 
 steps:
   #============================================================================
   - name: Check Env
-    agentSelector: "{nodeLabel: 'swx-clx01'}"
+#    agentSelector: "{nodeLabel: 'swx-clx01'}"
     containerSelector: "{name:'centos8'}"
     run: |
       echo "INFO: check environment"
@@ -56,72 +56,73 @@ steps:
       ibv_devinfo
       nvidia-smi
       nvidia-smi topo -m
-  #============================================================================
-  - name: Run UCC tests
-    containerSelector: "{name:'centos8'}"
-    run: |
-      echo "INFO: Run UCC tests"
-      hostname
-      cat /proc/1/cgroup
-      pip3 list | grep torch
-      ${TORCH_UCC_SRC_DIR}/.ci/scripts/run_tests_ucc.sh
-  #============================================================================
-  - name: Run Torch-UCC tests
-    containerSelector: "{name:'centos8'}"
-    run: |
-      echo "INFO: Run Torch-UCC tests"
-      hostname
-      cat /proc/1/cgroup
-      pip3 list | grep torch
-      ${TORCH_UCC_SRC_DIR}/.ci/scripts/run_tests_torch_ucc.sh
-  #============================================================================
-  - name: Run docker containers
-    agentSelector: "{nodeLabel: 'swx-clx01'}"
-    run: |
-      echo "INFO: Run docker containers"
-      ${WORKSPACE}/.ci/scripts/run_docker.sh
-  #============================================================================
-  - name: Run UCC MPI tests
-    agentSelector: "{nodeLabel: 'swx-clx01'}"
-    run: |
-      echo "INFO: Run UCC MPI tests"
-      ${WORKSPACE}/.ci/scripts/run_tests_ucc_mpi_docker.sh
-  #============================================================================
-  - name: Run DLRM tests (UCC/GPU)
-    agentSelector: "{nodeLabel: 'swx-clx01'}"
-    run: |
-      echo "INFO: Run DLRM tests (UCC/GPU)"
-      ${WORKSPACE}/.ci/scripts/run_dlrm_docker.sh
-  #============================================================================
-#  - name: Run PARAM benchmarks
-#    agentSelector: "{nodeLabel: 'swx-clx01'}"
+      sleep 20000
+#  #============================================================================
+#  - name: Run UCC tests
+#    containerSelector: "{name:'centos8'}"
 #    run: |
-#      echo "INFO: Run PARAM benchmarks"
+#      echo "INFO: Run UCC tests"
 #      hostname
 #      cat /proc/1/cgroup
-#      #${TORCH_UCC_SRC_DIR}/.ci/scripts/run_param_benchmarks.sh
-  #============================================================================
-  - name: Stop docker containers
-    agentSelector: "{nodeLabel: 'swx-clx01'}"
-    run: |
-      echo "INFO: Stop docker containers"
-      ${WORKSPACE}/.ci/scripts/stop_docker.sh
-  #============================================================================
-  - name: Publish release files to NFS repo
-    containerSelector: "{name:'centos8'}"
-    run: |
-      if [ "${do_release}" = "true" ]; then
-        echo "INFO: Publish release files to NFS repo ..."
-        if [ -d "${release_dir}/${TORCH_UCC_VERSION}" ]; then
-          echo "ERROR: ${release_dir} exists, remove it and restart the job"
-          exit 1
-        else
-          mkdir -p "${release_dir}/${TORCH_UCC_VERSION}"
-        fi
-        cd "${TORCH_UCC_BIN_DIR}" && tar cfz "${release_dir}/${TORCH_UCC_VERSION}/torch-ucc.${TORCH_UCC_VERSION}.tgz" --owner=0 --group=0 .
-        find "${release_dir}/${TORCH_UCC_VERSION}"
-        echo "INFO: Publish release files to NFS repo ... DONE"
-      else
-        echo "INFO: Publish release files to NFS repo ... SKIPPED"
-      fi
-  #============================================================================
+#      pip3 list | grep torch
+#      ${TORCH_UCC_SRC_DIR}/.ci/scripts/run_tests_ucc.sh
+#  #============================================================================
+#  - name: Run Torch-UCC tests
+#    containerSelector: "{name:'centos8'}"
+#    run: |
+#      echo "INFO: Run Torch-UCC tests"
+#      hostname
+#      cat /proc/1/cgroup
+#      pip3 list | grep torch
+#      ${TORCH_UCC_SRC_DIR}/.ci/scripts/run_tests_torch_ucc.sh
+#  #============================================================================
+#  - name: Run docker containers
+#    agentSelector: "{nodeLabel: 'swx-clx01'}"
+#    run: |
+#      echo "INFO: Run docker containers"
+#      ${WORKSPACE}/.ci/scripts/run_docker.sh
+#  #============================================================================
+#  - name: Run UCC MPI tests
+#    agentSelector: "{nodeLabel: 'swx-clx01'}"
+#    run: |
+#      echo "INFO: Run UCC MPI tests"
+#      ${WORKSPACE}/.ci/scripts/run_tests_ucc_mpi_docker.sh
+#  #============================================================================
+#  - name: Run DLRM tests (UCC/GPU)
+#    agentSelector: "{nodeLabel: 'swx-clx01'}"
+#    run: |
+#      echo "INFO: Run DLRM tests (UCC/GPU)"
+#      ${WORKSPACE}/.ci/scripts/run_dlrm_docker.sh
+#  #============================================================================
+##  - name: Run PARAM benchmarks
+##    agentSelector: "{nodeLabel: 'swx-clx01'}"
+##    run: |
+##      echo "INFO: Run PARAM benchmarks"
+##      hostname
+##      cat /proc/1/cgroup
+##      #${TORCH_UCC_SRC_DIR}/.ci/scripts/run_param_benchmarks.sh
+#  #============================================================================
+#  - name: Stop docker containers
+#    agentSelector: "{nodeLabel: 'swx-clx01'}"
+#    run: |
+#      echo "INFO: Stop docker containers"
+#      ${WORKSPACE}/.ci/scripts/stop_docker.sh
+#  #============================================================================
+#  - name: Publish release files to NFS repo
+#    containerSelector: "{name:'centos8'}"
+#    run: |
+#      if [ "${do_release}" = "true" ]; then
+#        echo "INFO: Publish release files to NFS repo ..."
+#        if [ -d "${release_dir}/${TORCH_UCC_VERSION}" ]; then
+#          echo "ERROR: ${release_dir} exists, remove it and restart the job"
+#          exit 1
+#        else
+#          mkdir -p "${release_dir}/${TORCH_UCC_VERSION}"
+#        fi
+#        cd "${TORCH_UCC_BIN_DIR}" && tar cfz "${release_dir}/${TORCH_UCC_VERSION}/torch-ucc.${TORCH_UCC_VERSION}.tgz" --owner=0 --group=0 .
+#        find "${release_dir}/${TORCH_UCC_VERSION}"
+#        echo "INFO: Publish release files to NFS repo ... DONE"
+#      else
+#        echo "INFO: Publish release files to NFS repo ... SKIPPED"
+#      fi
+#  #============================================================================
