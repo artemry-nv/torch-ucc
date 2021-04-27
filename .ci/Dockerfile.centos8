@@ -16,6 +16,9 @@ RUN mkdir -p ${TORCH_UCC_SRC_DIR} && \
 
 COPY . ${TORCH_UCC_SRC_DIR}
 #==============================================================================
+# TODO debug
+RUN hostname
+#==============================================================================
 RUN yum groupinstall -y \
     'Development Tools' \
     'Infiniband Support'
