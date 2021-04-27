@@ -31,6 +31,7 @@ runs_on_dockers:
     build_args: '--network=host --rm --no-cache --build-arg CUDA_VER=${CUDA_VER} --build-arg TORCH_UCC_ROOT_DIR=${TORCH_UCC_ROOT_DIR}',
     cloud: 'swx-k8s',
     nodeLabel: 'dockerserver && swx-clx01',
+    nodeSelector: 'tester=yes'
   }
 
 # bare metal
